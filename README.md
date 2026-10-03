@@ -98,6 +98,7 @@ v0.1 implements one production profile:
 - [#8 — FNR-007 generic provisioning/recovery](https://github.com/techrote/faikeow-now-reciever/issues/8)
 - [#9 — FNR-008 platform + reference-profile physical acceptance](https://github.com/techrote/faikeow-now-reciever/issues/9)
 - [#10 — FNR-009 v0.1 platform release](https://github.com/techrote/faikeow-now-reciever/issues/10)
+- [#11 — FNR-010 post-v0.1 HID/PIO expansion](https://github.com/techrote/faikeow-now-reciever/issues/11) — non-blocking
 
 ## Explicit v0.1 non-goals
 
