@@ -1,146 +1,112 @@
 # Validation
 
-## Automated checks
+## Automated gates
 
-FNR-001 establishes named CI gates. Later issues must preserve them.
+FNR-001 establishes:
 
-### 1. Native/shared tests
+1. **Native tests**
+2. **RP2040 firmware build**
+3. **ESP radio firmware build**
+4. **Text and style sanity**
 
-Run on a normal host compiler with strict warnings.
+## Native/shared coverage
 
-Cover pure logic including:
+Pure code should cover:
 
-- COBS/frame parser if used;
+### Platform
+
+- internal frame codec/parser;
 - CRC vectors;
-- packet length/version validation;
+- generic envelope version/length validation;
+- profile ID dispatch;
+- sender/session restart handling;
 - wrap-safe sequence comparison;
 - duplicate/stale rejection;
-- timeout decisions;
-- latest-first queue behavior;
-- button release behavior;
-- HID report construction;
-- recovery/reset state machines.
+- freshness/timeout transitions;
+- bounded queue/drop behavior;
+- provisioning/config validation.
 
-Use sanitizers where practical in host CI.
+### HID framework
 
-### 2. RP2040 firmware build
+- profile registration/selection;
+- USB mount/unmount/suspend/resume;
+- no stale report replay after invalid/unmounted state.
 
-Cross-build the production RP2040 target with the exact pinned Pico SDK/toolchain.
+### relative_mouse profile
 
-A green build proves compilation only.
+- X/Y bounds;
+- button state;
+- duplicate/stale no-motion behavior;
+- sequence gaps;
+- timeout/restart release;
+- no stale movement burst after recovery.
 
-### 3. ESP8266/ESP8285 firmware build
-
-Cross-build the production radio target with the exact pinned ESP toolchain/core.
-
-Verify the ESP-NOW API used is actually present in the pinned dependency.
-
-A green build proves compilation only.
-
-### 4. Text/style/static sanity
-
-Enforce at least:
-
-- UTF-8/LF;
-- final newline;
-- no trailing whitespace;
-- strict compiler warnings for native code;
-- no committed generated build trees/secrets.
-
-## Deterministic fixtures
-
-Keep small human-readable/binary fixtures for:
-
-- valid wireless packets;
-- bad version/length;
-- duplicate sequence;
-- out-of-order sequence;
-- sequence wrap;
-- missing sequence gap;
-- button press/hold/release;
-- simultaneous buttons if upstream supports it;
-- movement bursts;
-- timeout after button hold;
-- corrupted internal frames;
-- truncated frames;
-- concatenated/recovered frames;
-- radio restart status.
-
-Once TM-005B freezes the exact wireless bytes, import compatibility vectors from or against the transmitter repo.
+Future profiles add their own deterministic policy tests.
 
 ## Physical FNR-002 evidence
 
-Required before hard-coding board resources:
+Unchanged:
 
-- radio identity;
+- exact radio identity;
 - internal link/pins;
-- button/boot behavior;
-- radio flashing success;
-- RP2040 recovery success;
-- link-rate stress evidence.
+- flashing/recovery;
+- proven link rate.
 
 ## Physical FNR-008 evidence
 
-Required for release:
+Separate claims.
 
-### USB
+### Platform claims
 
-- standard OS HID driver binds;
-- expected mouse-only descriptors;
-- unplug/replug;
-- no synthetic cursor movement before valid wireless input.
+- ESP-NOW datagrams received on target radio;
+- internal frames remain synchronized;
+- generic envelope/session/order handling works;
+- provisioning and restart recovery work;
+- selected profile dispatch is correct;
+- USB lifecycle is safe.
 
-### RF/end-to-end
+### relative_mouse profile claims
 
-- exact TiltMouse transmitter build;
-- receiver radio receives packets;
-- actual packet/sequence counters;
-- motion/button function;
-- reasonable desktop operating distance;
-- no infrastructure Wi-Fi dependency.
+- standard mouse HID enumeration;
+- X/Y/buttons;
+- duplicate/reorder/loss semantics;
+- timeout releases buttons;
+- no stale movement replay.
 
-### Faults
+### TiltMouse reference interoperability
 
-Exercise:
+Use exact TiltMouse artifacts to prove the first real sender maps correctly to the generic `relative_mouse` profile.
 
-- transmitter power loss while a button is held;
-- radio reset while a button is held;
-- RP2040 reset;
-- internal link interruption/corruption where practical;
-- USB replug;
-- wrong peer/channel/key;
-- sequence duplicates/out-of-order injection if tooling permits.
+Do not describe TiltMouse success as proof that every future profile is accepted.
 
-Acceptance requires all uncertain/fault states to converge to zero movement and released buttons.
+## Fault campaign
 
-### Performance
+Before v0.1:
 
-Record rather than over-promise:
+- radio loss/restart;
+- internal-link corruption/restart;
+- sender/session change;
+- duplicate/out-of-order messages;
+- USB unmount/replug;
+- wrong peer/channel/key/profile;
+- profile timeout.
 
-- report rate seen at USB;
-- end-to-end latency measurement method and observed distribution;
-- ESP-NOW sequence gaps/loss;
-- internal link drop/error counts;
-- recovery time.
-
-No specific latency target is accepted until measured. The goal is subjectively usable mouse behavior plus bounded deterministic safety.
+Every profile must define a safe neutral state.
 
 ## Evidence identity
 
-Every physical result must identify:
+Record:
 
-- receiver repo commit;
-- RP2040 artifact checksum;
-- ESP radio artifact checksum;
-- upstream TiltMouse commit/artifact;
+- receiver commit/artifact hashes;
+- platform protocol version;
 - internal protocol version;
-- wireless protocol version;
-- host OS;
-- board/chip identity;
-- test date.
+- selected profile ID/schema version;
+- sender artifact/protocol/profile version;
+- board/radio identity;
+- host OS/date.
 
 ## Merge rule
 
-CI may merge software-only issues whose acceptance is entirely automated.
+Software-only issues may merge on automated acceptance.
 
-Hardware-gated issues do not merge/close on inference. If hardware is unavailable, leave a clean handoff with exact missing evidence.
+Hardware-gated criteria require physical evidence or a precise open handoff.
