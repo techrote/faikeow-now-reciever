@@ -91,9 +91,9 @@ Choose the lowest rate comfortably exceeding the real protocol bandwidth with ze
 
 ## Bandwidth reality
 
-Mouse reports should be small. Even at ~125 reports/s, a compact packet is modest traffic.
+v0.1 HID traffic is modest. A compact platform envelope plus relative-mouse payload at ordinary HID report rates should require only a small fraction of a normal UART link.
 
-Do not optimize UART speed before correctness. The internal link need only keep up with the actual frozen upstream packet size/report rate plus diagnostics.
+Do not optimize link speed before correctness. The internal link need only keep up with the accepted platform/profile payload rate plus diagnostics, with headroom for future profiles.
 
 ## Power/reset interactions
 
