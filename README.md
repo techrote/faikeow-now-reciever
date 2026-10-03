@@ -78,6 +78,19 @@ FNR-001 foundation / CI
 
 FNR-002, FNR-003 and the hardware-independent parts of FNR-004 may proceed in parallel after FNR-001.
 
+GitHub programme map:
+
+- [#1 — v0.1 programme tracker](https://github.com/techrote/faikeow-now-reciever/issues/1)
+- [#2 — FNR-001 foundation / CI](https://github.com/techrote/faikeow-now-reciever/issues/2)
+- [#3 — FNR-002 hardware characterization](https://github.com/techrote/faikeow-now-reciever/issues/3)
+- [#4 — FNR-003 RP2040 USB HID](https://github.com/techrote/faikeow-now-reciever/issues/4)
+- [#5 — FNR-004 ESP-NOW radio receiver](https://github.com/techrote/faikeow-now-reciever/issues/5)
+- [#6 — FNR-005 inter-MCU transport](https://github.com/techrote/faikeow-now-reciever/issues/6)
+- [#7 — FNR-006 integrated receiver](https://github.com/techrote/faikeow-now-reciever/issues/7)
+- [#8 — FNR-007 provisioning/recovery](https://github.com/techrote/faikeow-now-reciever/issues/8)
+- [#9 — FNR-008 physical acceptance](https://github.com/techrote/faikeow-now-reciever/issues/9)
+- [#10 — FNR-009 v0.1 release](https://github.com/techrote/faikeow-now-reciever/issues/10)
+
 ## Upstream contract
 
 The transmitter is maintained in:
