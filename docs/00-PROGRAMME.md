@@ -2,7 +2,9 @@
 
 ## Goal
 
-Produce a reproducible dual-MCU firmware set that turns the target RP2040 + ESP8266/ESP8285 clone Pico-W board into a robust ESP-NOW-to-USB mouse receiver for TiltMouse.
+Deliver a reusable ESP-NOW-to-USB HID receiver platform on RP2040 + ESP8266/ESP8285 clone Pico-W hardware.
+
+v0.1 proves the platform with one generic **relative-mouse profile** and uses TiltMouse as the first reference sender.
 
 ## Dependency graph
 
@@ -13,205 +15,157 @@ FNR-001 foundation / CI
    |                    |                    |
    v                    v                    v
 FNR-002              FNR-003              FNR-004
-hardware             RP2040 USB           ESP radio
-characterization     HID endpoint          foundation/RX
+hardware             generic HID          generic ESP-NOW
+characterization     framework             ingress
    |                    |                    |
    +----------+---------+--------------------+
               |
               v
-        FNR-005 internal link
+        FNR-005 internal
+        datagram transport
               |
               v
-        FNR-006 integration
+        FNR-006 receiver core
+        + profile dispatch
+        + relative mouse
               |
               v
-        FNR-007 provisioning/
-                recovery policy
+        FNR-007 generic
+        provisioning/recovery
               |
               v
-        FNR-008 physical acceptance
+        FNR-008 platform physical
+        acceptance + TiltMouse reference
               |
               v
         FNR-009 v0.1 release
 ```
 
-FNR-004 may build its ESP-NOW receive abstraction before the transmitter byte format is frozen, but final packet interoperability work in FNR-006 depends on the TiltMouse TM-005B / #16 contract.
-
 ## FNR-001 — Reproducible dual-firmware foundation and CI
 
-Create the repository/build skeleton for both MCUs plus target-independent native tests.
+Create the shared/RP2040/ESP-radio repository skeleton, pin both toolchains and establish native tests plus both cross-builds.
 
-Select and pin exact toolchains rather than floating releases. Establish:
-
-- RP2040 Pico SDK/TinyUSB target;
-- ESP8266/ESP8285 build target with confirmed ESP-NOW API;
-- portable shared library/test target;
-- CI for both cross-builds, native tests and text/style sanity;
-- manifest/version traceability for produced firmware artifacts.
-
-No physical board behavior is claimed here.
+The foundation must be profile-neutral.
 
 ## FNR-002 — Clone-board characterization and flashing path
 
-Use the actual clone board to establish facts that public prior art cannot safely guarantee:
+Establish actual radio identity, RP2040↔radio transport/pins, boot/reset behavior, reversible flashing and a physically proven internal link rate.
 
-- exact radio silicon identity and flash size;
-- RP2040↔radio data pins/peripheral;
-- reset and bootloader control;
-- behavior of both physical buttons;
-- USB-to-serial flashing bridge procedure;
-- usable default and higher UART baud rates if UART is confirmed;
-- power/reset behavior during independent MCU flashing.
+Unchanged by the generalization.
 
-Commit a board contract and reproducible flashing guide. This is a physical evidence issue.
+## FNR-003 — Generic RP2040 TinyUSB HID framework
 
-## FNR-003 — RP2040 USB HID endpoint
+Implement:
 
-Implement the RP2040-facing host endpoint independently of ESP-NOW:
+- TinyUSB lifecycle abstraction;
+- generic HID-profile registration/selection seam;
+- profile-owned descriptor/report hooks;
+- target-independent HID state helpers;
+- v0.1 `relative_mouse` USB backend as the first profile implementation.
 
-- normal USB identity is a standard relative mouse;
-- left/right buttons + relative X/Y only;
-- deterministic report construction;
-- all-buttons-release;
-- mount/unmount/suspend/resume/replug handling;
-- no synthetic default movement;
-- native tests for pure HID/report state.
+Do not make the core USB framework assume that all future profiles are mice.
 
-Use synthetic/internal test reports; no radio dependency.
+## FNR-004 — Generic ESP-NOW datagram ingress
 
-## FNR-004 — ESP8266/ESP8285 radio receiver layer
+Implement the ESP radio as a payload-agnostic ingress layer:
 
-Implement the radio MCU as a narrow ESP-NOW front-end:
+- explicit channel/peer filtering;
+- bounded newest-datagram state;
+- source metadata/counters;
+- no HID semantics;
+- no TiltMouse decoder;
+- no infrastructure IP networking.
 
-- initialize only the Wi-Fi state required for ESP-NOW;
-- explicit RF channel;
-- peer/source filtering;
-- receive callback copies into bounded newest-packet state;
-- no stale-packet backlog;
-- diagnostic counters;
-- portable seam for packet handoff;
-- cross-build under the pinned ESP toolchain.
+## FNR-005 — Framed inter-MCU datagram transport
 
-Do not give the ESP MCU responsibility for USB HID. Do not add general Wi-Fi/IP features.
+Carry generic ESP-NOW datagrams and radio/control status across the board-internal link.
 
-## FNR-005 — Framed inter-MCU transport
+The internal protocol must not name TiltMouse or mouse fields.
 
-On the physical link established by FNR-002, implement a bounded, recoverable binary link between the MCUs.
+If UART is confirmed, use the COBS + CRC bounded baseline unless evidence justifies otherwise.
 
-If UART is confirmed, default to COBS + CRC-16/CCITT unless evidence justifies a different framing.
+## FNR-006 — Generic receiver core, profile dispatch and relative mouse
 
-Requirements:
+Freeze the generic receiver envelope v1 and implement RP2040 core semantics:
 
-- explicit frame type/version/length;
-- bounded payload;
-- corruption/truncation/resynchronization tests;
-- newest-report semantics;
-- no unbounded queues;
-- restart detection/status;
-- diagnostic/control frames sufficient for bring-up;
-- target-independent encoder/parser tests.
+- platform version;
+- profile ID;
+- message type/flags;
+- sender/session restart discrimination;
+- sequence ordering;
+- payload length;
+- profile dispatch;
+- generic peer/session/freshness state.
 
-The ESP side forwards newest wireless input; the RP2040 remains final state authority.
+Then implement the first production profile:
 
-## FNR-006 — Integrated receiver and TiltMouse semantics
-
-Sync to the exact upstream TiltMouse TM-005B packet contract and implement the complete receiver path:
-
-```text
-ESP-NOW packet
- -> ESP radio handoff
- -> framed inter-MCU link
- -> RP2040 validation/order
- -> timeout/state machine
- -> USB mouse report
-```
-
-Own:
-
-- exact wireless version/length decode;
-- wrap-safe sequence comparison;
-- duplicate/stale/out-of-order rejection;
-- latest-first movement;
-- full button-state application;
-- timeout -> all-buttons-released;
-- recovery starts from fresh state;
-- no stale cursor backlog;
-- deterministic fault/replay tests.
-
-## FNR-007 — Provisioning, peer/channel/key and operational recovery
-
-Make deployment repeatable without hard-coded project-wide secrets.
-
-Define and implement:
-
-- transmitter peer MAC configuration;
-- receiver MAC discovery/reporting;
-- RF channel configuration;
-- encryption/key provisioning if upstream TM-005B uses it;
-- safe factory/default state;
-- controlled reconfiguration path;
-- reset/reflash recovery;
-- behavior when peer/channel/key is wrong;
-- diagnostics usable without changing normal USB mouse identity.
-
-Avoid web UI or infrastructure networking.
-
-## FNR-008 — Physical end-to-end acceptance
-
-Run the complete real chain with exact artifacts:
-
-```text
-TiltMouse ESP32-S3
- -> ESP-NOW RF
- -> clone ESP8266/ESP8285
- -> internal link
- -> RP2040
- -> USB HID
- -> host
-```
-
-Measure and record:
-
-- enumeration/driver behavior;
-- report rate and practical latency/jitter;
-- packet/sequence gaps;
+- relative X/Y;
+- complete button state;
 - duplicate/stale rejection;
-- button press/hold/release;
-- mouse movement;
-- transmitter loss;
-- radio reset;
-- RP2040 reset;
-- USB replug;
-- internal-link corruption/recovery where practical;
-- timeout all-buttons-release;
-- no stale movement burst after recovery;
-- operating range sufficient for intended desktop use.
+- timeout -> released buttons;
+- no stale movement replay.
 
-Physical evidence must identify both repository commits/artifacts and host OS.
+TiltMouse is a compatibility/reference implementation of this profile, not the protocol owner.
 
-## FNR-009 — v0.1 release consolidation
+## FNR-007 — Generic provisioning and recovery
 
-Freeze the accepted board contract, toolchains, protocol version and defaults.
+Provision/configure:
 
-Produce/document:
+- allowed peer(s);
+- RF channel;
+- encryption/key material if used;
+- enabled/selected profile;
+- compatible platform/profile versions.
+
+Do not hard-code TiltMouse as the only possible sender.
+
+## FNR-008 — Platform physical acceptance + TiltMouse reference profile
+
+Physically establish:
+
+### Platform
+
+- board flashing/recovery;
+- ESP-NOW ingress;
+- internal datagram integrity;
+- peer/session/order/freshness behavior;
+- USB lifecycle;
+- provisioning/recovery.
+
+### Relative mouse profile
+
+- standard USB mouse enumeration;
+- X/Y/buttons;
+- duplicate/loss/reorder behavior;
+- timeout release;
+- no stale movement replay.
+
+### Reference interoperability
+
+Use exact TiltMouse artifacts to prove the first real sender/profile integration.
+
+The evidence must distinguish platform claims from TiltMouse-specific interoperability claims.
+
+## FNR-009 — v0.1 platform release
+
+Release:
 
 - RP2040 UF2;
-- ESP8266/ESP8285 binary;
-- checksums/manifests;
-- flashing sequence;
-- peer/channel/key setup;
-- recovery procedure;
-- known limitations;
-- exact upstream TiltMouse compatibility contract/version;
-- release/tag if tooling permits.
+- ESP radio firmware;
+- generic platform protocol version;
+- internal protocol version;
+- relative-mouse profile version;
+- provisioning/recovery docs;
+- TiltMouse compatibility statement;
+- reproducible manifests/checksums.
 
-Close v0.1 only if FNR-008 evidence applies to the exact release candidate.
+The project README/release must describe TiltMouse as a reference profile, not the only intended use.
 
-## Programme rules
+## Design rules
 
-- Do not collapse the radio and USB responsibilities into one MCU merely for convenience.
-- Do not bypass FNR-002 by assuming another clone's pinout.
-- Do not merge physical claims based on CI.
-- Do not invent an incompatible TiltMouse packet layout.
-- Do not allow stale cursor movement to accumulate across any queue/link.
-- Keep safety decisions deterministic and testable on the RP2040 side.
+1. Core radio ingress stays profile-agnostic.
+2. Internal MCU transport stays profile-agnostic.
+3. Receiver core handles generic routing/order/freshness; profiles handle payload semantics.
+4. HID descriptors/reports belong to profiles, not generic transport code.
+5. Adding a keyboard/gamepad/custom profile must not require rewriting the radio or inter-MCU layers.
+6. PIO-backed future backends remain possible but out of v0.1 scope.
