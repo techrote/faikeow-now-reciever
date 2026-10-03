@@ -1,152 +1,139 @@
 # Protocol contracts
 
-## 1. TiltMouse ESP-NOW packet
+## 1. Generic ESP-NOW receiver envelope
 
-The exact wireless packet layout is **upstream-owned** by:
+This repository owns the platform envelope.
 
-- repository: `techrote/ESP32-QMI8658C-TiltMouse`
-- document: `docs/WIRELESS.md`
-- issue: TM-005B / #16
+FNR-006 freezes exact byte encoding and golden vectors.
 
-Do not freeze a competing byte format here before TM-005B does.
+Logical v1 contents must include:
 
-### Receiver-required invariants
+- platform version;
+- profile ID;
+- message type/flags;
+- sender/session identifier or restart discriminator;
+- monotonic message sequence;
+- payload length;
+- profile payload.
 
-The upstream contract already requires:
+Total ESP-NOW application payload must remain <=250 bytes for ESP8266-class interoperability.
 
-- packet size <=250 bytes;
-- protocol version;
-- monotonically advancing sequence;
-- bounded relative X/Y;
-- complete current left/right button state;
-- newest movement wins;
-- no retransmission backlog to fill old motion gaps;
-- explicit peer/channel/provisioning;
-- timeout behavior that releases all buttons.
+The envelope routes/orders data without understanding profile payload semantics.
 
-FNR-004 may receive/forward opaque bounded payloads before the exact format freezes. FNR-006 imports/freezes the exact decoder and compatibility vectors once upstream is authoritative.
+## 2. Profile contracts
 
-## 2. Wireless sequence semantics
+Profile IDs and profile payload schemas are versioned repository-owned contracts.
 
-FNR-006 implements one canonical wrap-safe comparison.
+v0.1 implements:
+
+- `relative_mouse`.
+
+TiltMouse consumes this profile; TiltMouse does not own the generic platform envelope.
+
+### Relative mouse v1
+
+Freeze exact payload layout in FNR-006.
+
+It must carry:
+
+- bounded relative X;
+- bounded relative Y;
+- complete current logical button state;
+- any profile-specific reserved/version bits required for safe evolution.
+
+Policy:
+
+- accepted movement is applied once;
+- duplicate/stale -> no movement;
+- gaps are diagnostic, not retransmission requests;
+- timeout/reset -> zero movement and released buttons.
+
+## 3. Sequence/session semantics
+
+The generic core owns wrap-safe platform sequence comparison.
 
 Requirements:
 
-- duplicate sequence -> reject;
-- older/out-of-order sequence -> reject;
-- newer sequence -> accept;
-- wrap at the exact upstream integer width -> handled deterministically;
-- gaps are counted but do not trigger replay requests;
-- a timeout/restart invalidates old ordering state until a fresh packet is accepted.
+- first valid message in a new sender/session establishes baseline;
+- duplicate -> reject;
+- older/out-of-order -> reject;
+- newer -> accept;
+- wrap at frozen integer width -> deterministic;
+- session/restart discriminator change resets ordering baseline safely;
+- radio/internal-link restart invalidates freshness and may require fresh session/message.
 
-Tests must cover values immediately before/after wrap.
+Profiles receive only messages accepted by generic ordering unless a profile explicitly defines another class of message.
 
-## 3. Internal ESP↔RP2040 protocol
+## 4. Internal ESP↔RP2040 protocol
 
-FNR-005 freezes this repository-owned protocol after FNR-002 establishes the physical link.
+FNR-005 freezes this board-local protocol after FNR-002 establishes the physical link.
 
-### Requirements
+Requirements:
 
-- self-resynchronizing byte stream if UART;
+- self-resynchronizing if byte-stream based;
 - explicit protocol version;
-- explicit frame type;
-- explicit bounded payload length;
+- frame type;
+- bounded payload length;
 - local frame sequence;
 - integrity check;
-- deterministic parser behavior on truncation/corruption/noise;
-- no dynamic allocation required.
+- deterministic corruption recovery.
 
-### Preferred UART encoding
+Preferred UART encoding: COBS + `0x00` delimiter + CRC-16/CCITT.
 
-COBS framing with `0x00` delimiter and CRC-16/CCITT over the decoded header+payload.
+### Frame types
 
-Rationale:
+Use profile-neutral names:
 
-- delimiter never appears inside encoded frame;
-- recovery after byte loss/corruption is bounded to a frame;
-- easy native fuzz/replay testing;
-- very small overhead for mouse-size reports.
+- `RADIO_DATAGRAM` — raw ESP-NOW application payload + bounded RF/source metadata;
+- `RADIO_STATUS`;
+- `CONTROL`;
+- `CONTROL_ACK`.
 
-If FNR-002 proves the physical link is not UART, FNR-005 must document the replacement and preserve equivalent bounded/integrity semantics.
+## 5. USB HID/profile contract
 
-### RADIO_PACKET payload
+The generic USB framework does not impose one report descriptor.
 
-Prefer forwarding:
+Each profile owns:
 
-- raw upstream TiltMouse payload;
-- source MAC;
-- optional receive metadata that is actually available/useful;
-- no interpretation that would prevent the RP2040 from being final decoder/state authority.
+- descriptor/report schema;
+- neutral/fail-safe output;
+- message-to-HID state logic.
 
-Never exceed the fixed internal maximum.
+v0.1 `relative_mouse` exposes:
 
-### RADIO_STATUS payload
-
-May include:
-
-- radio firmware protocol version;
-- station MAC;
-- active channel;
-- configured peer;
-- receive count;
-- dropped/overwritten packet count;
-- radio restart count;
-- last error code.
-
-Keep diagnostics compact and versioned.
-
-## 4. USB HID contract
-
-RP2040 normal output:
-
-- standard relative mouse;
-- two logical button bits;
+- left/right buttons;
 - relative X/Y;
 - no keyboard;
-- no required wheel;
-- no required vendor/CDC interface.
+- no required wheel/pan.
 
-When no fresh valid report is available:
+## 6. Queue/backpressure
 
-- X = 0;
-- Y = 0;
-- buttons = released if the link/state is invalid or timed out.
+Radio and inter-MCU layers are bounded.
 
-## 5. Queue/backpressure contract
+Generic rule:
 
-Radio receive and UART forwarding are latest-first.
+- never create an unbounded datagram queue;
+- preserve whole-message boundaries;
+- expose drops diagnostically.
 
-Permitted behavior under pressure:
+Drop/coalescing policy may depend on message type/profile. The radio layer may use a small bounded queue/newest slot, but must not itself interpret profile payload fields.
 
-- overwrite/drop older **unforwarded movement-bearing reports**;
-- increment a diagnostic drop counter;
-- forward the newest complete packet.
+## 7. Provisioning/configuration
 
-Forbidden behavior:
+FNR-007 owns:
 
-- unbounded queues;
-- replaying a long backlog after congestion;
-- partial packet forwarding;
-- dropping the only known release state and then suppressing timeout release.
-
-## 6. Configuration/provisioning contract
-
-FNR-007 owns storage and user workflow.
-
-Required configurable values:
-
+- allowed sender peer(s);
 - RF channel;
-- allowed transmitter MAC/peer;
-- encryption material if the upstream transport enables encryption.
+- keys/encryption when used;
+- enabled/selected profile;
+- compatible platform/profile versions.
 
-Secrets must not be committed as universal production defaults.
+No real universal production secret is committed.
 
-## 7. Compatibility evidence
+## 8. TiltMouse interoperability
 
-The receiver release must record:
+TiltMouse is the first reference sender.
 
-- supported upstream wireless protocol version;
-- transmitter repository commit used for acceptance;
-- receiver internal protocol version;
-- RP2040 firmware version/commit;
-- ESP radio firmware version/commit.
+Its transmitter task must encode the generic platform envelope + `relative_mouse` profile rather than create a private receiver-only protocol.
+
+Physical compatibility is accepted jointly through TiltMouse and FNR acceptance evidence.
