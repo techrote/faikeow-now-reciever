@@ -1,0 +1,224 @@
+{
+  "scope": "host and compile-only probes; NOT complete SDK cross-builds, RF or USB tests",
+  "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "checks": [
+    {
+      "name": "environment",
+      "command": [
+        "sh",
+        "-c",
+        "uname -a; gcc --version; g++ --version; clang --version; cmake --version; ninja --version; python3 --version; make --version; perl -e 'print \"$^V\\n\"'; command -v arm-none-eabi-gcc || true; command -v xtensa-lx106-elf-gcc || true"
+      ],
+      "returncode": 0,
+      "expected": "zero",
+      "passed": true,
+      "elapsed_seconds": 0.04
+    },
+    {
+      "name": "native_configure",
+      "command": [
+        "cmake",
+        "-S",
+        "/mnt/data/fnr001-prepass/packet/proposed",
+        "-B",
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/build-native",
+        "-G",
+        "Ninja",
+        "-DCMAKE_BUILD_TYPE=Debug",
+        "-DCMAKE_C_FLAGS=-fsanitize=undefined -fno-sanitize-recover=all",
+        "-DCMAKE_CXX_FLAGS=-fsanitize=undefined -fno-sanitize-recover=all"
+      ],
+      "returncode": 0,
+      "expected": "zero",
+      "passed": true,
+      "elapsed_seconds": 0.576
+    },
+    {
+      "name": "native_build",
+      "command": [
+        "cmake",
+        "--build",
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/build-native",
+        "--parallel",
+        "2"
+      ],
+      "returncode": 0,
+      "expected": "zero",
+      "passed": true,
+      "elapsed_seconds": 0.112
+    },
+    {
+      "name": "native_ctest",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/build-native",
+        "--output-on-failure"
+      ],
+      "returncode": 0,
+      "expected": "zero",
+      "passed": true,
+      "elapsed_seconds": 0.026
+    },
+    {
+      "name": "native_trace",
+      "command": [
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/build-native/fnr_native_tests"
+      ],
+      "returncode": 0,
+      "expected": "zero",
+      "passed": true,
+      "elapsed_seconds": 0.002
+    },
+    {
+      "name": "sdk_independent_c",
+      "command": [
+        "gcc",
+        "-std=c17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/mnt/data/fnr001-prepass/packet/evidence/probes/poison",
+        "-I/mnt/data/fnr001-prepass/packet/proposed/shared/include",
+        "-c",
+        "/mnt/data/fnr001-prepass/packet/proposed/shared/src/datagram.c",
+        "-o",
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/shared-host.o"
+      ],
+      "returncode": 0,
+      "expected": "zero",
+      "passed": true,
+      "elapsed_seconds": 0.02
+    },
+    {
+      "name": "arm_freestanding_headers",
+      "command": [
+        "clang",
+        "--target=arm-none-eabi",
+        "-mcpu=cortex-m0plus",
+        "-mthumb",
+        "-ffreestanding",
+        "-std=c17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/mnt/data/fnr001-prepass/packet/evidence/probes/poison",
+        "-I/mnt/data/fnr001-prepass/packet/proposed/shared/include",
+        "-c",
+        "/mnt/data/fnr001-prepass/packet/proposed/tests/native/arm_layout.c",
+        "-o",
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/arm-layout.o"
+      ],
+      "returncode": 0,
+      "expected": "zero",
+      "passed": true,
+      "elapsed_seconds": 0.046
+    },
+    {
+      "name": "arm_freestanding_shared",
+      "command": [
+        "clang",
+        "--target=arm-none-eabi",
+        "-mcpu=cortex-m0plus",
+        "-mthumb",
+        "-ffreestanding",
+        "-std=c17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/mnt/data/fnr001-prepass/packet/proposed/shared/include",
+        "-c",
+        "/mnt/data/fnr001-prepass/packet/proposed/shared/src/datagram.c",
+        "-o",
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/arm-shared.o"
+      ],
+      "returncode": 0,
+      "expected": "zero",
+      "passed": true,
+      "elapsed_seconds": 0.027
+    },
+    {
+      "name": "arm_object_identity",
+      "command": [
+        "readelf",
+        "-h",
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/arm-layout.o"
+      ],
+      "returncode": 0,
+      "expected": "zero",
+      "passed": true,
+      "elapsed_seconds": 0.002
+    },
+    {
+      "name": "legacy_positive",
+      "command": [
+        "g++",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/mnt/data/fnr001-prepass/packet/fixtures/upstream",
+        "-c",
+        "/mnt/data/fnr001-prepass/packet/fixtures/probes/legacy_positive.cpp",
+        "-o",
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/legacy_positive.o"
+      ],
+      "returncode": 0,
+      "expected": "zero",
+      "passed": true,
+      "elapsed_seconds": 0.031
+    },
+    {
+      "name": "rtos_negative",
+      "command": [
+        "g++",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/mnt/data/fnr001-prepass/packet/fixtures/upstream",
+        "-c",
+        "/mnt/data/fnr001-prepass/packet/fixtures/probes/rtos_negative.cpp",
+        "-o",
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/rtos_negative.o"
+      ],
+      "returncode": 1,
+      "expected": "compiler rejection",
+      "passed": true,
+      "elapsed_seconds": 0.012
+    },
+    {
+      "name": "esp32_negative",
+      "command": [
+        "g++",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/mnt/data/fnr001-prepass/packet/fixtures/upstream",
+        "-c",
+        "/mnt/data/fnr001-prepass/packet/fixtures/probes/esp32_negative.cpp",
+        "-o",
+        "/mnt/data/fnr001-prepass/packet/evidence/probes/esp32_negative.o"
+      ],
+      "returncode": 1,
+      "expected": "compiler rejection",
+      "passed": true,
+      "elapsed_seconds": 0.011
+    },
+    {
+      "name": "upstream_header_git_blob",
+      "passed": true,
+      "actual": "2e1c2dbf6b35b629459910542045ee32da00c420",
+      "expected": "2e1c2dbf6b35b629459910542045ee32da00c420"
+    }
+  ],
+  "all_passed": true,
+  "unexecuted": [
+    "RP2040 SDK+TinyUSB complete ELF/UF2 link",
+    "ESP8266 core+SDK complete ELF/BIN link",
+    "RF/USB/hardware tests",
+    "two independent clean firmware rebuilds"
+  ]
+}

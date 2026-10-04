@@ -1,0 +1,12 @@
+{
+  "zip_sha256": "731813fed65631dd713b4ce8e33e0c8c40390325984c82ca37f35ba290f2a0bd",
+  "zip_size_bytes": 91696,
+  "zip_crc_test": "PASS",
+  "extracted_payload_verification": {
+    "payload_files_sha256_verified": 66,
+    "patch_files_verified": 24,
+    "base_path_collisions": 0,
+    "patch_application_scope": "empty scratch Git tree plus assessed base-path collision check; NOT full assessed Git object checkout",
+    "status": "PASS"
+  }
+}
