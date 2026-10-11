@@ -205,6 +205,15 @@ class GuardTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate(block)
 
+    def test_raw_mouse_alias_preserves_exact_hid_device_instance(self):
+        from hid_idle_windows import mouse_interface_path
+        prefix = r'\\?\HID#VID_CAFE&PID_F003#INSTANCE'
+        raw = mouse_interface_path(prefix + '#{4d1e55b2-f16f-11cf-88cb-001111000030}')
+        self.assertEqual(raw, prefix.lower() + '#{378de44c-56ef-11d1-bc8c-00a0c91405dd}')
+        self.assertNotEqual(raw, mouse_interface_path(prefix + '-OTHER#{4d1e55b2-f16f-11cf-88cb-001111000030}'))
+        with self.assertRaises(ValueError):
+            mouse_interface_path(prefix + '#{unexpected-guid}')
+
     def test_incomplete_or_duplicate_uf2_is_rejected(self):
         with self.assertRaises(ValueError):
             validate(b'')

@@ -16,7 +16,17 @@ from datetime import datetime, timezone
 from rp2040_backup import private_destination
 
 
+def mouse_interface_path(hid_path):
+    # The same device instance exposes different HID and mouse interface GUIDs.
+    # https://learn.microsoft.com/windows-hardware/drivers/install/guid-devinterface-mouse
+    hid_suffix = '#{4d1e55b2-f16f-11cf-88cb-001111000030}'
+    if not hid_path.lower().endswith(hid_suffix):
+        raise ValueError('Require a standard HID interface path')
+    return hid_path[:-len(hid_suffix)].lower() + '#{378de44c-56ef-11d1-bc8c-00a0c91405dd}'
+
+
 def observe(device_path, seconds):
+    raw_device_path = mouse_interface_path(device_path)
     user = c.WinDLL('user32',use_last_error=True); kernel = c.WinDLL('kernel32',use_last_error=True)
     callback = c.WINFUNCTYPE(c.c_ssize_t,w.HWND,w.UINT,w.WPARAM,w.LPARAM)
     class Header(c.Structure):
@@ -65,7 +75,7 @@ def observe(device_path, seconds):
             name = c.create_unicode_buffer(length.value+1)
             if user.GetRawInputDeviceInfoW(device.device,0x20000007,name,c.byref(length)) == 0xffffffff:
                 raise c.WinError(c.get_last_error())
-            if name.value.lower() == device_path.lower(): matches.append(device.device)
+            if name.value.lower() == raw_device_path: matches.append(device.device)
         if len(matches)!=1: raise ValueError('Require exactly one raw mouse matching the mapped HID probe')
         return matches[0]
 
