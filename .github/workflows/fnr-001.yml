@@ -39,6 +39,11 @@ jobs:
               assert len(entry["sha256"]) == 64
           print("PASS: pinned sources, artifact hashes, Python syntax")
           PY
+      - name: Pinned esptool stub integration regression (no hardware)
+        run: |
+          python3 -m venv build/hardware-tools-test
+          build/hardware-tools-test/bin/pip install esptool==4.8.1 pyserial==3.5
+          build/hardware-tools-test/bin/python tools/hardware/test_esptool_integration.py
 
   native:
     name: Native tests (UBSan)

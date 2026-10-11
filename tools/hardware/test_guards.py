@@ -11,9 +11,27 @@ from check_ram_uf2 import validate
 from radio_backup import validate_cdc
 from radio_flash import validate_backup, validate_image
 from link_capture import assess
+from rp2040_flash import flash_blocks
 
 
 class GuardTests(unittest.TestCase):
+    def test_persistent_uf2_rejects_sram_out_of_capacity_and_aliases(self):
+        block = bytearray(512)
+        struct.pack_into('<8I', block, 0, 0x0a324655, 0x9e5d5157, 0x2000,
+                         0x10000000, 256, 0, 1, 0xe48bff56)
+        struct.pack_into('<I', block, 508, 0x0ab16f30)
+        self.assertEqual(len(flash_blocks(block, 2097152)), 1)
+        for address in (0x20000000, 0x10200000):
+            struct.pack_into('<I', block, 12, address)
+            with self.assertRaises(ValueError):
+                flash_blocks(block, 2097152)
+        struct.pack_into('<I', block, 12, 0x10000000)
+        struct.pack_into('<I', block, 24, 2)
+        second = bytearray(block)
+        struct.pack_into('<I', second, 20, 1)
+        with self.assertRaises(ValueError):
+            flash_blocks(block + second, 2097152)
+
     def test_link_acceptance_rejects_short_runs_missing_echoes_and_errors(self):
         end = {name: 0 for name in ['gaps', 'pattern_errors', 'crc_errors', 'length_errors',
                'parser_overflows', 'uart_overruns', 'uart_framing', 'uart_parity',
