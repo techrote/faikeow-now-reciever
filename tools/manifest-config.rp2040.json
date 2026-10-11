@@ -4,7 +4,7 @@
     "mode": "UF2",
     "measured": false
   },
-  "profile": "none/inert",
+  "profile": "relative_mouse TinyUSB HID backend",
   "platform_protocol": null,
   "internal_link_protocol": null,
   "profile_schema": null,
@@ -12,5 +12,5 @@
     "bash",
     "tools/build_rp2040.sh"
   ],
-  "evidence_class": "locked-cross-build-only; no USB/hardware acceptance"
+  "evidence_class": "locked cross-build plus native descriptor/state-machine qualification; no physical USB/hardware acceptance"
 }
