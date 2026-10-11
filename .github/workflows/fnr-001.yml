@@ -65,7 +65,7 @@ jobs:
         run: python3 tools/acquire_deps.py --lane rp2040
       - name: Cross-compile
         run: bash tools/build_rp2040.sh
-      - name: Build SRAM-only hardware observer
+      - name: Build SRAM-only hardware diagnostics
         run: bash tools/build_observer.sh
       - name: Verify production USB path is linked
         shell: bash
@@ -124,6 +124,10 @@ jobs:
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
         run: bash tools/build_esp.sh
+      - name: Compile isolated UART diagnostic (not physical evidence)
+        env:
+          FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: bash tools/build_esp_diag.sh
       - name: Record image hashes and manifest
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}

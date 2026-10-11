@@ -3,13 +3,40 @@ import pathlib
 import struct
 import tempfile
 import unittest
+import json
+import hashlib
 
 from rp2040_backup import private_destination, validate_target
 from check_ram_uf2 import validate
 from radio_backup import validate_cdc
+from radio_flash import validate_backup, validate_image
 
 
 class GuardTests(unittest.TestCase):
+    def test_radio_write_requires_both_complete_unchanged_backups(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            data = bytes(1048576)
+            digest = hashlib.sha256(data).hexdigest()
+            metadata = {'board': 'A', 'matching_independent_reads': True,
+                        'size_bytes': 1048576, 'sha256': digest,
+                        'reads': [{'mac': 'aa:bb:cc:dd:ee:ff'}] * 2}
+            (root / 'backup.json').write_text(json.dumps(metadata))
+            for n in (1, 2):
+                (root / f'original-{n}.bin').write_bytes(data)
+            validate_backup(root, 'A', 'aa:bb:cc:dd:ee:ff')
+            with self.assertRaises(ValueError):
+                validate_backup(root, 'B', 'aa:bb:cc:dd:ee:ff')
+            with self.assertRaises(ValueError):
+                validate_backup(root, 'A', 'aa:bb:cc:dd:ee:00')
+            image = root / 'original-1.bin'
+            validate_image(image, digest, True, metadata)
+            (root / 'original-2.bin').write_bytes(data[:-1])
+            with self.assertRaises(ValueError):
+                validate_backup(root, 'A', 'aa:bb:cc:dd:ee:ff')
+            with self.assertRaises(ValueError):
+                validate_image(image, 'f' * 64, True, metadata)
+
     def test_radio_cdc_requires_exact_topology_and_port(self):
         identity = {'location_path': 'USBROOT(0)#USB(1)'}
         device = {'instance_id': 'USB\\VID_2E8A&PID_000A&MI_00\\TEST',

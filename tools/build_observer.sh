@@ -14,3 +14,13 @@ cmake -S "$ROOT/diagnostics/rp2040-observer" -B "$ROOT/build/observer" -G Ninja 
  -DCMAKE_BUILD_TYPE=Release -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF
 cmake --build "$ROOT/build/observer" --parallel 2
 python3 "$ROOT/tools/hardware/check_ram_uf2.py" "$ROOT/build/observer/fnr_observer.uf2"
+for item in "rp2040-candidate-bridge:candidate-bridge:fnr_candidate_bridge" "rp2040-link:rp-link:fnr_link_diag"; do
+  IFS=: read -r source build target <<< "$item"
+  cmake -S "$ROOT/diagnostics/$source" -B "$ROOT/build/$build" -G Ninja \
+    -DPICO_TOOLCHAIN_PATH="$D/arm" -Dpicotool_DIR="$D/picotool-install/picotool" \
+    -DPICO_BOARD=pico -DPICO_PLATFORM=rp2040 -DPICO_NO_FLASH=1 \
+    -DFNR_ALLOW_CANDIDATE_UART=1 -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF
+  cmake --build "$ROOT/build/$build" --parallel 2
+  python3 "$ROOT/tools/hardware/check_ram_uf2.py" "$ROOT/build/$build/$target.uf2"
+done
