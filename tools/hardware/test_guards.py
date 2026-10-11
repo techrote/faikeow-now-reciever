@@ -12,9 +12,51 @@ from radio_backup import validate_cdc
 from radio_flash import validate_backup, validate_image
 from link_capture import assess
 from rp2040_flash import flash_blocks
+from rf_pair_capture import validate_pair, assess as assess_rf
 
 
 class GuardTests(unittest.TestCase):
+    def test_rf_pair_requires_both_labels_ports_and_independent_topologies(self):
+        devices = []
+        identities = {b: {'location_path': 'USBROOT(0)#USB(' + str(i) + ')'} for b, i in [('A', 1), ('B', 3)]}
+        ports = {'A': 'COM6', 'B': 'COM7'}
+        for b in ('A', 'B'):
+            path = identities[b]['location_path']
+            devices += [{'instance_id': 'USB\\VID_2E8A&PID_000A&MI_00\\' + b,
+                         'description': 'USB Serial Device (' + ports[b] + ')',
+                         'properties': {'DEVPKEY_Device_LocationPaths': [path + '#USBMI(0)']}},
+                        {'instance_id': 'USB\\VID_2E8A&PID_000A\\FNR002' + b,
+                         'properties': {'DEVPKEY_Device_LocationPaths': [path]}}]
+        validate_pair(devices, identities, ports)
+        with self.assertRaises(ValueError):
+            validate_pair(devices, identities, {'A': 'COM7', 'B': 'COM6'})
+        with self.assertRaises(ValueError):
+            validate_pair(devices[:-1], identities, ports)
+
+    def test_rf_assessment_separates_integrity_from_deliberate_backpressure(self):
+        tx = dict(attempted=100, queued=100, enqueue_fail=0, outstanding=0,
+                  tx_ok=100, tx_callback_fail=0, uart_overrun=0, uart_rx_error=0)
+        rx = dict(received=100, accepted=100, rejected_source=0, invalid_length=0,
+                  checked=100, consumed=100, dropped=0, gaps=0, duplicates=0,
+                  integrity_errors=0, uart_overrun=0, uart_rx_error=0, last_source='aa:bb:cc:dd:ee:ff')
+        self.assertEqual(assess_rf(tx, rx, 'full_250', 100, rx['last_source']), [])
+        rx.update(checked=20, consumed=20, dropped=80, gaps=80)
+        self.assertEqual(assess_rf(tx, rx, 'backpressure', 100, rx['last_source']), [])
+        self.assertTrue(assess_rf(tx, rx, 'full_250', 100, rx['last_source']))
+        rx['integrity_errors'] = 1
+        self.assertTrue(assess_rf(tx, rx, 'backpressure', 100, rx['last_source']))
+
+    def test_rf_negative_cases_require_observed_admission_and_channel_outcomes(self):
+        tx = dict(attempted=100, queued=100, enqueue_fail=0, outstanding=0,
+                  tx_ok=100, tx_callback_fail=0, uart_overrun=0, uart_rx_error=0)
+        rx = dict(received=100, accepted=0, rejected_source=100, invalid_length=0,
+                  checked=0, consumed=0, dropped=0, gaps=0, duplicates=0,
+                  integrity_errors=0, uart_overrun=0, uart_rx_error=0, last_source='00:00:00:00:00:00')
+        self.assertEqual(assess_rf(tx, rx, 'reject_source', 100, 'aa:bb:cc:dd:ee:ff'), [])
+        self.assertTrue(assess_rf(tx, rx, 'wrong_channel', 100, 'aa:bb:cc:dd:ee:ff'))
+        rx.update(received=0, rejected_source=0)
+        self.assertEqual(assess_rf(tx, rx, 'wrong_channel', 100, 'aa:bb:cc:dd:ee:ff'), [])
+
     def test_persistent_uf2_rejects_sram_out_of_capacity_and_aliases(self):
         block = bytearray(512)
         struct.pack_into('<8I', block, 0, 0x0a324655, 0x9e5d5157, 0x2000,

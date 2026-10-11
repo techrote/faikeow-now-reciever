@@ -134,6 +134,10 @@ jobs:
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
         run: bash tools/build_esp_diag.sh
+      - name: Compile isolated RF diagnostic using accepted ingress
+        env:
+          FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: bash tools/build_esp_rf.sh
       - name: Record image hashes and manifest
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}

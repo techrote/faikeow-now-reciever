@@ -24,3 +24,21 @@ for item in "rp2040-candidate-bridge:candidate-bridge:fnr_candidate_bridge" "rp2
   cmake --build "$ROOT/build/$build" --parallel 2
   python3 "$ROOT/tools/hardware/check_ram_uf2.py" "$ROOT/build/$build/$target.uf2"
 done
+# These explicit flash-resident bridges are for already-preserved, characterized
+# boards. Labels avoid duplicate CDC instances; topology remains authoritative.
+for label in A B; do
+  cmake -S "$ROOT/diagnostics/rp2040-candidate-bridge" -B "$ROOT/build/bridge-flash-$label" -G Ninja \
+    -DPICO_TOOLCHAIN_PATH="$D/arm" -Dpicotool_DIR="$D/picotool-install/picotool" \
+    -DPICO_BOARD=pico -DPICO_PLATFORM=rp2040 -DPICO_NO_FLASH=0 \
+    -DFNR_BRIDGE_FLASH_RECOVERY_TEST=1 -DFNR_DIAG_BOARD_LABEL="$label" \
+    -DFNR_ALLOW_CANDIDATE_UART=1 -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF
+  cmake --build "$ROOT/build/bridge-flash-$label" --parallel 2
+  python3 - "$ROOT/build/bridge-flash-$label/fnr_candidate_bridge.uf2" "$ROOT" <<'PY'
+import pathlib, sys
+sys.path.insert(0, str(pathlib.Path(sys.argv[2]) / 'tools/hardware'))
+from rp2040_flash import flash_blocks
+assert flash_blocks(pathlib.Path(sys.argv[1]).read_bytes(), 2097152)
+print('PASS: compile-only flash bridge addresses fit the 2 MiB surrogate')
+PY
+done
