@@ -7,6 +7,9 @@ No reset, boot strap or other unknown GPIO is driven. GP0 uses 2 mA drive.
 DTR/RTS have no radio effect; use the separately observed physical boot sequence.
 CDC baud controls UART baud (9600–921600); 1200 requests RP2040 BOOTSEL.
 No text/logging is inserted into the transparent byte stream.
+CDC byte forwarding remains active with DTR deasserted: esptool 4.8.1 opens
+ports with DTR/RTS false. The Pico SDK stdio default gates on DTR and causes
+write timeouts in that case; this diagnostic explicitly disables that gating.
 
 Use the observer build procedure with this source directory, a separate build
 directory, and `-DFNR_ALLOW_CANDIDATE_UART=1`. `PICO_NO_FLASH=1` is mandatory.
