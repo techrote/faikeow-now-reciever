@@ -1,0 +1,16 @@
+{
+  "board": "RP2040 pico compile surrogate (not verified clone board)",
+  "flash": {
+    "mode": "UF2",
+    "measured": false
+  },
+  "profile": "none/inert",
+  "platform_protocol": null,
+  "internal_link_protocol": null,
+  "profile_schema": null,
+  "command": [
+    "bash",
+    "tools/build_rp2040.sh"
+  ],
+  "evidence_class": "locked-cross-build-only; no USB/hardware acceptance"
+}
