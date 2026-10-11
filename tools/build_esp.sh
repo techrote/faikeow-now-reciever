@@ -10,7 +10,7 @@ make -f "$D/makeEspArduino/makeEspArduino.mk" \
   ESP_ROOT="$D/esp8266" COMP_PATH="$D/xtensa" \
   PYTHON3_PATH="$(dirname "$(command -v python3)")" \
   CONFIG_ROOT="$ROOT/build/empty-config" PROJ_CONF=/dev/null \
-  ARDUINO_LIBS= BOARD=esp8285 CHIP=esp8266 FLASH_DEF=1M \
+  ARDUINO_LIBS=ESP8266WiFi BOARD=esp8285 CHIP=esp8266 FLASH_DEF=1M \
   FLASH_MODE=dout FLASH_SPEED=40 F_CPU=80000000L LWIP_VARIANT=lm2f \
   ARDUINO_EXTRA_DESC="$ROOT/firmware/esp8266/recipe-overrides.txt" \
   SKETCH="$ROOT/firmware/esp8266/main.cpp" \
