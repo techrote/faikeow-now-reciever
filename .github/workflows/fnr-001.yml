@@ -1,0 +1,98 @@
+name: FNR-001 dual-firmware foundation
+on:
+  push:
+    branches: [main, fnr-001-dual-firmware-ci]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  text-style:
+    name: Text and style sanity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Whitespace and source integrity
+        shell: bash
+        run: |
+          git diff --check "${{ github.event.pull_request.base.sha || 'HEAD~1' }}" HEAD
+          python3 -m compileall -q tools
+          python3 -m json.tool dependencies.lock.json >/dev/null
+          python3 - <<'PY'
+          import json, pathlib
+          lock = json.loads(pathlib.Path("dependencies.lock.json").read_text())
+          assert lock["schema_version"] == 1
+          assert len(lock["sources"]) == 4
+          assert len(lock["artifacts"]) == 4
+          for entry in lock["sources"]:
+              assert len(entry["commit"]) == 40
+          for entry in lock["artifacts"]:
+              assert len(entry["sha256"]) == 64
+          print("PASS: pinned sources, artifact hashes, Python syntax")
+          PY
+
+  native:
+    name: Native tests (UBSan)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: |
+          cmake -S . -B build/native -G Ninja -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_C_FLAGS="-fsanitize=undefined -fno-sanitize-recover=all" \
+            -DCMAKE_CXX_FLAGS="-fsanitize=undefined -fno-sanitize-recover=all"
+      - name: Compile
+        run: cmake --build build/native --parallel 2
+      - name: Test
+        run: ctest --test-dir build/native --output-on-failure
+
+  rp2040:
+    name: RP2040 locked cross-build (inert)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Acquire exact dependencies
+        run: python3 tools/acquire_deps.py --lane rp2040
+      - name: Cross-compile
+        run: bash tools/build_rp2040.sh
+      - name: Record UF2 hashes
+        run: |
+          test -s build/rp2040/fnr_rp2040_inert.uf2
+          cd build/rp2040
+          sha256sum fnr_rp2040_inert.uf2 fnr_rp2040_inert.elf > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fnr-001-rp2040-inert
+          path: |
+            build/rp2040/fnr_rp2040_inert.uf2
+            build/rp2040/fnr_rp2040_inert.elf
+            build/rp2040/SHA256SUMS
+
+  esp8266:
+    name: ESP8266 locked cross-build (inert)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Acquire exact dependencies
+        run: python3 tools/acquire_deps.py --lane esp
+      - name: Cross-compile
+        env:
+          FNR_SOURCE_ID: ${{ github.sha }}
+        run: bash tools/build_esp.sh
+      - name: Record image hashes
+        run: |
+          find build/esp8266 -type f \( -name '*.bin' -o -name '*.elf' \) -print -quit | grep -q .
+          find build/esp8266 -type f \( -name '*.bin' -o -name '*.elf' \) -print0 | sort -z | xargs -0 sha256sum > build/esp8266/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fnr-001-esp8266-inert
+          path: |
+            build/esp8266/*.bin
+            build/esp8266/*.elf
+            build/esp8266/SHA256SUMS
