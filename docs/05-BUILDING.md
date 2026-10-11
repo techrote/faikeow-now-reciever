@@ -94,8 +94,9 @@ Outputs:
 - `build/esp8266/fnr_esp8266_ingress.elf`
 
 The default build is fail-closed/unprovisioned. When explicitly configured it
-initializes the pinned NONOS ESP-NOW receive path, performs exact-source/channel
-admission and exposes a bounded generic datagram handoff. It does not interpret
+initializes the pinned NONOS ESP-NOW receive path, selects the explicit SDK
+channel, performs exact-source admission and exposes a bounded generic datagram
+handoff. Channel selection is not a per-datagram physical-channel filter. It does not interpret
 HID/profile payloads or assume a UART/SPI link to the RP2040. CI verifies that
 `esp_now_register_recv_cb` remains linked. See
 [FNR-004 radio ingress](FNR-004-RADIO-INGRESS.md).

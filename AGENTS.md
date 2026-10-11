@@ -26,7 +26,7 @@ The authoritative hardware reference is
 For board programming or hardware decisions, read its board contract,
 programming reference and relevant runbook sections, linked from
 `docs/03-HARDWARE.md`. The qualified documentation baseline is
-`8d48cdde71ccba824436635858265cb31c4ed88f` in that repository.
+`e8a80ae21e6432d30f6ec6146ff6754605a5d469` in that repository.
 
 This repository retains authority over receiver firmware, dependency locks,
 protocols, profiles and programme acceptance. Local `docs/BOARD-CONTRACT.md`

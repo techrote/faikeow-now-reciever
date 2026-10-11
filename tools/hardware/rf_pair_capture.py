@@ -15,6 +15,15 @@ from rp2040_backup import private_destination, sha256
 from radio_flash import validate_backup
 
 
+def bounded_integer(low, high):
+    def parse(text):
+        value = int(text)
+        if not low <= value <= high:
+            raise argparse.ArgumentTypeError(f'Require {low}..{high}')
+        return value
+    return parse
+
+
 def validate_pair(devices, identities, ports):
     candidates = [d for d in devices if d['instance_id'].upper().startswith('USB\\VID_2E8A&PID_000A&MI_00\\')]
     if len(candidates) != 2 or ports['A'] == ports['B']:
@@ -28,8 +37,15 @@ def validate_pair(devices, identities, ports):
             raise ValueError('Explicit port/fixture label/topology mismatch')
 
 
-def assess(tx, rx, kind, count, sender_mac):
+def assess(tx, rx, kind, count, sender_mac, receive_channel=None, transmit_channel=None,
+           power_limit_qdbm=None):
     reasons = []
+    if ((receive_channel is not None and rx['channel'] != receive_channel)
+            or (transmit_channel is not None and tx['channel'] != transmit_channel)):
+        reasons.append('final SDK channel differs from requested configuration')
+    if power_limit_qdbm is not None and any(
+            sample.get('power_limit_qdbm') != power_limit_qdbm for sample in (tx, rx)):
+        reasons.append('final diagnostic power ceiling differs from request')
     if tx['attempted'] != count or tx['queued'] != count or tx['enqueue_fail'] or tx['outstanding']:
         reasons.append('TX queue/callback completion')
     if tx['tx_ok'] + tx['tx_callback_fail'] != count:
@@ -41,6 +57,8 @@ def assess(tx, rx, kind, count, sender_mac):
     if kind == 'wrong_channel':
         if rx['received'] or rx['accepted'] or rx['checked']:
             reasons.append('unexpected wrong-channel reception')
+        if tx['tx_ok']:
+            reasons.append('unexpected wrong-channel acknowledgement')
     elif kind == 'reject_source':
         if rx['received'] != count or rx['rejected_source'] != count or rx['accepted'] or rx['checked']:
             reasons.append('source admission failed')
@@ -73,11 +91,21 @@ def main():
     parser.add_argument('--radio-image-sha256', required=True)
     parser.add_argument('--output', type=pathlib.Path, required=True)
     parser.add_argument('--direction', choices=['both', 'A-to-B', 'B-to-A'], default='both')
+    parser.add_argument('--receive-channel', type=bounded_integer(1, 14), default=1)
+    parser.add_argument('--mismatch-channel', type=bounded_integer(1, 14), default=6,
+                        help='Sender channel for wrong_channel only; must differ from receive channel')
+    parser.add_argument('--mismatch-count', type=bounded_integer(1, 20000), default=100)
+    parser.add_argument('--separation-cm', type=bounded_integer(1, 100000),
+                        help='Operator-reported antenna separation; recorded, not measured by this tool')
+    parser.add_argument('--power-limit-qdbm', type=bounded_integer(0, 82),
+                        help='Optional diagnostic SDK ceiling, quarter dBm; requires POWER-capable image')
     parser.add_argument('--case', action='append', choices=['one_byte', 'representative_32',
                         'representative_128', 'full_250', 'burst', 'backpressure',
                         'reject_source', 'wrong_channel', 'receiver_restart', 'sustained'],
                         help='Run only selected cases, preserving prior captures separately')
     args = parser.parse_args()
+    if args.receive_channel == args.mismatch_channel:
+        parser.error('Mismatch channel must differ from receive channel')
     repo = pathlib.Path(__file__).resolve().parents[2]
     destination = private_destination(args.output, repo)
     identities = json.loads(args.identities.read_text(encoding='utf-8-sig'))
@@ -138,10 +166,14 @@ def main():
         for board in ('A', 'B'):
             streams[board].dtr = True; streams[board].rts = False
             command(board, 'INFO')  # Verify both live MACs before configuring RF.
+            if args.power_limit_qdbm is not None:
+                power = command(board, f'POWER {args.power_limit_qdbm}', 'power_set')
+                if power.get('power_limit_qdbm') != args.power_limit_qdbm:
+                    raise ValueError('Diagnostic did not acknowledge requested power ceiling')
         recipes = [('one_byte', 1, 100, 50), ('representative_32', 32, 200, 10),
                    ('representative_128', 128, 400, 10), ('full_250', 250, 2000, 10),
                    ('burst', 250, 500, 0), ('backpressure', 250, 500, 2),
-                   ('reject_source', 250, 100, 10), ('wrong_channel', 250, 100, 10),
+                   ('reject_source', 250, 100, 10), ('wrong_channel', 250, args.mismatch_count, 10),
                    ('receiver_restart', 250, 200, 10), ('sustained', 250, 6000, 20)]
         if args.case:
             recipes = [recipe for recipe in recipes if recipe[0] in args.case]
@@ -155,8 +187,8 @@ def main():
                 allowed = macs[sender] if kind != 'reject_source' else '02:00:00:00:00:01'
                 if allowed == macs[sender] and kind == 'reject_source':
                     raise ValueError('Unexpected peer-test identity collision')
-                ready = command(receiver, f'RX 1 {allowed} {length}', 'rx_ready')
-                if ready['state'] != 2 or ready['channel'] != 1 or ready['peer'] != allowed:
+                ready = command(receiver, f'RX {args.receive_channel} {allowed} {length}', 'rx_ready')
+                if ready['state'] != 2 or ready['channel'] != args.receive_channel or ready['peer'] != allowed:
                     raise ValueError('Receiver configuration did not take effect')
                 if kind == 'receiver_restart':
                     ready = command(receiver, 'RESTART', 'restarted')
@@ -164,16 +196,18 @@ def main():
                         raise ValueError('Receiver restart failed')
                 if kind == 'backpressure':
                     command(receiver, 'PAUSE 800', 'paused')
-                channel = 6 if kind == 'wrong_channel' else 1
+                channel = args.mismatch_channel if kind == 'wrong_channel' else args.receive_channel
                 tx_start = command(sender, f'TX {channel} {macs[receiver]} {length} {count} {spacing}', 'tx_started')
                 if tx_start['channel'] != channel or tx_start['peer'] != macs[receiver]:
                     raise ValueError('Sender configuration mismatch')
                 tx = wait_event(sender, 'tx_end', count * spacing / 1000 + 30)
                 time.sleep(.1)
                 rx = command(receiver, 'STATS')
-                failures = assess(tx, rx, kind, count, macs[sender])
+                failures = assess(tx, rx, kind, count, macs[sender], args.receive_channel, channel,
+                                  args.power_limit_qdbm)
                 result = {'sender': sender, 'receiver': receiver, 'case': kind, 'length': length,
-                          'count': count, 'interval_ms': spacing, 'tx_channel': channel, 'rx_channel': 1,
+                          'count': count, 'interval_ms': spacing, 'tx_channel': channel,
+                          'rx_channel': args.receive_channel,
                           'tx': tx, 'rx': rx, 'result': 'FAIL' if failures else 'PASS', 'failures': failures}
                 cases.append(result)
                 (destination / 'cases.json').write_text(json.dumps(cases, indent=2) + '\n')
@@ -194,6 +228,9 @@ def main():
                   'source_commit': subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip(),
                   'radio_image_sha256': args.radio_image_sha256, 'radio_deployments': writes,
                   'direction_selection': args.direction, 'case_selection': args.case,
+                  'receive_channel': args.receive_channel, 'mismatch_channel': args.mismatch_channel,
+                  'mismatch_count': args.mismatch_count, 'operator_reported_separation_cm': args.separation_cm,
+                  'requested_power_limit_qdbm': args.power_limit_qdbm,
                   'expected_cases': expected_cases,
                   'elapsed_seconds': time.monotonic() - started, 'cases_completed': len(cases),
                   'result': 'PASS' if expected_cases is not None and len(cases) == expected_cases

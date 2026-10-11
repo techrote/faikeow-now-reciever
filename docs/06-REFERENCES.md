@@ -40,7 +40,7 @@ Keep the generic application envelope plus profile payload at or below the ESP-N
 - [Board contract](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/BOARD-CONTRACT.md)
 - [Programming reference](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-PROGRAMMING-REFERENCE.md)
 - [Operating runbook](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-OPERATING-RUNBOOK.md)
-- [Qualified documentation baseline](https://github.com/techrote/picoWcloneESP8285N08/tree/8d48cdde71ccba824436635858265cb31c4ed88f)
+- [Qualified documentation baseline](https://github.com/techrote/picoWcloneESP8285N08/tree/e8a80ae21e6432d30f6ec6146ff6754605a5d469)
 
 This dedicated repository owns general board facts and programming/recovery
 procedures. The receiver repository owns its firmware, dependency lock,

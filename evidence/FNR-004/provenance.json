@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "date_utc": "2026-10-11",
+  "host": "Microsoft Windows 11 Pro; native PowerShell and Python USB/serial access",
+  "hardware_reference_commit": "8d48cdde71ccba824436635858265cb31c4ed88f",
+  "units": "Existing privately identified A and B; RP2040 B2 / 2 MiB plus ESP8285N08 / 1 MiB, reported 26 MHz crystal",
+  "identity_guards": "Fresh two-fixture USB label/topology and distinct live radio MAC against preserved original backups on every capture",
+  "initial_observation": {
+    "result": "BLOCKED",
+    "reason": "B CDC Windows error 31; no baseline RF case ran until user reconnected B",
+    "private_inventory_sha256": "409834f868e62363031e8382068be4b9147cdfe19f5365075cbbe81477b97f3d"
+  },
+  "original_diagnostic": {
+    "source_commit": "81de11045e729f5bf194074c042e1b31d6f1eee1",
+    "image_sha256": "83e67685b82f4f2a5b90cb6356ff26377ab4ca67656893c4853ce976b2f1c3c3",
+    "bytes": 284816,
+    "deployment": "Reused original exact-readback records and unchanged persistent RP bridges"
+  },
+  "power_diagnostic": {
+    "source_commit": "5f9f5e7c312c746df4ed138ddf7a9514131432c9",
+    "source_dirty": false,
+    "image_sha256": "aa68778ae10238417c92739f506f09c93a796ee1e61ad0f2fd60e7d6d6bd084d",
+    "image_bytes": 285264
+  },
+  "build_configuration": {
+    "fqbn": "esp8266:esp8266:esp8285:xtal=80,CrystalFreq=26,eesz=1M,wipe=none",
+    "arduino_core": "3.1.2",
+    "sdk": "NONOS 22x_190703",
+    "flash_header": "DOUT / 1 MiB / 40 MHz",
+    "include_roots": [
+      "diagnostics/common",
+      "shared/include",
+      "shared/src",
+      "firmware/esp8266"
+    ]
+  },
+  "tools": {
+    "Arduino CLI": "1.5.1",
+    "Xtensa GCC": "10.3",
+    "Python": "3.12.10",
+    "pyserial": "3.5",
+    "esptool": "4.8.1"
+  },
+  "tool_executable_sha256": {
+    "arduino-cli.exe": "1017de89179c3167e6b8a38ca6cc4091fa69a3cf97aafa7810f01423003f5571",
+    "python.exe": "0b471133e110cfb53a061cad528ce8e517d7b9ac41a0a396c39ad795a487fc14",
+    "xtensa-lx106-elf-gcc.exe": "413927577a946db9657f8b8d8ea5637ff9628f5be1761e3a3fa5a9c565b1d231"
+  },
+  "private_driver_sha256": {
+    "matrix.py": "7ca7e248c612ba99f8b6543832dbc015315d53edf0e3c2a712e2c8e1c8f48730",
+    "power-focused.py": "ddf3ab4122ae1b6433b63d07f74e5775bc46e36029fa8d3567a31045291fb823",
+    "final-state.py": "8b8524096af4c59e027450ff71f1c569baa20bb5f221a79a9d8bc95e207f3ea4"
+  },
+  "deployments": [
+    {
+      "board": "A",
+      "captured_at_utc": "2026-10-11T22:29:15.705859+00:00",
+      "source_commit": "5f9f5e7c312c746df4ed138ddf7a9514131432c9",
+      "image_sha256": "aa68778ae10238417c92739f506f09c93a796ee1e61ad0f2fd60e7d6d6bd084d",
+      "size_bytes": 285264,
+      "header_changes": false,
+      "exact_readback": true,
+      "private_readback_sha256": "aa68778ae10238417c92739f506f09c93a796ee1e61ad0f2fd60e7d6d6bd084d",
+      "boot_kind": "software",
+      "boot_observation_result": "PASS",
+      "private_write_record_sha256": "4acb2cb979977c56d31de397868a8ff5d7564d9fb6e4839bd099b4fff6635dcb",
+      "private_probe_record_sha256": "ad43c358fe4f9c27b1c590a1bef2057bdb5aade3eaa8fbcf1c8fdff833815a3d"
+    },
+    {
+      "board": "B",
+      "captured_at_utc": "2026-10-11T22:23:28.650784+00:00",
+      "source_commit": "5f9f5e7c312c746df4ed138ddf7a9514131432c9",
+      "image_sha256": "aa68778ae10238417c92739f506f09c93a796ee1e61ad0f2fd60e7d6d6bd084d",
+      "size_bytes": 285264,
+      "header_changes": false,
+      "exact_readback": true,
+      "private_readback_sha256": "aa68778ae10238417c92739f506f09c93a796ee1e61ad0f2fd60e7d6d6bd084d",
+      "boot_kind": "software",
+      "boot_observation_result": "PASS",
+      "private_write_record_sha256": "aa14c7985a9ba7af64618e17b9a5093a04dc90af0af0984e892eff9b0beb465f",
+      "private_probe_record_sha256": "d83f0713995c168be0f938f8c2c37e8b92c687545e13cf1640889a9d35e71ecb"
+    }
+  ],
+  "reused_evidence": "FNR-002 identity, independent complete original backup pairs, restoration/recovery, UART routing and 600-second integrity/fault recovery; no new RP writes or UART soak",
+  "limits": [
+    "Distances operator reported, not instrumented",
+    "Requested SDK power ceiling, not measured radiated power",
+    "No physical frequency, RSSI, RF spectrum or receiver selectivity measurement",
+    "RX callback has source/data/length, no per-packet channel metadata",
+    "Production ingress adapter unchanged; no integrated transport/HID/profile acceptance"
+  ]
+}

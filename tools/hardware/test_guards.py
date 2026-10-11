@@ -79,6 +79,8 @@ class GuardTests(unittest.TestCase):
         self.assertEqual(assess_rf(tx, rx, 'reject_source', 100, 'aa:bb:cc:dd:ee:ff'), [])
         self.assertTrue(assess_rf(tx, rx, 'wrong_channel', 100, 'aa:bb:cc:dd:ee:ff'))
         rx.update(received=0, rejected_source=0)
+        self.assertTrue(assess_rf(tx, rx, 'wrong_channel', 100, 'aa:bb:cc:dd:ee:ff'))
+        tx.update(tx_ok=0, tx_callback_fail=100)
         self.assertEqual(assess_rf(tx, rx, 'wrong_channel', 100, 'aa:bb:cc:dd:ee:ff'), [])
 
     def test_persistent_uf2_rejects_sram_out_of_capacity_and_aliases(self):

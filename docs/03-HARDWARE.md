@@ -10,20 +10,24 @@ are maintained there.
 
 | Reference | Current documentation | Qualified baseline |
 |---|---|---|
-| Overview | [README](https://github.com/techrote/picoWcloneESP8285N08#readme) | [8d48cdd](https://github.com/techrote/picoWcloneESP8285N08/tree/8d48cdde71ccba824436635858265cb31c4ed88f) |
-| Measured board contract | [Current](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/BOARD-CONTRACT.md) | [Pinned](https://github.com/techrote/picoWcloneESP8285N08/blob/8d48cdde71ccba824436635858265cb31c4ed88f/docs/BOARD-CONTRACT.md) |
-| Programming reference | [Current](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-PROGRAMMING-REFERENCE.md) | [Pinned](https://github.com/techrote/picoWcloneESP8285N08/blob/8d48cdde71ccba824436635858265cb31c4ed88f/docs/DEVBOARD-PROGRAMMING-REFERENCE.md) |
-| Operating runbook | [Current](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-OPERATING-RUNBOOK.md) | [Pinned](https://github.com/techrote/picoWcloneESP8285N08/blob/8d48cdde71ccba824436635858265cb31c4ed88f/docs/DEVBOARD-OPERATING-RUNBOOK.md) |
-| Tool source/checkout | [Upstream tools](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/UPSTREAM-TOOLS.md) | [Pinned](https://github.com/techrote/picoWcloneESP8285N08/blob/8d48cdde71ccba824436635858265cb31c4ed88f/docs/UPSTREAM-TOOLS.md) |
+| Overview | [README](https://github.com/techrote/picoWcloneESP8285N08#readme) | [e8a80ae](https://github.com/techrote/picoWcloneESP8285N08/tree/e8a80ae21e6432d30f6ec6146ff6754605a5d469) |
+| Measured board contract | [Current](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/BOARD-CONTRACT.md) | [Pinned](https://github.com/techrote/picoWcloneESP8285N08/blob/e8a80ae21e6432d30f6ec6146ff6754605a5d469/docs/BOARD-CONTRACT.md) |
+| Programming reference | [Current](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-PROGRAMMING-REFERENCE.md) | [Pinned](https://github.com/techrote/picoWcloneESP8285N08/blob/e8a80ae21e6432d30f6ec6146ff6754605a5d469/docs/DEVBOARD-PROGRAMMING-REFERENCE.md) |
+| Operating runbook | [Current](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-OPERATING-RUNBOOK.md) | [Pinned](https://github.com/techrote/picoWcloneESP8285N08/blob/e8a80ae21e6432d30f6ec6146ff6754605a5d469/docs/DEVBOARD-OPERATING-RUNBOOK.md) |
+| Tool source/checkout | [Upstream tools](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/UPSTREAM-TOOLS.md) | [Pinned](https://github.com/techrote/picoWcloneESP8285N08/blob/e8a80ae21e6432d30f6ec6146ff6754605a5d469/docs/UPSTREAM-TOOLS.md) |
+| RF channel behavior | [Current](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/RF-CHANNEL-BEHAVIOR.md) | [Pinned](https://github.com/techrote/picoWcloneESP8285N08/blob/e8a80ae21e6432d30f6ec6146ff6754605a5d469/docs/RF-CHANNEL-BEHAVIOR.md) |
 
 The qualified documentation baseline is
-`8d48cdde71ccba824436635858265cb31c4ed88f`. The original accepted receiver-side
+`e8a80ae21e6432d30f6ec6146ff6754605a5d469`. The original accepted receiver-side
 hardware implementation/evidence baseline remains
 `2777c90bfb13194feaeb6f7410c8029417af8da4` (PR #17, FNR-002).
 Use current hardware documentation for ongoing development and record the exact
 reference commit used when making reproducible firmware/acceptance claims.
 A later documentation commit does not automatically qualify a new firmware
 artifact, board revision or changed electrical assumption.
+The FNR-004 physical investigation used documentation baseline
+`8d48cdde71ccba824436635858265cb31c4ed88f`; the current pin adds its measured
+channel-behavior disposition after devboard PR #1 and main documentation checks.
 
 ## Receiver integration baseline
 
@@ -39,7 +43,10 @@ remain unknown; use the reference's tested physical recovery sequences.
 
 FNR-002 passed independent complete backup/restoration, diagnostic cold boot,
 600-second UART integrity and software fault/recovery cases on both boards.
-The separate reverse RF channel-isolation anomaly remains under FNR-004.
+The [FNR-004 follow-up](../evidence/FNR-004/README.md) established distance- and
+requested-power-sensitive mismatch reception. SDK channel selection is not a
+per-packet physical-channel admission guarantee; the exact RF mechanism remains
+unmeasured. Preserve those failed negative tests when planning later acceptance.
 Full USB/profile/integrated receiver acceptance is not implied by this baseline.
 
 ## Authority and maintenance boundaries
