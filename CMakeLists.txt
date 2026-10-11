@@ -7,7 +7,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 include(CTest)
-add_library(fnr_shared STATIC shared/src/datagram.c shared/src/radio_ingress.c)
+add_library(fnr_shared STATIC
+  shared/src/datagram.c
+  shared/src/radio_ingress.c
+  shared/src/hid.c
+  shared/src/hid_relative_mouse.c)
 target_include_directories(fnr_shared PUBLIC shared/include)
 target_compile_options(fnr_shared PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow)
 add_executable(fnr_native_tests tests/native/test_datagram.cpp)
@@ -18,3 +22,7 @@ add_executable(fnr_radio_ingress_tests tests/native/test_radio_ingress.cpp)
 target_link_libraries(fnr_radio_ingress_tests PRIVATE fnr_shared)
 target_compile_options(fnr_radio_ingress_tests PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow)
 add_test(NAME radio_ingress_bounds_ownership_loss COMMAND fnr_radio_ingress_tests)
+add_executable(fnr_hid_tests tests/native/test_hid.cpp)
+target_link_libraries(fnr_hid_tests PRIVATE fnr_shared)
+target_compile_options(fnr_hid_tests PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow)
+add_test(NAME hid_framework_and_relative_mouse COMMAND fnr_hid_tests)

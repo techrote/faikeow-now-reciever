@@ -1,7 +1,7 @@
-name: FNR-001 dual-firmware foundation
+name: FNR platform CI
 on:
   push:
-    branches: [main, fnr-001-dual-firmware-ci]
+    branches: [main, fnr-001-dual-firmware-ci, fnr-003-generic-tinyusb-hid]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -55,7 +55,7 @@ jobs:
         run: ctest --test-dir build/native --output-on-failure
 
   rp2040:
-    name: RP2040 locked cross-build (inert)
+    name: RP2040 locked cross-build (TinyUSB HID)
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
@@ -64,26 +64,48 @@ jobs:
         run: python3 tools/acquire_deps.py --lane rp2040
       - name: Cross-compile
         run: bash tools/build_rp2040.sh
+      - name: Verify production USB path is linked
+        shell: bash
+        run: |
+          test -s build/rp2040/fnr_rp2040_hid.uf2
+          test -s build/rp2040/fnr_rp2040_hid.elf
+          NM=.deps/arm/bin/arm-none-eabi-nm
+          "$NM" -g --defined-only build/rp2040/fnr_rp2040_hid.elf | awk '{print $3}' > build/rp2040/DEFINED_SYMBOLS
+          for symbol in \
+            tud_descriptor_device_cb \
+            tud_descriptor_configuration_cb \
+            tud_descriptor_string_cb \
+            tud_hid_descriptor_report_cb \
+            tud_mount_cb \
+            tud_umount_cb \
+            tud_suspend_cb \
+            tud_resume_cb \
+            fnr_usb_adapter_task \
+            fnr_hid_device_service; do
+            grep -Fxq "$symbol" build/rp2040/DEFINED_SYMBOLS || {
+              echo "Required production USB symbol missing: $symbol" >&2
+              exit 1
+            }
+          done
+          echo "PASS: production TinyUSB descriptor/lifecycle/service symbols linked"
       - name: Record UF2 hashes and manifest
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
-          test -s build/rp2040/fnr_rp2040_inert.uf2
-          test -s build/rp2040/fnr_rp2040_inert.elf
-          sha256sum build/rp2040/fnr_rp2040_inert.uf2 build/rp2040/fnr_rp2040_inert.elf > build/rp2040/SHA256SUMS
+          sha256sum build/rp2040/fnr_rp2040_hid.uf2 build/rp2040/fnr_rp2040_hid.elf > build/rp2040/SHA256SUMS
           python3 tools/artifact_manifest.py --lane rp2040 --source-id "$FNR_SOURCE_ID" \
             --compiler .deps/arm/bin/arm-none-eabi-gcc \
             --config tools/manifest-config.rp2040.json \
             --output build/rp2040/manifest.json \
-            build/rp2040/fnr_rp2040_inert.uf2 build/rp2040/fnr_rp2040_inert.elf
+            build/rp2040/fnr_rp2040_hid.uf2 build/rp2040/fnr_rp2040_hid.elf
           python3 -m json.tool build/rp2040/manifest.json >/dev/null
           cat build/rp2040/SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: fnr-001-rp2040-inert
+          name: fnr-003-rp2040-hid
           path: |
-            build/rp2040/fnr_rp2040_inert.uf2
-            build/rp2040/fnr_rp2040_inert.elf
+            build/rp2040/fnr_rp2040_hid.uf2
+            build/rp2040/fnr_rp2040_hid.elf
             build/rp2040/SHA256SUMS
             build/rp2040/manifest.json
 

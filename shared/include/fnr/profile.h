@@ -4,7 +4,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Illustrative in-process seam. FNR-006 owns IDs and byte encodings. */
+/* Preliminary receiver-message dispatch seam. FNR-006 owns IDs, byte encodings
+ * and final dispatch semantics. Host HID backend registration/descriptor/report
+ * behavior is deliberately separate in fnr/hid.h so this file does not freeze a
+ * platform wire contract as a side effect of FNR-003. */
 typedef struct fnr_profile_view {
     uint16_t profile_id;
     uint16_t schema_version;
