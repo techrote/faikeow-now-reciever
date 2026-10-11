@@ -16,12 +16,15 @@ static_assert(std::is_same<esp_now_recv_cb_t, expected_rx>::value,
  * serialization assumption, requiring hardware stress confirmation. */
 static fnr_radio_ingress ingress = {};
 static bool now_active = false;
+static fnr_radio_config runtime_config = {};
+static volatile bool runtime_config_present = false;
 static void rx(uint8_t *mac, uint8_t *bytes, uint8_t length) {
     noInterrupts();
     fnr_radio_receive(&ingress, mac, bytes, length);
     interrupts();
 }
 static fnr_radio_config configured() {
+    if (runtime_config_present) return runtime_config;
     fnr_radio_config c = {};
 #if defined(FNR_RADIO_ENABLE) && FNR_RADIO_ENABLE == 1 && \
     defined(FNR_PEER_0) && defined(FNR_PEER_1) && defined(FNR_PEER_2) && \
@@ -78,6 +81,13 @@ void fnr_radio_start(void) {
     interrupts();
 }
 void fnr_radio_restart(void) { fnr_radio_start(); }
+void fnr_radio_apply_config(const fnr_radio_config *config) {
+    /* Called by foreground only. The restart retires the prior callback. */
+    runtime_config_present = false;
+    runtime_config = config ? *config : fnr_radio_config{};
+    runtime_config_present = (config != nullptr);
+    fnr_radio_restart();
+}
 bool fnr_radio_take_foreground(fnr_datagram *out) {
     noInterrupts();
     const bool ok=fnr_radio_take(&ingress,out);
