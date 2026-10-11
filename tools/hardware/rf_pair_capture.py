@@ -72,6 +72,11 @@ def main():
     parser.add_argument('--radio-write-B', type=pathlib.Path, required=True)
     parser.add_argument('--radio-image-sha256', required=True)
     parser.add_argument('--output', type=pathlib.Path, required=True)
+    parser.add_argument('--direction', choices=['both', 'A-to-B', 'B-to-A'], default='both')
+    parser.add_argument('--case', action='append', choices=['one_byte', 'representative_32',
+                        'representative_128', 'full_250', 'burst', 'backpressure',
+                        'reject_source', 'wrong_channel', 'receiver_restart', 'sustained'],
+                        help='Run only selected cases, preserving prior captures separately')
     args = parser.parse_args()
     repo = pathlib.Path(__file__).resolve().parents[2]
     destination = private_destination(args.output, repo)
@@ -100,6 +105,7 @@ def main():
     validate_pair(initial_inventory['devices'], identities, ports)
     streams = {b: serial.Serial(ports[b], 115200, timeout=.2) for b in ('A', 'B')}
     cases = []
+    expected_cases = None
     started = time.monotonic()
     log = (destination / 'capture.jsonl').open('w', encoding='utf-8')
 
@@ -137,7 +143,13 @@ def main():
                    ('burst', 250, 500, 0), ('backpressure', 250, 500, 2),
                    ('reject_source', 250, 100, 10), ('wrong_channel', 250, 100, 10),
                    ('receiver_restart', 250, 200, 10), ('sustained', 250, 6000, 20)]
-        for sender, receiver in (('A', 'B'), ('B', 'A')):
+        if args.case:
+            recipes = [recipe for recipe in recipes if recipe[0] in args.case]
+        directions = [('A', 'B'), ('B', 'A')]
+        if args.direction != 'both':
+            directions = [pair for pair in directions if '-to-'.join(pair) == args.direction]
+        expected_cases = len(recipes) * len(directions)
+        for sender, receiver in directions:
             for kind, length, count, spacing in recipes:
                 command(sender, 'OFF', 'off')
                 allowed = macs[sender] if kind != 'reject_source' else '02:00:00:00:00:01'
@@ -181,8 +193,11 @@ def main():
                   'source_dirty_at_start': initial_inventory['source_dirty'],
                   'source_commit': subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip(),
                   'radio_image_sha256': args.radio_image_sha256, 'radio_deployments': writes,
+                  'direction_selection': args.direction, 'case_selection': args.case,
+                  'expected_cases': expected_cases,
                   'elapsed_seconds': time.monotonic() - started, 'cases_completed': len(cases),
-                  'result': 'PASS' if len(cases) == 20 and all(c['result'] == 'PASS' for c in cases) else 'FAIL'}
+                  'result': 'PASS' if expected_cases is not None and len(cases) == expected_cases
+                            and all(c['result'] == 'PASS' for c in cases) else 'FAIL'}
         (destination / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
 
 
