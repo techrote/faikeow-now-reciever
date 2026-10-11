@@ -24,7 +24,7 @@ Date: 2026-10-11. Host: native Windows 11 Pro. Evidence: adjacent JSON ledger.
 | Burst/interruption/reset/soak recovery | FNR-002 | NOT TESTED | NOT TESTED | Separate failure and recovery ledger required |
 | Cold USB reconnect to ROM | FNR-002 | PASS | PASS | Does not prove application cold-boot behavior |
 | USB HID enumeration/descriptors/lifecycle | FNR-003 | NOT TESTED | NOT TESTED | Accepted source merged PR16; no physical HID load |
-| ESP-NOW pair/admission/channel/integrity | FNR-004 | NOT TESTED | NOT TESTED | Accepted ingress software; no diagnostic pair loaded |
+| ESP-NOW pair/admission/channel/integrity | FNR-004 | NOT TESTED | NOT TESTED | Ingress software merged PR15; #5 remains open; no diagnostic pair loaded |
 | Production framing/core/provisioning | FNR-005/006/007 | BLOCKED | BLOCKED | Required accepted implementations not established in this campaign |
 | Integrated receiver and actual TiltMouse | FNR-008 | BLOCKED | BLOCKED | Integrated software/reference sender acceptance absent |
 | Overall FNR-002 acceptance | FNR-002 | BLOCKED | BLOCKED | Reversible flash recovery and sustained dual-board evidence missing |
