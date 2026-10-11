@@ -69,7 +69,7 @@ Do not make the core USB framework assume that all future profiles are mice.
 
 Implement the ESP radio as a payload-agnostic ingress layer:
 
-- explicit channel/peer filtering;
+- explicit SDK channel selection/verification and exact-source admission;
 - bounded newest-datagram state;
 - source metadata/counters;
 - no HID semantics;

@@ -78,6 +78,31 @@ integrity, admission, backpressure and restart cases. One reverse channel
 isolation case failed and reproduced; see the separate RF evidence, not an
 overall RF PASS. Optional `--direction` and repeated `--case` selections run
 only remaining/focused cases without overwriting earlier captures.
+
+The FNR-004 power-control diagnostic adds `POWER <quarter-dBm-ceiling>` with
+range 0–82, accepted only while no transmission is pending. The requested SDK
+ceiling is reapplied after RX/TX initialization and reported as
+`power_limit_qdbm`; it is not a calibrated measurement of radiated power.
+Status also reports SDK mode, station connection status, auto-connect,
+auto-reconnect and sleep type without exposing saved credentials. The
+production receive adapter remains unchanged.
+
+Focused captures accept `--receive-channel`, `--mismatch-channel`,
+`--mismatch-count`, `--separation-cm` and optional `--power-limit-qdbm`.
+Channels are bounded to 1–14; negative-case count to 1–20,000. Record only an
+operator-confirmed separation and select channels appropriate to the test
+location. The power option requires this new diagnostic and its own exact
+deployment/readback records on both radios; it cannot be used with the original
+FNR-002 image. Omitting it preserves compatibility with that image.
+
+Negative channel assessment still requires zero received/accepted/checked
+packets and zero successful transmit acknowledgements, complete callbacks,
+unchanged final SDK channels and, when requested, matching final reported power
+ceilings. A failed sender callback cannot erase an observed receive event.
+Use same-channel positive controls at the same power and geometry, preserve
+every failing comparison, and stop transmissions/close serial handles after
+each capture. Channel choice is not authentication or a proven exclusion
+mechanism at every separation and power.
 For two-board access, the candidate bridge can be built with explicit fixture
 labels A/B and `FNR_BRIDGE_FLASH_RECOVERY_TEST=1`, `PICO_NO_FLASH=0`. This optional
 flash image requires complete originals, measured geometry and the guarded RP

@@ -17,9 +17,9 @@ They are build parameters, not hard-coded source secrets. Alternatively,
 `fnr_radio_apply_config(const fnr_radio_config *)` accepts a copied foreground
 configuration and restarts reception; null revokes admission. This seam makes
 the real registration path link-reachable in an otherwise unprovisioned image.
-The build uses the ESP8285 1 MiB target consistent with accepted FNR-002 identity.
-That hardware evidence is separate from software compilation. FNR-007 owns
-persisted configuration.
+FNR-002 independently established ESP8285N08 with 1 MiB embedded flash on both
+units; the authoritative [devboard reference](03-HARDWARE.md) owns the hardware
+and programming contract. FNR-007 owns persisted configuration.
 The MAC admission check excludes zero, broadcast and multicast addresses.
 The exact MAC match is **not cryptographic sender authentication**.
 No infrastructure association, SoftAP, DHCP application or socket is used.
@@ -78,6 +78,36 @@ unregisters the callback/deinitializes ESP-NOW when active, invalidates pending
 data and reapplies explicit configuration. UNCONFIGURED turns Wi-Fi off.
 The channel is not a claimed regulatory-domain or physical link validation.
 
+## Channel selection and admission
+
+The configured channel selects the SDK radio channel and startup checks the
+SDK's reported value. It is not a per-datagram channel admission field. The
+pinned NONOS receive callback supplies source MAC, data and length, with no
+physical receive-channel metadata. Exact-source admission is performed in the
+portable ingress module; channel selection cannot substitute for that check or
+for future cryptographic policy.
+
+The [FNR-004 follow-up evidence](../evidence/FNR-004/README.md) resolves the
+receiver contract: mismatch reception varies with distance and requested power,
+and zero delivery across software-reported channels is not guaranteed. The
+original FNR-002 failure is preserved unchanged. At fixed operator-reported
+20 cm, B-to-A high/low/high power tests accepted 36/300, 2/1,000 and 12/300
+mismatch packets; all same-channel burst and source-rejection controls passed.
+At 180 cm, original-channel focused tests received zero in both directions,
+while two other matrix channel pairs still received packets. Lower power and
+greater separation reduce observed mismatch reception but do not establish
+isolation. Every observed mismatch reception remains a failed zero-reception
+test, including residual low-power reception.
+
+SDK channel values alone do not establish actual over-the-air frequency, and
+a failed transmit callback does not prove that no packet reached the receiver.
+The precise RF mechanism was not measured; strong-signal/selectivity effects
+are a hypothesis, not a diagnosed circuit fault. No production software cure
+is asserted or required to uphold the documented source/length/handoff contract.
+Channel choice is not authentication or per-packet physical-channel admission.
+FNR-007 owns future key/provisioning policy. FNR-008 still owns integrated
+receiver/profile acceptance.
+
 ## Evidence limits
 
 Native tests exercise ownership, length bounds (including 251–255),
@@ -85,8 +115,9 @@ configuration, filtering, overflow, ordering, restart and saturation.
 Target compilation/CI must independently establish the pinned SDK symbol/API
 compatibility, ELF/BIN provenance and RP2040 regression status. **Neither a
 cross-build nor native simulation proves physical ESP-NOW reception.**
-FNR-002 has separately accepted the actual chip, flashing/recovery and internal
-UART contract. Its additional RF campaign passed 19/20 cases; the reproduced
-reverse channel-isolation anomaly remains open under #5. FNR-005's software
-consumer is now attached, while its [production physical framing campaign](FNR-005-HARDWARE-HANDOFF.md)
-remains separate. No new RF or hardware evidence is claimed by that integration.
+FNR-002 established actual chip identity, flashing/recovery, the onboard UART0
+GP0/GP1 interconnect and independent UART integrity. Reuse those unchanged
+results through the authoritative devboard reference. FNR-005's software
+consumer is attached, while its [production physical framing campaign](FNR-005-HARDWARE-HANDOFF.md)
+remains separate. Diagnostic UART/RF exchanges do not establish that production
+transport or integrated HID/profile acceptance.

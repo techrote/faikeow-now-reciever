@@ -111,8 +111,9 @@ Outputs:
 - `build/esp8266/fnr_esp8266_ingress.elf`
 
 The default build is fail-closed/unprovisioned. When explicitly configured it
-initializes the pinned NONOS ESP-NOW receive path, performs exact-source/channel
-admission and exposes a bounded generic datagram handoff. It does not interpret
+initializes the pinned NONOS ESP-NOW receive path, selects the explicit SDK
+channel, performs exact-source admission and exposes a bounded generic datagram
+handoff. Channel selection is not a per-datagram physical-channel filter. It does not interpret
 HID/profile payloads. FNR-005 takes at most one foreground record per loop and
 writes at most 32 bytes, bounded by the pinned UART's usable FIFO space. It
 sends generic status every second even when the radio is unprovisioned.
