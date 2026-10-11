@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "host": {
+    "os": "Windows 11 Pro",
+    "execution": "native PowerShell and native Windows Python USB/serial access",
+    "date_utc": "2026-10-11",
+    "private_inventory_sha256": "5237a9d6c920d31b6c81784e2e3f7d9464d0d1e7df7452d6d9160bde4ef834df"
+  },
+  "bootsel": {
+    "boards": [
+      "A",
+      "B"
+    ],
+    "vid_pid": "2e8a:0003",
+    "volume_label": "RPI-RP2",
+    "uf2_bootloader_version": "3.0",
+    "usb_serial_shared": true,
+    "selection": "physical topology plus RP flash unique ID; not USB serial or enumeration order",
+    "result": "PASS"
+  },
+  "driver": {
+    "interface": "RP2 Boot MI 01",
+    "driver": "WinUSB",
+    "installed_by": "user using Zadig 2.9",
+    "mass_storage_driver": "USBSTOR retained",
+    "composite_parent": "original driver retained"
+  },
+  "sram_diagnostic_cdc": {
+    "board": "A",
+    "vid_pid": "2e8a:000a",
+    "observed_port": "COM5",
+    "serial_unique": false,
+    "result": "PASS",
+    "image_sha256": "a1ab31c4627d8582e73dd428bbf9891e56daef36a143126f857e244c0bdbc0ed",
+    "source_commit": "5e08a71aee75a466c82ccc9d41849c4d89d27399"
+  }
+}

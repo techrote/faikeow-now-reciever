@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "host": {
+    "os": "Windows 11 Pro",
+    "execution": "native PowerShell and native Windows Python USB/serial access",
+    "date_utc": "2026-10-11",
+    "private_inventory_sha256": "5237a9d6c920d31b6c81784e2e3f7d9464d0d1e7df7452d6d9160bde4ef834df"
+  },
+  "A": {
+    "rp_bootsel_physical": "PASS",
+    "rp_sram_load_verify_run": "PASS",
+    "rp_software_return_bootsel": "PASS",
+    "rp_original_after_sram_diagnostics": {
+      "result": "PASS",
+      "sha256": "4bda3a28f4ffe603c0ec1258c0034d65a1a0d35ab7bd523a834608adabf03cc5",
+      "size_bytes": 2097152,
+      "matching_independent_reads": true,
+      "captured_at_utc": "2026-10-11T01:54:00.815171+00:00",
+      "source_commit": "5bff48cc8a00ae6685c5ccb6919e0d5b019fdd6e",
+      "raw_manifest": "board-A-after-radio-backup-rp2040/backup.json"
+    },
+    "rp_persistent_write_restore": "NOT TESTED",
+    "radio_rom_access": "PASS",
+    "radio_backup": "PASS",
+    "radio_flash_write_restore": "NOT TESTED",
+    "factory_radio_boot": "NOT TESTED"
+  },
+  "B": {
+    "rp_bootsel_physical": "PASS",
+    "rp_backup": "PASS",
+    "rp_sram_diagnostics": "NOT TESTED",
+    "radio_rom_access": "NOT TESTED",
+    "radio_flash_write_restore": "NOT TESTED"
+  },
+  "original_firmware_flash_written": false,
+  "restoration_helpers": "prepared; guard tests pass; physical execution untested"
+}

@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "host": {
+    "os": "Windows 11 Pro",
+    "execution": "native PowerShell and native Windows Python USB/serial access",
+    "date_utc": "2026-10-11",
+    "private_inventory_sha256": "5237a9d6c920d31b6c81784e2e3f7d9464d0d1e7df7452d6d9160bde4ef834df"
+  },
+  "qualification_result": "NOT TESTED",
+  "boards": {
+    "A": {
+      "rom_read_baud": 115200,
+      "full_radio_reads": "PASS",
+      "sustained_frames": null,
+      "duration_seconds": null,
+      "effective_payload_throughput": null
+    },
+    "B": {
+      "result": "NOT TESTED"
+    }
+  },
+  "read_failures": [
+    {
+      "bridge": "polling",
+      "result": "FAIL",
+      "first_block_expected_bytes": 4096,
+      "received_bytes": 4092
+    },
+    {
+      "bridge": "IRQ-buffered stdio",
+      "result": "FAIL",
+      "first_block_expected_bytes": 4096,
+      "received_bytes": 4093,
+      "counter_query": {
+        "rx": 4775,
+        "tx": 10176,
+        "drops": 0,
+        "overruns": 0,
+        "framing": 0,
+        "parity": 0,
+        "breaks": 0
+      }
+    },
+    {
+      "bridge": "foreground TinyUSB",
+      "result": "FAIL",
+      "first_block_expected_bytes": 4096,
+      "received_bytes": 84,
+      "counter_query": {
+        "rx": 4775,
+        "tx": 10176,
+        "drops": 0,
+        "overruns": 0,
+        "framing": 4,
+        "parity": 0,
+        "breaks": 0
+      }
+    }
+  ],
+  "accepted_read_condition": "DTR asserted through already-open serial object; exact full read digest and independent SHA256 checks",
+  "accepted_read_counters": "FNRBRIDGE rx=2126043 tx=13702 drops=0 overruns=0 framing=4 parity=0 breaks=0",
+  "second_read_counters": "FNRBRIDGE rx=3188919 tx=15676 drops=0 overruns=0 framing=4 parity=0 breaks=0",
+  "counter_interpretation": "four framing errors predate accepted reads; counters unchanged except rx/tx; not a clean qualification baseline",
+  "diagnostic_protocol": {
+    "seed": "0x002f4a91",
+    "payload_lengths": [
+      1,
+      32,
+      128,
+      250
+    ],
+    "crc": "CRC-32/ISO-HDLC",
+    "nominal_cadence_each_mcu_hz": 20,
+    "required_run_seconds": 600,
+    "required_minimum_frames": 10000,
+    "physical_execution": "NOT TESTED"
+  }
+}
