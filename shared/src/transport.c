@@ -128,7 +128,7 @@ fnr_transport_result fnr_transport_cobs_decode(const uint8_t *bytes, size_t leng
 static bool status_values_valid(uint8_t flags, fnr_radio_state state,
     uint8_t channel) {
     if ((flags & (uint8_t)~FNR_TRANSPORT_STATUS_RESET) != 0 ||
-        state < FNR_RADIO_UNCONFIGURED || state > FNR_RADIO_ERROR ||
+        (unsigned)state > (unsigned)FNR_RADIO_ERROR ||
         channel > 14u)
         return false;
     return state != FNR_RADIO_READY || channel >= 1u;

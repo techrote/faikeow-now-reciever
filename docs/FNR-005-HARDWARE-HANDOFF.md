@@ -134,9 +134,9 @@ Expected bounded loss must follow the documented drop rule and be counted; it
 is separate from clean-run integrity. Earlier FNR-002 RF runs at that offered
 payload rate do not prove loss-free production UART forwarding.
 
-## Per-board campaign
+## Representative-DUT campaign
 
-Run the following independently for both characterized boards. Start each case
+Run the following on one representative characterized board. The two available units are identical hardware designs. Do not repeat the full campaign on the second unit unless a plausible unit-specific anomaly requires comparison. A short optional smoke check is supplementary. Start each case
 with recorded counter/state snapshots, a deterministic stimulus seed and an
 explicit expected outcome. Include a drain interval and final snapshots so
 pending/in-flight data are accounted for. Stop on unexplained corruption or
@@ -213,7 +213,7 @@ recovery; do not waive unexplained corruption because some loss was intentional.
 Any stale delivery after the documented reset/loss boundary is a failure.
 
 Preserve bulky raw captures and complete device identities privately. Commit
-concise curated per-board results and a checksum manifest under an issue-owned
+concise curated representative-DUT results and a checksum manifest under an issue-owned
 evidence directory. Preserve the original FNR-002 evidence and checksums unchanged.
 
 ## Acceptance checklist and programme handoff
@@ -221,10 +221,10 @@ evidence directory. Preserve the original FNR-002 evidence and checksums unchang
 These checkboxes are deliberately unchecked. They represent future physical
 evidence, not a record of the software prepass.
 
-- [ ] Final source/artifact/protocol/reference identities recorded for both boards.
+- [ ] Final source/artifact/protocol/reference identities recorded for the representative DUT.
 - [ ] Production serializer/UART/parser/handoff path established by the observation method.
-- [ ] Minimum and maximum payload/metadata smoke passes independently on both boards.
-- [ ] Sustained production integrity at a documented wire budget passes on both boards.
+- [ ] Minimum and maximum payload/metadata smoke passes on the representative DUT.
+- [ ] Sustained production integrity at a documented wire budget passes on the representative DUT.
 - [ ] Overload and delayed-consumer cases demonstrate bounded loss with reconciled counters.
 - [ ] Corruption, truncation and oversized input recover at a documented frame boundary.
 - [ ] UART errors and IRQ ring overflow are observable and cannot release damaged/stale handoff state.

@@ -23,6 +23,7 @@ jobs:
           python3 -m compileall -q tools
           python3 tools/hardware/test_guards.py
           python3 tools/hardware/test_rf_assessment.py
+          python3 tools/hardware/test_transport_assessment.py
           (cd evidence/FNR-002 && sha256sum -c SHA256SUMS)
           (cd evidence/FNR-004 && sha256sum -c SHA256SUMS)
           python3 -m json.tool dependencies.lock.json >/dev/null
@@ -87,6 +88,10 @@ jobs:
         run: bash tools/build_rp2040.sh
       - name: Build SRAM-only hardware diagnostics
         run: bash tools/build_observer.sh
+      - name: Build production transport SRAM observer
+        env:
+          FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: bash tools/build_transport_qualification.sh rp2040
       - name: Verify production USB path is linked
         shell: bash
         run: |
@@ -134,6 +139,8 @@ jobs:
             build/rp2040/SHA256SUMS
             build/rp2040/manifest.json
             build/rp2040/TRANSPORT_SYMBOLS
+            build/transport-observer/fnr_transport_observer.uf2
+            build/transport-observer/fnr_transport_observer.elf
 
   esp8266:
     name: ESP8285 locked cross-build (radio ingress and UART transport)
@@ -157,6 +164,10 @@ jobs:
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
         run: bash tools/build_esp_rf.sh
+      - name: Build production transport injector
+        env:
+          FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: bash tools/build_transport_qualification.sh esp
       - name: Record image hashes and manifest
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -181,3 +192,5 @@ jobs:
             build/esp8266/SHA256SUMS
             build/esp8266/manifest.json
             build/esp8266/TRANSPORT_SYMBOLS
+            build/transport-injector/*.bin
+            build/transport-injector/*.elf
