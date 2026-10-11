@@ -55,7 +55,8 @@ def main():
     inventory = destination / 'inventory.json'
     subprocess.run(['pwsh', '-NoProfile', '-File', str(repo / 'tools/hardware/discover_windows.ps1'),
                     '-OutputPath', str(inventory)], check=True)
-    validate_cdc(json.loads(inventory.read_text(encoding='utf-8-sig'))['devices'], args.port, identity)
+    initial_inventory = json.loads(inventory.read_text(encoding='utf-8-sig'))
+    validate_cdc(initial_inventory['devices'], args.port, identity)
     ended = None
     started = time.monotonic()
     with serial.Serial(args.port, 115200, timeout=1) as port:
@@ -81,6 +82,8 @@ def main():
                     break
     reasons = assess(ended, args.seconds, args.expected_radio_chip_id) if ended else ['no final marker/timeout']
     result = {'board': args.board, 'captured_at_utc': datetime.now(timezone.utc).isoformat(),
+              'source_commit_at_start': initial_inventory['source_commit'],
+              'source_dirty_at_start': initial_inventory['source_dirty'],
               'source_commit': subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip(),
               'rp_image_sha256': args.rp_image_sha256, 'radio_image_sha256': write['image_sha256'],
               'baud': 115200, 'seed': '0x002f4a91', 'requested_seconds': args.seconds,

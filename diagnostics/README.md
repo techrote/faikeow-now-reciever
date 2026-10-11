@@ -9,8 +9,9 @@ matrix records completed physical tests for both boards.
   Board A ROM communication has established this route; Board B is untested.
 - `rp2040-link`: SRAM-only generator/checker for the isolated UART integrity test.
 - `esp-link/esp_link`: ESP8285 flash-resident counterpart. No networking or
-  credentials; Wi-Fi is disabled. **A: write/readback/boot and ten-second smoke
-  passed; original radio image restored exactly. B: not tested.**
+  credentials; Wi-Fi is disabled. **A: write/readback/cold boot, ten-minute
+  integrity and software fault/recovery cases passed; original radio image
+  previously restored exactly. A currently runs this diagnostic. B: pending.**
 
 The link test uses bounded SLIP frames, reflected CRC-32/ISO-HDLC, fixed seed
 `0x002f4a91`, sequence numbers, and cycling payload lengths 1/32/128/250 bytes.
@@ -49,3 +50,22 @@ and `PICO_NO_FLASH=1`. Validate its UF2 with `check_ram_uf2.py` before loading.
 Build success does not establish physical test success. Use `radio_flash.py`
 only with reviewed image hashes, two validated complete original backups,
 positive target identity, ROM access and an available physical restoration step.
+
+`tools/hardware/load_ram.py` checks the mapped ROM topology, flash UID,
+picotool/image SHA-256 and every SRAM UF2 destination before loading.
+`uart_fault_capture.py` records bounded burst, damaged/interrupted frame and
+independent MCU restart cases against the already-deployed UART diagnostic.
+It returns RP2040 to ROM with the bridge's 1200-baud request, reloads SRAM and
+checks recovery. Radio restart is an application command. No flash or unknown
+GPIO write occurs in this fault campaign; deliberate reset losses are reported
+separately from clean integrity runs.
+
+The isolated `esp-rf/esp_rf` diagnostic uses the accepted FNR-004 ingress adapter
+with runtime-only exact-peer/channel configuration and bounded deterministic
+datagrams. `rf_pair_capture.py` prepares two-direction integrity, admission,
+channel, backpressure and restart cases. This RF campaign has not run yet.
+For two-board access, the candidate bridge can be built with explicit fixture
+labels A/B and `FNR_BRIDGE_FLASH_RECOVERY_TEST=1`, `PICO_NO_FLASH=0`. This optional
+flash image requires complete originals, measured geometry and the guarded RP
+flash helper; the default candidate bridge remains SRAM-only. Labels distinguish
+USB interfaces but never replace independent topology/MCU identity checks.

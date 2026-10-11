@@ -23,7 +23,7 @@
         "sha256": "4bda3a28f4ffe603c0ec1258c0034d65a1a0d35ab7bd523a834608adabf03cc5",
         "matching_independent_reads": true,
         "raw_manifest": "board-A-rp2040-original/backup.json",
-        "restoration_result": "NOT TESTED"
+        "restoration_result": "PASS: full original readback and observed blank ROM return"
       },
       "radio": {
         "model": "ESP8285N08",
@@ -34,11 +34,11 @@
     },
     {
       "board": "B",
-      "physical_usb_port_label": 3,
+      "physical_usb_port_label": 1,
       "rp2040": "RP2040 B2",
       "flash_unique_id_sha256": "3c364283acb3cdc4c2221ca0104771f699221e274970505b9a9bfeeb60d45e88",
-      "flash_jedec": null,
-      "flash_capacity_evidence": "picotool save -a returned 2 MiB; independent JEDEC pending",
+      "flash_jedec": "684015",
+      "flash_capacity_evidence": "Independent input-only observer JEDEC: 2 MiB",
       "original_image_state": "picowutooth app metadata",
       "backup": {
         "result": "PASS",
@@ -51,9 +51,13 @@
         "restoration_result": "NOT TESTED"
       },
       "radio": {
-        "identity_result": "NOT TESTED"
+        "identity_result": "PASS",
+        "model": "ESP8285N08",
+        "flash_size_bytes": 1048576
       },
-      "persistent_flash_writes_in_campaign": false
+      "persistent_flash_writes_in_campaign": false,
+      "initial_physical_usb_port_label": 3,
+      "topology_rebinding": "User B-only reconnect at port 1; old topology refused; independently confirmed B flash UID via read-only picotool before updating private map"
     }
   ],
   "acceptance": "OPEN"

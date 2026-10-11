@@ -19,7 +19,7 @@
       "source_commit": "5bff48cc8a00ae6685c5ccb6919e0d5b019fdd6e",
       "raw_manifest": "board-A-after-radio-backup-rp2040/backup.json"
     },
-    "rp_persistent_write_restore": "NOT TESTED",
+    "rp_persistent_write_restore": "PASS: accepted HID flash write/cold boot, exact full original restore, observed blank RP return to ROM",
     "radio_rom_access": "PASS",
     "radio_backup": "PASS",
     "radio_flash_write_restore": "PASS: exact diagnostic and full original readbacks; original application boot unverified",
@@ -66,15 +66,53 @@
       "raw_manifest": "board-A-rp-hid-write-1/result.json"
     },
     "factory_boot_probe_raw_manifest": "board-A-radio-restored-cold-boot.json",
-    "factory_at_probe_result": "FAIL: expected OK response was not observed; this does not isolate a firmware or hardware fault"
+    "factory_at_probe_result": "FAIL: expected OK response was not observed; this does not isolate a firmware or hardware fault",
+    "rp_original_restoration": {
+      "board": "A",
+      "mode": "restore",
+      "captured_at_utc": "2026-10-11T10:48:42.741129+00:00",
+      "source_commit": "bb77606c948774d2966dd0892bd9a4a19da59a78",
+      "image_sha256": "4bda3a28f4ffe603c0ec1258c0034d65a1a0d35ab7bd523a834608adabf03cc5",
+      "backup_sha256": "4bda3a28f4ffe603c0ec1258c0034d65a1a0d35ab7bd523a834608adabf03cc5",
+      "image_size_bytes": 2097152,
+      "readback_size_bytes": 2097152,
+      "readback_sha256": "4bda3a28f4ffe603c0ec1258c0034d65a1a0d35ab7bd523a834608adabf03cc5",
+      "exact_readback": true,
+      "raw_manifest": "board-A-rp-restoration-1/result.json",
+      "rom_observation_raw_manifest": "board-A-rp-restored-rom.json"
+    },
+    "radio_diagnostic_redeployment": {
+      "board": "A",
+      "mode": "diagnostic",
+      "captured_at_utc": "2026-10-11T10:52:11.535686+00:00",
+      "source_commit": "bb77606c948774d2966dd0892bd9a4a19da59a78",
+      "image_sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
+      "size_bytes": 272800,
+      "backup_sha256": "cd4c7a680d35d95b0aca8d1207b4889d2f974af00d427b0131a2caf5d8b036cc",
+      "header_changes": false,
+      "exact_readback": true,
+      "raw_manifest": "board-A-radio-diagnostic-write-3/result.json"
+    },
+    "radio_diagnostic_cold_boot": {
+      "board": "A",
+      "captured_at_utc": "2026-10-11T10:54:40.239347+00:00",
+      "source_commit": "bb77606c948774d2966dd0892bd9a4a19da59a78",
+      "cold_boot_user_confirmed": true,
+      "command": "CRC-protected DIAG_INFO via SRAM bridge UART0 115200",
+      "radio_image_sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
+      "bridge_image_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
+      "boot_observed": true,
+      "raw_manifest": "board-A-radio-diagnostic-cold-boot.json"
+    },
+    "current_state": "Original blank RP flash; temporary UART radio diagnostic, cold boot proved; full original backups retained"
   },
   "B": {
     "rp_bootsel_physical": "PASS",
     "rp_backup": "PASS",
-    "rp_sram_diagnostics": "NOT TESTED",
+    "rp_sram_diagnostics": "PASS: input-only observer; independent UID and 684015 JEDEC, 2 MiB; zero GPIO output-enable",
     "radio_rom_access": "NOT TESTED",
     "radio_flash_write_restore": "NOT TESTED"
   },
   "original_firmware_flash_written": true,
-  "restoration_helpers": "radio helper physically exercised on A; RP write/readback exercised, RP restore pending"
+  "restoration_helpers": "Radio diagnostic/full original and RP diagnostic/full original paths physically exercised on A; B pending"
 }

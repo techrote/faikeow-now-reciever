@@ -69,6 +69,39 @@
       "raw_manifest": "board-A-hid-probe-1/result.json",
       "enumeration_result": "PASS",
       "neutral_report_result": "BLOCKED: Windows HidD_GetInputReport returned error 1; no report observed"
+    },
+    {
+      "vid": 51966,
+      "pid": 61443,
+      "caps": {
+        "usage": 2,
+        "usage_page": 1,
+        "input_bytes": 4,
+        "output_bytes": 0,
+        "feature_bytes": 0,
+        "link_nodes": 2,
+        "input_button_caps": 1,
+        "input_value_caps": 2,
+        "input_data_indices": 4,
+        "output_button_caps": 0,
+        "output_value_caps": 0,
+        "output_data_indices": 0,
+        "feature_button_caps": 0,
+        "feature_value_caps": 0,
+        "feature_data_indices": 0
+      },
+      "get_input_report_succeeded": false,
+      "get_input_report_error": 1,
+      "input_report_hex": null,
+      "board": "A",
+      "captured_at_utc": "2026-10-11T10:46:43.752928+00:00",
+      "source_commit": "bb77606c948774d2966dd0892bd9a4a19da59a78",
+      "image_sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "mouse_caps_match": true,
+      "neutral_get_report": false,
+      "raw_manifest": "board-A-hid-cold-probe-1/result.json",
+      "enumeration_result": "PASS after user-confirmed unheld USB cold reconnect",
+      "neutral_report_result": "BLOCKED: Windows error 1; no neutral report observed"
     }
   ]
 }

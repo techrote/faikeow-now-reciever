@@ -6,9 +6,9 @@ Date: 2026-10-11. Host: native Windows 11 Pro. Evidence: adjacent JSON ledger.
 |---|---|---|---|---|
 | USB topology isolation | FNR-002 | PASS | PASS | User unplug/replug correlated exact private port paths |
 | RP2040 ROM identity / physical BOOTSEL | FNR-002 | PASS | PASS | Both B2, RPI-RP2 |
-| RP flash backup | FNR-002 | PASS | PASS | Two matching 2 MiB reads each; B capacity JEDEC still pending |
-| RP flash JEDEC | FNR-002 | PASS | NOT TESTED | A 684015; exact vendor part unverified |
-| Input-only SRAM observer | FNR-002 | PASS | NOT TESTED | A zero GPIO output-enable, captured JEDEC/UID |
+| RP flash backup | FNR-002 | PASS | PASS | Two matching 2 MiB reads each |
+| RP flash JEDEC | FNR-002 | PASS | PASS | Each independently 684015 / 2 MiB; exact vendor part unverified |
+| Input-only SRAM observer | FNR-002 | PASS | PASS | Zero GPIO output-enable, captured independent JEDEC/UID |
 | SRAM bridge load/verify/run and return ROM | FNR-002 | PASS | NOT TESTED | SRAM loads preserve flash; later HID deployment is a separate case |
 | RP flash unchanged after SRAM diagnostics | FNR-002 | PASS | NOT TESTED | A repeated full reads match original |
 | Radio ROM access / model / flash / MAC | FNR-002 | PASS | NOT TESTED | A ESP8285N08, 1 MiB, 26 MHz reported |
@@ -21,10 +21,12 @@ Date: 2026-10-11. Host: native Windows 11 Pro. Evidence: adjacent JSON ledger.
 | Full radio factory restoration/readback | FNR-002 | PASS | NOT TESTED | A exact complete original bytes; unchanged headers |
 | Restored factory radio application boot | FNR-002 | BLOCKED | NOT TESTED | A silent AT probes after software and cold boot; no baseline response |
 | RP persistent UF2 write/readback/application boot | FNR-002 | PASS | NOT TESTED | A accepted mouse-only image, Windows enumeration |
-| RP original-image restoration | FNR-002 | NOT TESTED | NOT TESTED | A restoration pending after HID replug check |
+| RP original-image restoration | FNR-002 | PASS | NOT TESTED | A full 2 MiB exact original readback and fresh ROM observation |
 | Ten-second deterministic link smoke | FNR-002 | PASS | NOT TESTED | A 198 requests/echoes, 240 independent streams including drain, zero errors |
-| 600-second/10,000-frame deterministic link | FNR-002 | NOT TESTED | NOT TESTED | Smoke does not qualify duration/frame target |
-| Burst/interruption/reset/soak recovery | FNR-002 | NOT TESTED | NOT TESTED | Separate failure and recovery ledger required |
+| 600-second/10,000-frame deterministic link | FNR-002 | PASS | NOT TESTED | A 11,998 requests/echoes, 12,039 independent streams including drain; zero errors |
+| Burst/interruption/software MCU reset recovery | FNR-002 | PASS | NOT TESTED | A six cases; intentional damage/reset losses kept separate |
+| Approved radio diagnostic cold boot | FNR-002 | PASS | NOT TESTED | A CRC-protected application identity after user-confirmed power cycle |
+| Persistent HID application cold USB reconnect | FNR-003 | PASS | NOT TESTED | A returned with matching parsed capabilities |
 | Cold USB reconnect to ROM | FNR-002 | PASS | PASS | Does not prove application cold-boot behavior |
 | USB HID mouse enumeration / parsed caps subset | FNR-003 | PASS | NOT TESTED | A Windows mouse usage, two value caps, one button-cap range |
 | HID neutral GET_REPORT observation | FNR-003 | BLOCKED | NOT TESTED | Windows error 1; no report observed, cause not isolated |

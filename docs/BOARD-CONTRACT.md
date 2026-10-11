@@ -1,7 +1,8 @@
 # Clone-board contract — FNR-002, partial physical evidence
 
-**FNR-002 is OPEN. Neither board has passed reversible flash deployment or
-sustained link qualification. Do not generalize Board A's measurements to B.**
+**FNR-002 is OPEN. A has passed reversible image deployment/restoration and
+600-second UART integrity plus software fault/recovery tests. B qualification
+is in progress. Do not generalize Board A's measurements to B.**
 Observations below were made on 2026-10-11 with native Windows 11 Pro USB access.
 The source/test ledger is in `evidence/FNR-002/`; original dumps, host inventory,
 complete device identifiers and raw serial logs remain outside Git.
@@ -11,7 +12,10 @@ complete device identifiers and raw serial logs remain outside Git.
 The user designated two visually identical boards A and B and reported that one
 had previously been used. Board markings/revision and electrical measurements
 have not been captured. Cable/port isolation established A at USB root port 1
-and B at root port 3 on the same observed hub. The complete host paths are in
+and B initially at root port 3 on the same observed hub. B was later connected
+at port 1; the guard refused its previous mapping, and read-only picotool
+selection by B's distinct flash ID confirmed its identity before rebinding.
+The complete host paths and rebinding record are in
 the private `board-identities.json`; they are checked before hardware commands.
 COM numbers and drive letters are enumeration observations, not board identities.
 
@@ -22,7 +26,7 @@ COM numbers and drive letters are enumeration observations, not board identities
 | BOOTSEL USB | 2e8a:0003, RPI-RP2; UF2 bootloader 3.0 | Same |
 | BOOTSEL serial | Shared with B; unsuitable for selection | Shared with A; unsuitable for selection |
 | RP flash unique ID | Privately recorded; distinct from B | Privately recorded; distinct from A |
-| RP flash JEDEC | `68 40 15`, consistent with 2 MiB; exact part unverified | Not measured |
+| RP flash JEDEC | `68 40 15`, consistent with 2 MiB; exact part unverified | Independently measured `68 40 15`, 2 MiB |
 | RP original contents | Erased (`ff`); two matching 2 MiB reads | Existing `picowutooth`; two matching 2 MiB reads |
 | Radio identity | ESP8285N08 from esptool efuse/ROM commands | NOT TESTED |
 | Radio crystal | esptool reports 26 MHz | NOT TESTED |
@@ -30,12 +34,12 @@ COM numbers and drive letters are enumeration observations, not board identities
 | Radio MAC | Read and privately recorded | NOT TESTED |
 | Radio backup | Two matching 1 MiB reads, stub MD5 verified | NOT TESTED |
 | Persistent writes in this campaign | Radio diagnostic/full original; accepted RP mouse-only image | None |
-| Restoration | Radio bytes PASS; factory boot unverified; RP restore pending | NOT TESTED |
+| Restoration | RP full original PASS; radio full original bytes PASS; approved diagnostic cold boot PASS; factory boot unverified | NOT TESTED |
 
 The first A preread covered the 16 MiB readable RP2040 XIP window, all `ff`.
 This is an address-window observation, **not evidence of a 16 MiB flash chip**.
 The later explicit 2 MiB backup uses the capacity consistent with JEDEC `15`.
-Exact flash part names and B's independently detected capacity remain pending.
+Exact flash part names remain pending; B's capacity is independently measured.
 B's existing image declares SDK 2.3.1 and `pico_w`; that metadata does not prove
 CYW43 hardware or qualify the installed application for this project.
 
@@ -51,8 +55,9 @@ CYW43 hardware or qualify the installed application for this project.
 | Header sharing/voltage | NOT TESTED | No schematic, continuity test or meter measurement |
 
 Successful bidirectional ROM commands prove the GPIO0/1 route on **A only**.
-115200 baud, 8N1, no flow control worked for ROM identity and backup. This is not
-a selected production rate or a ten-minute transport qualification.
+115200 baud, 8N1, no flow control worked for ROM identity, backup and A's
+ten-minute integrity run. Production bandwidth headroom remains dependent on
+the later production framing and cadence requirements.
 
 The input-only SRAM observer enabled no GPIO output drivers. It observed GPIO1
 low initially, high after holding the far button during a power cycle; GPIO0
@@ -78,15 +83,17 @@ boot remains unverified: read-only `AT\r\n` probes received no response after
 software boot at 115200, or after a user-confirmed cold boot at 115200/9600/74880.
 Offline AT/SDK string markers do not prove a working AT application. No factory
 boot response was captured before deployment, so silence cannot be attributed
-to the diagnostic. Keep B preserved while A's remaining recovery gates are open.
+to the diagnostic. The approved UART radio diagnostic was subsequently
+redeployed with exact readback and identified after a user-confirmed cold boot.
 
 The SRAM bridge/observer enumerate as SDK CDC 2e8a:000a, observed COM5 on A.
 The SRAM serial descriptor is not unique. A 1200-baud CDC request returns the
 bridge to RP2040 ROM; Windows reports the expected port-disappearance exception.
 This software return has been exercised. A later persistent deployment of the
 accepted FNR-003 mouse-only image passed picotool verification, independent
-image-region readback and application enumeration. Its original blank RP flash
-has not yet been restored after that deployment.
+image-region readback, application enumeration and unheld cold re-enumeration.
+Its original blank RP flash was then restored; the full 2 MiB readback matches
+the original SHA-256, and a fresh ROM observation confirms return to RPI-RP2.
 
 Windows initially lacked the RP2 Boot Interface 1 driver. The user installed
 WinUSB for **2e8a:0003, MI 01 only** with Zadig 2.9. Mass-storage remained on
@@ -191,26 +198,41 @@ rejects non-RP2040, SRAM, duplicate or out-of-capacity UF2 destinations. Restore
 mode accepts only the complete original binary and writes it at `0x10000000`.
 Both paths independently read back every selected image byte before rebooting.
 This is a qualified image restoration, with no separate erase-all command.
-The physical RP write path has run on A; its restoration path remains pending.
+Both physical RP write and full restoration paths have passed on A.
 
 The radio and RP UART diagnostics passed a ten-second active smoke run on A at
 115200 8N1. A generated 198 requests and received 198 matching echoes plus 240
 independent radio streams, including the two-second drain. All CRC, pattern,
 sequence, UART and software-buffer error counters were zero, and the radio's
-final counters matched. This is smoke evidence, not the required 600-second /
-10,000-frame qualification or a measured production bandwidth guarantee.
+final counters matched. A later run completed 600.000001 active seconds, with
+11,998 requests, 11,998 echoes and 12,039 independent radio streams including
+the two-second drain. Every CRC, pattern, sequence, UART and software-buffer
+error counter was zero, with matching radio counters. Measured request payload
+throughput was approximately 2,054 B/s during the active interval; combined
+echo/stream receive payload throughput was approximately 4,102 B/s over the
+602-second observation including drain. These are measured diagnostic loads,
+not a production bandwidth guarantee.
+
+A also passed contiguous 20-frame bursts, deliberate CRC damage/truncation/
+bounded-overflow resynchronization, radio application restart during traffic,
+and RP2040 return to ROM while the radio continued streaming. Each restart was
+followed by a clean 20-frame recovery burst. The deliberate damage produced
+exactly one CRC, length and overflow count; losses during MCU restart were
+intentional and excluded from the clean qualification. Radio reset used its
+application command; no unknown reset GPIO was driven.
 
 The isolated link diagnostics, build configuration and `RUN10`/`RUN600` commands
-are described in `diagnostics/README.md`. Required UART interruption/reset/burst
-cases, 600-second/10,000-frame tests on each board, RP2040 persistent-image
-recovery, full USB lifecycle/HID behavior, RF pair tests, and full FNR-008
+are described in `diagnostics/README.md`. B's independent deployment/recovery,
+600-second integrity and fault cases, full USB lifecycle/HID behavior, RF pair
+tests, electrical/header facts and full FNR-008
 reference TiltMouse interoperability remain pending.
 
 ## Physical USB HID subset on A
 
 The accepted FNR-003 source was built with the native Windows Arm toolchain and
 deployed to A's RP flash. Windows enumerated `cafe:f003` with a HID-compliant
-mouse child at A's mapped port, both with status OK. Windows HID parsed usage
+mouse child at A's mapped port, both with status OK, and repeated this after a
+user-confirmed unheld USB cold reconnect. Windows HID parsed usage
 page 1 / usage 2, a four-byte Windows input buffer (including its report-ID
 prefix), one button-capability range and two value capabilities, with no output
 or feature reports. This is an observed descriptor subset, not a raw USB device /

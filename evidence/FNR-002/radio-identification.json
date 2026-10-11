@@ -23,7 +23,17 @@
     "raw_manifest": "board-A-radio-original-dtr/backup.json"
   },
   "B": {
-    "result": "NOT TESTED",
-    "reason": "preserved reference until A restoration is proved"
+    "result": "PASS",
+    "model": "ESP8285N08",
+    "crystal_mhz_reported": 26,
+    "flash_jedec": "5e3214",
+    "detected_flash_size_bytes": 1048576,
+    "mac_sha256": "73903bd432340326afd55d456b76561dc3b907e3f020b17387996f81786fd339",
+    "esptool": "4.8.1",
+    "pyserial": "3.5",
+    "source_commit": "c164938905ed23e60378b973b0dc69b8e217eb15",
+    "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
+    "raw_manifest": "board-B-radio-identification.json",
+    "backup_result": "in progress"
   }
 }
