@@ -48,9 +48,16 @@ The two runs produced identical SHA-256 values for each pair of output images:
 | ESP8266 | `fnr_esp8266_inert.bin` | `f298fa1eb0f1fd7f3b5c03a3595782d13d7e343d165d29a329ca29019a388f8b` |
 | ESP8266 | `fnr_esp8266_inert.elf` | `8f19de1f41601fe280acd442cffe8346ec7d65f3dd4d36d3bca36c1ad94692b6` |
 
-These hashes apply only to the stated prior source head. The source ID is
-embedded in ESP firmware metadata, so later commits are not expected to keep
-the same output hash. Check the **exact final head** in Actions before merging.
+These exact hashes were first confirmed on the stated source head. A
+source ID is **supplied** to the ESP build recipe and **recorded** in CI
+manifests; embedding that ID in loadable firmware bytes is not established.
+Indeed, the same ESP image hashes were observed on merged
+`main@510851931d3ccf3168e651c945cc115b4b0bbd1b` despite a different
+Git commit ID. Therefore an image SHA-256 hash alone **does not prove**
+which source commit was used. Retain the linked CI run and manifest's
+source/dependency/compiler identities alongside the artifact hashes.
+Check the exact accepted head in Actions; do not infer source identity from
+a matching binary hash.
 
 ## Acceptance and release record
 
