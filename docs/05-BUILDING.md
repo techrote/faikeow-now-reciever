@@ -1,7 +1,8 @@
-# Building the FNR-001 dual-firmware foundation
+# Building the dual-firmware platform (FNR-001 + FNR-004)
 
-**Scope:** compile-only, inert and profile-neutral. No USB enumeration, ESP-NOW
-configuration, board GPIO/pin assertions or real RF/USB behavior is implemented.
+**Scope:** RP2040 firmware is still inert; FNR-004 adds profile-neutral,
+fail-closed ESP-NOW receive initialization and a bounded generic handoff.
+No physical RF/USB behavior has been demonstrated.
 The actual clone-board contract remains FNR-002 (#3).
 
 ## Layout (implemented)
@@ -9,15 +10,15 @@ The actual clone-board contract remains FNR-002 (#3).
 - `shared/include/fnr/`, `shared/src/` — portable datagram ownership and a
   profile extension seam, with neither target SDK imported.
 - `firmware/rp2040/` — Pico SDK 2.2.0 + TinyUSB 0.18.0 inert UF2 target.
-- `firmware/esp8266/` — ESP8266 Arduino 3.1.2 (NONOSDK22x_190703) inert
-  radio API/link target.
+- `firmware/esp8266/` — ESP8266 Arduino 3.1.2 (NONOSDK22x_190703) generic
+  radio-ingress target.
 - `tests/native/` — sanitizer-testable portable code.
 - `tools/` — verified dependency acquisition, target builds and artifact
   manifests.
 - `.github/workflows/fnr-001.yml` — four CI gates and firmware artifacts.
 
-Later FNR issues own full protocol codecs, profile backends, radio callbacks,
-inter-MCU transport, and board-specific flashing/recovery. Empty placeholder
+Later FNR issues own full protocol codecs, profile backends,
+inter-MCU transport, provisioning UX and board-specific flashing/recovery. Empty placeholder
 modules are not interpreted as implemented functionality.
 
 ## Required host
@@ -51,7 +52,8 @@ cmake --build build/native --parallel 2
 ctest --test-dir build/native --output-on-failure
 ```
 
-These tests currently cover datagram byte ownership, limits and malformed input.
+These tests cover datagram byte ownership, bounds, malformed input,
+peer/channel validation, admission, loss accounting and restart transitions.
 Expanded core/transport/profile coverage belongs to later FNR issues.
 
 ## Firmware cross-builds
@@ -62,11 +64,13 @@ FNR_SOURCE_ID="$(git rev-parse HEAD)" bash tools/build_esp.sh
 ```
 
 Output includes `build/rp2040/fnr_rp2040_inert.uf2` and
-`build/esp8266/fnr_esp8266_inert.bin`, with corresponding ELF files.
+`build/esp8266/fnr_esp8266_ingress.bin`, with corresponding ELF files.
 The build script verifies pinned local dependencies before compilation.
 
-**Do not flash these as functional receiver firmware.** They deliberately
-do not initialize TinyUSB or register an ESP-NOW callback. The `pico`
+**Do not flash these as a working receiver.** The RP2040 build does not
+initialize TinyUSB. The ESP image initializes an ESP-NOW ingress path only
+when explicitly configured, and it has no verified board interconnect.
+See [FNR-004 admission, configuration and foreground API](FNR-004-RADIO-INGRESS.md). The `pico`
 RP2040 board profile and `esp8285` 1 MiB `dout` ESP flash profile are
 *compile surrogates*, not physical board acceptance or flash instructions.
 

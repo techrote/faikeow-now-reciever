@@ -88,7 +88,7 @@ jobs:
             build/rp2040/manifest.json
 
   esp8266:
-    name: ESP8266 locked cross-build (inert)
+    name: ESP8266 locked cross-build (radio ingress)
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
@@ -103,19 +103,20 @@ jobs:
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
-          test -s build/esp8266/fnr_esp8266_inert.bin
-          test -s build/esp8266/fnr_esp8266_inert.elf
-          sha256sum build/esp8266/fnr_esp8266_inert.bin build/esp8266/fnr_esp8266_inert.elf > build/esp8266/SHA256SUMS
+          test -s build/esp8266/fnr_esp8266_ingress.bin
+          test -s build/esp8266/fnr_esp8266_ingress.elf
+          .deps/xtensa/bin/xtensa-lx106-elf-nm build/esp8266/fnr_esp8266_ingress.elf | grep -q 'esp_now_register_recv_cb'
+          sha256sum build/esp8266/fnr_esp8266_ingress.bin build/esp8266/fnr_esp8266_ingress.elf > build/esp8266/SHA256SUMS
           python3 tools/artifact_manifest.py --lane esp --source-id "$FNR_SOURCE_ID" \
             --compiler .deps/xtensa/bin/xtensa-lx106-elf-gcc \
             --config tools/manifest-config.esp8266.json \
             --output build/esp8266/manifest.json \
-            build/esp8266/fnr_esp8266_inert.bin build/esp8266/fnr_esp8266_inert.elf
+            build/esp8266/fnr_esp8266_ingress.bin build/esp8266/fnr_esp8266_ingress.elf
           python3 -m json.tool build/esp8266/manifest.json >/dev/null
           cat build/esp8266/SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: fnr-001-esp8266-inert
+          name: fnr-004-esp8266-ingress
           path: |
             build/esp8266/*.bin
             build/esp8266/*.elf
