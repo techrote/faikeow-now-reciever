@@ -13,7 +13,10 @@ radio startup leaves Wi-Fi OFF. To build a *locally provisioned* receiver, suppl
 all eight compile-time definitions:
 `FNR_RADIO_ENABLE=1`, `FNR_CHANNEL` (1–14) and
 `FNR_PEER_0` through `FNR_PEER_5` (six decimal MAC octets).
-They are build parameters, not hard-coded source secrets. The build still uses
+They are build parameters, not hard-coded source secrets. Alternatively,
+`fnr_radio_apply_config(const fnr_radio_config *)` accepts a copied foreground
+configuration and restarts reception; null revokes admission. This seam makes
+the real registration path link-reachable in an otherwise unprovisioned image. The build still uses
 an unverified ESP8285 flash surrogate. FNR-007 owns persisted configuration.
 The MAC admission check excludes zero, broadcast and multicast addresses.
 The exact MAC match is **not cryptographic sender authentication**.
@@ -33,7 +36,7 @@ invocations, subject to the explicit newest-wins drop rule.
 `fnr_radio_status_foreground(fnr_radio_ingress *out)` copies a status/ingress
 snapshot; `fnr_radio_station_mac(uint8_t out[6])` retrieves the SDK station MAC.
 Counters saturate at UINT32_MAX; they persist across `fnr_radio_restart()`.
-Reset invalidates the pending record. The status includes configuration
+Reset invalidates the pending record and counts its discard. The status includes configuration
 (channel + allowed MAC), state and accepted/rejected/loss counters, but no keys.
 The current implementation provisions one exact source MAC. Extending to a
 bounded peer list belongs to FNR-007.
