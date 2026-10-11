@@ -16,8 +16,10 @@ all eight compile-time definitions:
 They are build parameters, not hard-coded source secrets. Alternatively,
 `fnr_radio_apply_config(const fnr_radio_config *)` accepts a copied foreground
 configuration and restarts reception; null revokes admission. This seam makes
-the real registration path link-reachable in an otherwise unprovisioned image. The build still uses
-an unverified ESP8285 flash surrogate. FNR-007 owns persisted configuration.
+the real registration path link-reachable in an otherwise unprovisioned image.
+FNR-002 independently established ESP8285N08 with 1 MiB embedded flash on both
+units; the authoritative [devboard reference](03-HARDWARE.md) owns the hardware
+and programming contract. FNR-007 owns persisted configuration.
 The MAC admission check excludes zero, broadcast and multicast addresses.
 The exact MAC match is **not cryptographic sender authentication**.
 No infrastructure association, SoftAP, DHCP application or socket is used.
@@ -69,6 +71,24 @@ unregisters the callback/deinitializes ESP-NOW when active, invalidates pending
 data and reapplies explicit configuration. UNCONFIGURED turns Wi-Fi off.
 The channel is not a claimed regulatory-domain or physical link validation.
 
+## Channel selection and admission
+
+The configured channel selects the SDK radio channel and startup checks the
+SDK's reported value. It is not a per-datagram channel admission field. The
+pinned NONOS receive callback supplies source MAC, data and length, with no
+physical receive-channel metadata. Exact-source admission is performed in the
+portable ingress module; channel selection cannot substitute for that check or
+for future cryptographic policy.
+
+The FNR-002 mismatch failure is preserved unchanged. The FNR-004 follow-up in
+[PR #19](https://github.com/techrote/faikeow-now-reciever/pull/19) reproduced
+reception at 20 cm and observed substantially less reception at 180 cm using
+the same deployed diagnostic. These are operator-reported separations.
+SDK channel values alone do not establish actual over-the-air frequency, and
+neither a failed transmit callback nor a channel difference proves that no
+packet reached the receiver. Every observed mismatch reception remains a
+failed zero-reception test. Universal RF channel isolation is not accepted.
+
 ## Evidence limits
 
 Native tests exercise ownership, length bounds (including 251–255),
@@ -76,6 +96,8 @@ configuration, filtering, overflow, ordering, restart and saturation.
 Target compilation/CI must independently establish the pinned SDK symbol/API
 compatibility, ELF/BIN provenance and RP2040 regression status. **Neither a
 cross-build nor native simulation proves physical ESP-NOW reception.**
-FNR-002 still needs to establish the actual chip, flashing/recovery, internal
-MCU interconnect and board resource contract. FNR-005 must attach its own
-framed generic consumer once that contract exists.
+FNR-002 established actual chip identity, flashing/recovery, the onboard UART0
+GP0/GP1 interconnect and independent UART integrity. Reuse those unchanged
+results through the authoritative devboard reference. FNR-005 must attach its
+own production framed generic consumer; diagnostic UART/RF exchanges do not
+establish that production transport or integrated HID/profile acceptance.
