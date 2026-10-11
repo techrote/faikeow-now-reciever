@@ -6,12 +6,14 @@ matrix records completed physical tests for both boards.
 
 - `rp2040-observer`: SRAM-only input observer. Drives no GPIO.
 - `rp2040-candidate-bridge`: SRAM-only CDC/UART0 bridge, GP0 TX and GP1 RX.
-  Board A ROM communication has established this route; Board B is untested.
+  Independent radio ROM communication and backups established this route on A/B.
 - `rp2040-link`: SRAM-only generator/checker for the isolated UART integrity test.
 - `esp-link/esp_link`: ESP8285 flash-resident counterpart. No networking or
   credentials; Wi-Fi is disabled. **A: write/readback/cold boot, ten-minute
   integrity and software fault/recovery cases passed; original radio image
-  previously restored exactly. A currently runs this diagnostic. B: pending.**
+  previously restored exactly. B also passed write/readback, full original
+  restoration, diagnostic redeployment and cold application identity. B's
+  sustained/fault qualification is recorded separately in the evidence ledger.**
 
 The link test uses bounded SLIP frames, reflected CRC-32/ISO-HDLC, fixed seed
 `0x002f4a91`, sequence numbers, and cycling payload lengths 1/32/128/250 bytes.
@@ -69,3 +71,15 @@ labels A/B and `FNR_BRIDGE_FLASH_RECOVERY_TEST=1`, `PICO_NO_FLASH=0`. This optio
 flash image requires complete originals, measured geometry and the guarded RP
 flash helper; the default candidate bridge remains SRAM-only. Labels distinguish
 USB interfaces but never replace independent topology/MCU identity checks.
+
+For additional Windows USB observations, unchanged accepted FNR-003 firmware
+can be built with `PICO_NO_FLASH=1` and loaded using `load_ram.py`. Its verified
+SRAM deployment record is accepted by `hid_probe_windows.py --ram-load-record`;
+the persistent path still requires an exact flash readback record.
+`usb_descriptors_windows.py` reads device and configuration descriptors from
+the mapped hub port. Its Windows hub API cannot retrieve the interface-recipient
+HID report descriptor. Parsed HID capabilities remain separate evidence.
+`hid_idle_windows.py` observes the exact mapped raw mouse for 20 or 60 seconds
+using a process-local Raw Input sink, without injecting or suppressing input.
+An idle PASS means no unsolicited motion in that interval; it does not prove
+a neutral report, active controls, suspend/resume or timeout behavior.
