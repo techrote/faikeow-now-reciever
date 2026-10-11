@@ -89,6 +89,13 @@ def main():
                 esp = rom.run_stub()
                 if esp.flash_id() != 0x14325e:
                     raise ValueError('Radio flash identity/capacity mismatch; no write performed')
+                # ESP8266StubLoader does not inherit sync_stub_detected from the
+                # ROM object. main() calls run_stub() again, so confirm the live
+                # resident stub by SYNC before passing that object to main().
+                # Otherwise 4.8.1 tries to upload over its own resident RAM stub.
+                esp.sync()
+                if not esp.sync_stub_detected:
+                    raise ValueError('Resident RAM stub was not confirmed; no write performed')
                 # A supplied connection keeps DTR asserted; every header field is
                 # "keep" so the image and restored dump are compared byte-for-byte.
                 esptool.main(command, esp=esp)
