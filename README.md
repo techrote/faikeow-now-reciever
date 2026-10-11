@@ -86,12 +86,18 @@ v0.1 implements one production profile:
 
 `techrote/ESP32-QMI8658C-TiltMouse` is the first reference sender and physical interoperability target, not the product definition of this repository.
 
-## Developer builds (FNR-001 / FNR-004)
+## Developer builds (FNR-003 + FNR-004 software state)
 
-The RP2040 build remains inert. The ESP8266 build contains real ESP-NOW
-initialization and bounded generic radio ingress but **defaults unprovisioned**;
-physical reception, board wiring and complete USB HID functionality are
-not yet accepted. Do **not flash these as a working dongle**.
+The RP2040 build contains the FNR-003 generic TinyUSB HID framework and the
+`relative_mouse` backend. The ESP8266 build contains the FNR-004 profile-neutral
+ESP-NOW ingress and **defaults unprovisioned**. Neither lane assumes the missing
+physical inter-MCU link, and the RP2040 firmware generates no synthetic mouse
+activity.
+
+These are software-qualified targets, not a complete or physically accepted
+dongle. FNR-002 still owns clone-board pinout/recovery evidence, FNR-005 owns the
+framed internal link, FNR-006 owns receiver/envelope/profile dispatch, and
+FNR-008 owns physical USB/RF/reference-profile acceptance.
 
 A canonical Linux x86_64 environment (including WSL2) can run:
 
@@ -100,15 +106,21 @@ python3 tools/acquire_deps.py --lane rp2040
 bash tools/build_rp2040.sh
 python3 tools/acquire_deps.py --lane esp
 FNR_SOURCE_ID="$(git rev-parse HEAD)" bash tools/build_esp.sh
-cmake -S . -B build/native -G Ninja
-cmake --build build/native
+cmake -S . -B build/native -G Ninja -DCMAKE_BUILD_TYPE=Debug \
+  -DCMAKE_C_FLAGS="-fsanitize=undefined -fno-sanitize-recover=all" \
+  -DCMAKE_CXX_FLAGS="-fsanitize=undefined -fno-sanitize-recover=all"
+cmake --build build/native --parallel 2
 ctest --test-dir build/native --output-on-failure
 ```
 
-The acquisition step downloads/checks explicitly pinned dependencies; build scripts
-do not fetch SDKs implicitly. See [exact commands and limitations](docs/05-BUILDING.md)
-and [toolchain provenance](docs/prepasses/FNR-001-DEPENDENCIES.md).
-CI runs both target cross-builds and produces separate checksummed manifests.
+Current firmware outputs are `build/rp2040/fnr_rp2040_hid.uf2`/`.elf` and
+`build/esp8266/fnr_esp8266_ingress.bin`/`.elf`. See
+[exact commands and limitations](docs/05-BUILDING.md),
+[HID profile architecture](docs/08-HID-PROFILES.md),
+[FNR-003 software evidence](docs/FNR-003-IMPLEMENTATION.md), and
+[FNR-004 radio ingress](docs/FNR-004-RADIO-INGRESS.md).
+CI runs all native tests plus both locked target cross-builds and publishes
+checksummed manifests with `physical_acceptance: false`.
 
 ## Programme
 

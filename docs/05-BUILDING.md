@@ -1,48 +1,46 @@
-# Building the dual-firmware platform (FNR-001 + FNR-004)
+# Building the dual-firmware platform after FNR-003 and FNR-004
 
-**Scope:** RP2040 firmware is still inert; FNR-004 adds profile-neutral,
-fail-closed ESP-NOW receive initialization and a bounded generic handoff.
-No physical RF/USB behavior has been demonstrated.
-The actual clone-board contract remains FNR-002 (#3).
+## Current software state
 
-## Layout (implemented)
+The two firmware lanes are independently software-functional but are not yet
+connected into a complete receiver:
 
-- `shared/include/fnr/`, `shared/src/` — portable datagram ownership and a
-  profile extension seam, with neither target SDK imported.
-- `firmware/rp2040/` — Pico SDK 2.2.0 + TinyUSB 0.18.0 inert UF2 target.
-- `firmware/esp8266/` — ESP8266 Arduino 3.1.2 (NONOSDK22x_190703) generic
-  radio-ingress target.
-- `tests/native/` — sanitizer-testable portable code.
-- `tools/` — verified dependency acquisition, target builds and artifact
-  manifests.
-- `.github/workflows/fnr-001.yml` — four CI gates and firmware artifacts.
+- **RP2040 / FNR-003:** generic TinyUSB HID framework with selected
+  `relative_mouse` backend, live USB descriptors and USB service loop.
+- **ESP8266/ESP8285 / FNR-004:** profile-neutral ESP-NOW receive initialization,
+  fail-closed exact-peer admission and bounded generic foreground handoff;
+  shipping/default build remains unprovisioned.
 
-Later FNR issues own full protocol codecs, profile backends,
-inter-MCU transport, provisioning UX and board-specific flashing/recovery. Empty placeholder
-modules are not interpreted as implemented functionality.
+FNR-005 still owns the physical framed inter-MCU transport. FNR-002 owns the
+actual clone-board wiring/flashing contract. Neither cross-build is physical
+USB/RF acceptance.
 
-## Required host
+The RP2040 target is deliberately renamed from `fnr_rp2040_inert` to
+`fnr_rp2040_hid`; consumers of the old artifact name must migrate. The ESP8266
+artifact remains the FNR-004 `fnr_esp8266_ingress` target.
 
-Use Linux x86_64 (Ubuntu 24.04 in CI; WSL2 also supported if it has network).
-Install Git, Python 3.11+, CMake, Ninja, GCC/G++, Bash and standard archive tools.
+## Pinned dependencies
 
-The exact firmware dependencies are in `dependencies.lock.json`. See
-`docs/prepasses/FNR-001-DEPENDENCIES.md` for source identities, hashes,
-licenses, acquisition risks and original prepass limitations.
+FNR-001 remains authority for acquisition and provenance. Exact versions/hashes
+are in `dependencies.lock.json`, including:
 
-Dependencies are fetched **only** by an explicit acquisition command.
-They are pinned and SHA-256 verified where binary archives are involved,
-and installed under ignored `.deps/`:
+- Pico SDK 2.2.0;
+- TinyUSB 0.18.0 at the SDK-pinned gitlink;
+- Arm GNU Toolchain 13.3.Rel1;
+- ESP8266 Arduino 3.1.2 / NONOSDK22x_190703;
+- XTensa GCC 10.3 and makeEspArduino 6.7.
+
+Dependencies are fetched only by explicit acquisition commands and installed
+under ignored `.deps/`:
 
 ```sh
 python3 tools/acquire_deps.py --lane rp2040
 python3 tools/acquire_deps.py --lane esp
 ```
 
-Both can be combined with `--lane all`. Acquisition requires internet
-access; the actual build scripts do not fetch SDKs.
+Use `--lane all` to acquire both. Build scripts never fetch SDKs implicitly.
 
-## Native tests
+## Native qualification
 
 ```sh
 cmake -S . -B build/native -G Ninja -DCMAKE_BUILD_TYPE=Debug \
@@ -52,52 +50,98 @@ cmake --build build/native --parallel 2
 ctest --test-dir build/native --output-on-failure
 ```
 
-These tests cover datagram byte ownership, bounds, malformed input,
-peer/channel validation, admission, loss accounting and restart transitions.
-Expanded core/transport/profile coverage belongs to later FNR issues.
+Project code builds with `-Wall -Wextra -Werror -Wconversion -Wshadow`.
+The native suite covers:
 
-## Firmware cross-builds
+- FNR-001 datagram ownership and bounds;
+- FNR-004 peer/channel admission, bounded newest-wins ingress, loss accounting
+  and restart transitions;
+- FNR-003 profile registration/selection, descriptor invariants, relative-mouse
+  signed/clamped reports, buttons, USB lifecycle, backpressure, recovery-neutral
+  barriers, invalidation and deterministic fault stress.
+
+Native USB/RF simulation is software evidence only.
+
+## RP2040 TinyUSB HID cross-build
 
 ```sh
 bash tools/build_rp2040.sh
+```
+
+Outputs:
+
+- `build/rp2040/fnr_rp2040_hid.uf2`
+- `build/rp2040/fnr_rp2040_hid.elf`
+
+The target selects `relative_mouse` before TinyUSB initialization, enables one
+HID class instance and disables CDC/MSC/MIDI/vendor classes. Descriptor callbacks
+resolve through the selected backend. The TinyUSB task is serviced
+non-blockingly; the production loop contains no synthetic mouse generator and
+uses no clone-board GPIO assumptions.
+
+The CI ELF-symbol gate requires the production descriptor/lifecycle callbacks,
+`fnr_usb_adapter_task` and `fnr_hid_device_service` to survive final linking.
+
+## ESP8266 generic ingress cross-build
+
+```sh
 FNR_SOURCE_ID="$(git rev-parse HEAD)" bash tools/build_esp.sh
 ```
 
-Output includes `build/rp2040/fnr_rp2040_inert.uf2` and
-`build/esp8266/fnr_esp8266_ingress.bin`, with corresponding ELF files.
-The build script verifies pinned local dependencies before compilation.
+Outputs:
 
-**Do not flash these as a working receiver.** The RP2040 build does not
-initialize TinyUSB. The ESP image initializes an ESP-NOW ingress path only
-when explicitly configured, and it has no verified board interconnect.
-See [FNR-004 admission, configuration and foreground API](FNR-004-RADIO-INGRESS.md). The `pico`
-RP2040 board profile and `esp8285` 1 MiB `dout` ESP flash profile are
-*compile surrogates*, not physical board acceptance or flash instructions.
+- `build/esp8266/fnr_esp8266_ingress.bin`
+- `build/esp8266/fnr_esp8266_ingress.elf`
 
-## Manifest / CI evidence
+The default build is fail-closed/unprovisioned. When explicitly configured it
+initializes the pinned NONOS ESP-NOW receive path, performs exact-source/channel
+admission and exposes a bounded generic datagram handoff. It does not interpret
+HID/profile payloads or assume a UART/SPI link to the RP2040. CI verifies that
+`esp_now_register_recv_cb` remains linked. See
+[FNR-004 radio ingress](FNR-004-RADIO-INGRESS.md).
 
-Four CI jobs must pass on the exact PR head:
+## CI and artifact identity
 
-1. Text/JSON/Python sanity and tracked-key-material check.
-2. Native UBSan tests.
-3. Locked Pico SDK/TinyUSB build and UF2/ELF hashes.
-4. Locked ESP8266 NONOS SDK build and BIN/ELF hashes.
+`.github/workflows/fnr-001.yml` retains its historical filename but is the
+platform CI. On the exact PR head it gates:
 
-The cross-build jobs publish SHA256SUMS and `manifest.json` files
-beside firmware images. The manifest records source ID, locked dependency
-file hash, compiler identity, build profile and artifact hashes, and
-`physical_acceptance: false`. The CI source ID uses the PR source head
-rather than GitHub's synthetic merge-commit SHA.
+1. text/source sanity;
+2. native UBSan tests;
+3. locked RP2040 TinyUSB HID cross-build plus linked-path symbol checks;
+4. locked ESP8266 radio-ingress cross-build plus receive-registration symbol
+   check.
 
-Artifacts may be byte-for-byte compared between clean builds with the
-same source identity. Do not claim reproducibility from mere successful
-compilation or record a firmware hash without the exact manifest.
+Each firmware job writes `SHA256SUMS` and `manifest.json`. Manifests record the
+source ID, dependency-lock hash, compiler identity, configuration and artifact
+hashes, with `physical_acceptance: false`. Preserve the manifest and exact CI run
+together; a binary hash alone does not prove its source commit.
+
+## USB identity policy
+
+FNR-003 uses `VID 0xCAFE` with project-local `PID 0xF003` only as a controlled
+development identity. TinyUSB examples use `0xCAFE` with unique example PIDs;
+this repository does not claim ownership of that VID or impersonate another
+production device. FNR-009 must replace it with a legitimately allocated
+release identity before distribution/certification claims.
+
+## Physical non-claims
+
+Current software qualification does **not** establish:
+
+- USB enumeration/input on the actual clone board or any host OS;
+- physical ESP-NOW reception/channel behavior on that board;
+- clone RP2040/radio pinout or flashing/recovery;
+- the board-internal framed link;
+- FNR-006 envelope/order/session/profile wire semantics;
+- TiltMouse interoperability or end-to-end latency.
+
+FNR-008 owns physical platform/reference-profile acceptance.
 
 ## Failure handling
 
-- A checksum mismatch is a hard stop, not a reason to silently update
-  `dependencies.lock.json`.
-- A wrong upstream source commit is a hard stop.
+- Dependency checksum/source-commit mismatch is a hard stop.
+- Do not silently edit `dependencies.lock.json` to make acquisition pass.
 - Use `python3 tools/check_deps.py <lane>` to revalidate local identities.
 - Keep `.deps/`, `build/`, credentials and flashing artifacts out of Git.
-- FNR-002 owns the actual board, UART pinout, boot and flash recovery evidence.
+- Successful compilation is not evidence of board operation; target hardware
+  faults are not inferred from software-only failures.
