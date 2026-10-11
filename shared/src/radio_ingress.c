@@ -12,6 +12,7 @@ bool fnr_radio_config_valid(const fnr_radio_config *c) {
 void fnr_radio_reset(fnr_radio_ingress *ctx, const fnr_radio_config *config) {
     if (!ctx) return;
     fnr_radio_counters saved = ctx->counters;
+    if (ctx->pending) bump(&saved.dropped);
     bool previously_started = saved.starts != 0;
     memset(ctx, 0, sizeof(*ctx));
     ctx->counters = saved;
@@ -26,11 +27,11 @@ void fnr_radio_reset(fnr_radio_ingress *ctx, const fnr_radio_config *config) {
 }
 void fnr_radio_transition(fnr_radio_ingress *ctx, fnr_radio_state state) {
     if (!ctx) return;
-    if (state == FNR_RADIO_ERROR) {
-        bump(&ctx->counters.errors);
+    if (state == FNR_RADIO_ERROR) bump(&ctx->counters.errors);
+    if (state != FNR_RADIO_READY && ctx->pending) {
+        bump(&ctx->counters.dropped);
         ctx->pending = false;
     }
-    if (state != FNR_RADIO_READY) ctx->pending = false;
     ctx->state = state;
 }
 void fnr_radio_receive(fnr_radio_ingress *ctx, const uint8_t *mac,
