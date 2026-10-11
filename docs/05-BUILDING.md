@@ -137,6 +137,16 @@ Current software qualification does **not** establish:
 
 FNR-008 owns physical platform/reference-profile acceptance.
 
+The statements above delimit what the build gates prove. Separate FNR-002
+physical measurements establish the two boards' identity/recovery/UART contract
+and additional USB/RF subsets, with their limitations. Hardware authority now
+belongs to [techrote/picoWcloneESP8285N08](https://github.com/techrote/picoWcloneESP8285N08);
+use its [operating runbook](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-OPERATING-RUNBOOK.md)
+when deploying these artifacts. [03-HARDWARE.md](03-HARDWARE.md) links the
+qualified reference baseline and retained local characterization records.
+Dependency/build authority remains this repository's lock and build scripts.
+Do not infer complete receiver acceptance from either a build or a subset test.
+
 ## Failure handling
 
 - Dependency checksum/source-commit mismatch is a hard stop.

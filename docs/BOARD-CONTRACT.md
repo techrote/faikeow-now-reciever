@@ -9,6 +9,20 @@ Observations below were made on 2026-10-11 with native Windows 11 Pro USB access
 The source/test ledger is in `evidence/FNR-002/`; original dumps, host inventory,
 complete device identifiers and raw serial logs remain outside Git.
 
+## Historical record and hardware authority
+
+This file preserves the receiver project's FNR-002 characterization record
+from 11 October 2026. The authoritative hardware reference and ongoing
+programming/recovery procedures now live in
+[techrote/picoWcloneESP8285N08](https://github.com/techrote/picoWcloneESP8285N08),
+including its [board contract](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/BOARD-CONTRACT.md),
+[programming reference](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-PROGRAMMING-REFERENCE.md)
+and [operating runbook](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-OPERATING-RUNBOOK.md).
+See [03-HARDWARE.md](03-HARDWARE.md) for the pinned reference baseline.
+Maintain new general board facts/procedures there; retain this record and the
+adjacent evidence's original measurement scope here. The identified ESP8285N08
+is ESP8266-family Wi-Fi hardware without Bluetooth; RP2040 has no radio controller.
+
 ## Physical identity and preservation
 
 The user designated two visually identical boards A and B and reported that one
