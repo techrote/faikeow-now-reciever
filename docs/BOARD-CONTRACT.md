@@ -1,8 +1,10 @@
-# Clone-board contract — FNR-002, partial physical evidence
+# Clone-board contract — FNR-002 physical qualification
 
-**FNR-002 is OPEN. Both boards independently passed reversible image
-deployment/restoration, diagnostic cold boot and 600-second UART integrity.
-Additional recovery, wiring, USB and RF observations remain separately gated.**
+**Both boards independently passed the FNR-002 hardware scope: silicon/flash
+identity, the GPIO0/1 UART route, physical button recovery, reversible image
+deployment/restoration, diagnostic cold boot, 600-second UART integrity and
+software reset/recovery. Programme acceptance is recorded in issue #3 after
+PR/main verification. Additional USB and RF results have separate owners.**
 Observations below were made on 2026-10-11 with native Windows 11 Pro USB access.
 The source/test ledger is in `evidence/FNR-002/`; original dumps, host inventory,
 complete device identifiers and raw serial logs remain outside Git.
@@ -250,8 +252,7 @@ readback and a user-confirmed cold-boot CRC-protected identity probe.
 
 The isolated link diagnostics, build configuration and `RUN10`/`RUN600` commands
 are described in `diagnostics/README.md`. Full USB
-lifecycle/HID behavior, RF pair
-tests, electrical/header facts and full FNR-008
+lifecycle/HID behavior, optional electrical/header facts and full FNR-008
 reference TiltMouse interoperability remain pending.
 
 ## Physical USB HID subset on A
@@ -284,9 +285,46 @@ where explicitly recorded above. Their prebuilt UF2s were not loaded. All
 diagnostics in this campaign were built from repository source. The observer's
 read-only SSI implementation retains the Pico SDK license notice locally.
 
-No ESP-NOW, production internal framing, provisioning, full HID-host behavior,
+No production internal framing, provisioning, full HID-host behavior,
 electrical voltage/current, latency bound, or TiltMouse interoperability is
 established by these measurements.
+
+## Additional ESP-NOW physical subset — FNR-004
+
+Both radios were deployed with the same isolated ESP8285 RF diagnostic, with
+exact readback and live MAC identity matched to their own preserved backups.
+It exercises the accepted generic ingress adapter unchanged and uses no
+application infrastructure-network or credential setup. Its temporary sender
+and UART observation interface do not implement production forwarding or HID.
+
+Both directions passed 1/32/128/250-byte payload checks, a 500-packet
+callback-paced burst, exact-peer admission/rejection, adapter restart, and a
+6,000-packet 250-byte run at configured 20 ms spacing. Each clean sustained run
+received and checked all 6,000 packets with zero integrity errors, duplicates,
+gaps, drops or UART errors. Exact configured cadences, counts and host-observed
+TX spans are in the RF ledger; no per-packet latency or range was measured.
+
+An intentional 800 ms receiver pause produced 256 drops A-to-B and 274 B-to-A.
+Every accepted packet was either checked or counted as dropped, with sequence
+gaps matching those drops and no corruption. These are deliberate bounded
+backpressure outcomes, kept separate from loss-free integrity runs.
+
+Nineteen of twenty RF cases passed. The reverse software-channel-mismatch case
+failed: B reported channel 6, A channel 1, yet A accepted 6/100 valid packets
+while all B delivery callbacks failed. A focused repeat accepted 78/1,000;
+live sampled SDK channels remained 6/1. This is a reproducible unresolved RF
+observation, not proof of a particular physical channel or software cause.
+The original failure remains recorded; the two previously unreached reverse
+cases passed in a separate completion capture. FNR-004 channel isolation is
+not accepted. Source admission passed independently and is not cryptographic
+authentication. Further investigation belongs to FNR-004, with provisioning
+and any cryptographic policy belonging to FNR-007.
+
+At the end of this campaign, A is mapped to root port 3 and B to root port 1.
+Each has a source-built labeled RP recovery bridge and the RF diagnostic in
+flash. These are development fixtures, not an integrated wireless USB receiver.
+Both original backup pairs remain preserved; no further restoration cycle is
+needed to repeat the already-established recovery proof.
 
 The preserved images are the firmware present before this campaign. The user
 reported previous use of one board; their factory provenance and intended

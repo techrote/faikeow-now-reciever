@@ -1,7 +1,9 @@
 # FNR-002 partial physical evidence — 2026-10-11
 
-**OPEN / NOT ACCEPTED.** This ledger records measured subsets, not completion of
-dual-board recovery, link reliability, USB HID or ESP-NOW acceptance.
+**FNR-002 physical hardware scope PASS on both boards.** Programme acceptance
+is recorded in issue #3 after PR/main verification. USB and RF entries are
+separate measured subsets; the reproducible RF channel-isolation failure remains
+open under FNR-004.
 
 Native Windows 11 Pro physical USB/serial access was available. Board A was
 isolated at its mapped port; Board B was backed up and unplugged as the reference.
@@ -24,6 +26,10 @@ complete host paths, flash IDs, MAC and raw logs remain in the private local
 - `flash-recovery.json`: observed ROM/SRAM/deployment/restoration subsets and gaps.
 - `link-integrity.json`: failed reads, accepted reads, independent A/B smoke/soak and fault cases.
 - `diagnostic-builds.json`: local build images, source content and hashes.
+- `rf-preparation.json`: per-board diagnostic deployment and live identity.
+- `rf-integrity.json`: original 18-case run, including its retained failure.
+- `rf-completion.json`: two unreached reverse cases completed separately.
+- `rf-channel-anomaly.json`: focused reproduction with live SDK-channel samples.
 - `raw-log-index.json`: private relative log names and immutable snapshot hashes.
 - `test-matrix.md`: acceptance state by case and owning issue.
 
@@ -33,15 +39,18 @@ or explicitly NOT TESTED. MAC/unique flash IDs are hashed in public evidence;
 the private mapping is required for actual operations. Backup image SHA-256s
 are published without their contents.
 
-The current physical phase is additional USB observation and RF pair preparation.
-A is unplugged, with original blank RP flash and a cold-boot-proven UART radio
-diagnostic. B has a labeled recovery bridge in RP flash and the UART radio
-diagnostic; temporary RAM applications do not change its preserved flash image.
-See the board contract and diagnostics README for commands and measured scope.
+The completed fixtures have labeled flash-resident RP recovery bridges and the
+RF diagnostic on both boards, with A mapped to root port 3 and B to port 1.
+Both original RP/radio backup pairs remain preserved privately. The boards
+are development fixtures; production framing/core/provisioning and integrated
+wireless USB HID remain later work. No additional meter work or repeated
+pre-existing-application/recovery tests are required to proceed.
 
 FNR-003/004 software was reconciled through main
 `d1def14ea85dcf66220b40249b8e66bd52667e4a`. A physical USB subset passed;
-full USB behavior and RF physical tests are pending.
+full USB behavior remains unverified. The RF campaign passed 19/20 cases;
+reverse software-channel isolation failed and reproduced. See the dedicated RF
+records; this is not an overall FNR-004 physical acceptance claim.
 FNR-005/006/007 software and FNR-008's integrated receiver/reference TiltMouse
 gates must be assessed independently before their later physical cases run.
 

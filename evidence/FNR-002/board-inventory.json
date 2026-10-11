@@ -9,7 +9,7 @@
   "boards": [
     {
       "board": "A",
-      "physical_usb_port_label": 1,
+      "physical_usb_port_label": 3,
       "rp2040": "RP2040 B2",
       "flash_unique_id_sha256": "2fc3eeb7948385c4c3f65fd466eaf697d65b2892d9b134dc39c982ff1a03f922",
       "flash_jedec": "684015",
@@ -30,7 +30,10 @@
         "flash_size_bytes": 1048576,
         "identity_result": "PASS"
       },
-      "persistent_flash_writes_in_campaign": true
+      "persistent_flash_writes_in_campaign": true,
+      "initial_physical_usb_port_label": 1,
+      "topology_rebinding": "A-only reconnect at port 3; read-only picotool selection by original flash UID confirmed A before updating private mapping; distinct from B port 1",
+      "topology_rebinding_raw_manifest": "board-A-topology-rebind-1.json"
     },
     {
       "board": "B",
@@ -60,5 +63,5 @@
       "topology_rebinding": "User B-only reconnect at port 1; old topology refused; independently confirmed B flash UID via read-only picotool before updating private map"
     }
   ],
-  "acceptance": "OPEN"
+  "acceptance": "FNR-002 physical scope PASS independently on both boards; programme acceptance follows issue #3 PR/main verification"
 }

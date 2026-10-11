@@ -65,7 +65,11 @@ separately from clean integrity runs.
 The isolated `esp-rf/esp_rf` diagnostic uses the accepted FNR-004 ingress adapter
 with runtime-only exact-peer/channel configuration and bounded deterministic
 datagrams. `rf_pair_capture.py` prepares two-direction integrity, admission,
-channel, backpressure and restart cases. This RF campaign has not run yet.
+channel, backpressure and restart cases. Both directions passed positive
+integrity, admission, backpressure and restart cases. One reverse channel
+isolation case failed and reproduced; see the separate RF evidence, not an
+overall RF PASS. Optional `--direction` and repeated `--case` selections run
+only remaining/focused cases without overwriting earlier captures.
 For two-board access, the candidate bridge can be built with explicit fixture
 labels A/B and `FNR_BRIDGE_FLASH_RECOVERY_TEST=1`, `PICO_NO_FLASH=0`. This optional
 flash image requires complete originals, measured geometry and the guarded RP

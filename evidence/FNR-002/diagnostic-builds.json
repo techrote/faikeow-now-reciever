@@ -53,7 +53,7 @@
       "file": "build/bridge-flash-A/fnr_candidate_bridge.uf2",
       "sha256": "17ecb9aea9766867aed0a7d1fca38dd751858ce6a1e665ae6aa92de7af06d464",
       "source_content_committed_at": "81de11045e729f5bf194074c042e1b31d6f1eee1",
-      "physical_state": "compile only",
+      "physical_state": "Independently A and B deployed/readback; exact labeled CDC/topology guards and live radio identity",
       "result": "PASS: native Windows cross-build"
     },
     {
@@ -61,7 +61,7 @@
       "file": "build/bridge-flash-B/fnr_candidate_bridge.uf2",
       "sha256": "7f8972c51422c8d1a6e15e69b8a58d8e2eef255b4bb1fe08d8f5531045cd2655",
       "source_content_committed_at": "81de11045e729f5bf194074c042e1b31d6f1eee1",
-      "physical_state": "B flash deployed/readback/CDC observed",
+      "physical_state": "Independently A and B deployed/readback; exact labeled CDC/topology guards and live radio identity",
       "result": "PASS: native Windows cross-build"
     },
     {
@@ -72,6 +72,14 @@
       "build_configuration": "Unchanged firmware/rp2040 source; PICO_NO_FLASH=1",
       "physical_state": "See separate SRAM load, capability, descriptor and idle records",
       "result": "PASS: native Windows cross-build; 72 validated SRAM UF2 blocks"
+    },
+    {
+      "name": "isolated ESP-NOW diagnostic using accepted FNR-004 ingress",
+      "file": "build/esp-rf/esp_rf.ino.bin",
+      "sha256": "83e67685b82f4f2a5b90cb6356ff26377ab4ca67656893c4853ce976b2f1c3c3",
+      "source_content_committed_at": "81de11045e729f5bf194074c042e1b31d6f1eee1",
+      "physical_state": "A and B deployment/readback/live identity; actual RF outcomes recorded separately",
+      "result": "PASS: native Windows ESP8285 cross-build"
     }
   ],
   "windows_tool_archives": {

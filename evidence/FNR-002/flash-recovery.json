@@ -104,7 +104,20 @@
       "boot_observed": true,
       "raw_manifest": "board-A-radio-diagnostic-cold-boot.json"
     },
-    "current_state": "Original blank RP flash; temporary UART radio diagnostic, cold boot proved; full original backups retained"
+    "current_state": "Original blank RP flash; temporary UART radio diagnostic, cold boot proved; full original backups retained",
+    "rp_flash_bridge_deployment": {
+      "board": "A",
+      "mode": "diagnostic",
+      "captured_at_utc": "2026-10-11T12:13:59.300272+00:00",
+      "source_commit": "c6fd6a660eec2b0dfb711542cc1ef3de28f0a01a",
+      "image_sha256": "17ecb9aea9766867aed0a7d1fca38dd751858ce6a1e665ae6aa92de7af06d464",
+      "backup_sha256": "4bda3a28f4ffe603c0ec1258c0034d65a1a0d35ab7bd523a834608adabf03cc5",
+      "image_size_bytes": 66048,
+      "readback_size_bytes": 33024,
+      "readback_sha256": "9c811333b01bb4aa8444003b61e470ace25ac040b78b98b818b9821690734b10",
+      "exact_readback": true,
+      "raw_manifest": "board-A-rp-bridge-write-1/result.json"
+    }
   },
   "B": {
     "rp_bootsel_physical": "PASS",

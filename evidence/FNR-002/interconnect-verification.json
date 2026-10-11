@@ -26,13 +26,15 @@
       "flash_id",
       "two matching complete flash reads",
       "CRC-protected application identity and deterministic 10-second bidirectional smoke",
-      "600-second deterministic bidirectional integrity and software faults/recovery"
+      "600-second deterministic bidirectional integrity and software faults/recovery",
+      "CRC-protected diagnostic cold boot",
+      "600-second deterministic bidirectional integrity and six software fault/recovery cases"
     ],
     "bridge_source_commit": "823d45e104827bb6e6b268e421f0a9d3b3ff48ff",
     "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
     "far_button_action": "hold during USB power reconnect, then release",
     "far_button_rom_access": "PASS",
-    "sustained_integrity_result": "PASS: 600 seconds and >=10000 requests/echoes/streams",
+    "sustained_integrity_result": "PASS: independently 600 seconds and >=10000 requests/echoes/streams",
     "smoke_integrity_result": "PASS"
   },
   "B": {
@@ -56,11 +58,14 @@
       "ROM SYNC",
       "independent silicon/MAC identity",
       "official RAM stub flash ID",
-      "two matching full radio reads"
+      "two matching full radio reads",
+      "CRC-protected diagnostic cold boot",
+      "600-second deterministic bidirectional integrity and six software fault/recovery cases"
     ],
     "far_button_action": "Both buttons held during USB reconnect; near button also keeps original RP application in ROM",
-    "sustained_integrity_result": "NOT TESTED",
-    "smoke_integrity_result": "NOT TESTED",
+    "sustained_integrity_result": "PASS: independently 600 seconds and >=10000 requests/echoes/streams",
+    "smoke_integrity_result": "PASS",
     "raw_manifest": "board-B-radio-identification.json"
-  }
+  },
+  "optional_measurement_scope": "Reset/download RP GPIO wiring, header continuity and voltage remain unknown; physical button recovery and functional GP0/1 link are verified. No user-built wiring or meter measurement required to proceed."
 }

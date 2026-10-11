@@ -15,7 +15,8 @@ Date: 2026-10-11. Host: native Windows 11 Pro. Evidence: adjacent JSON ledger.
 | Bidirectional UART route at 115200 | FNR-002 | PASS | PASS | Independently RP GP0 TX, GP1 RX on each |
 | Radio full backup with DTR false | FNR-002 | FAIL | NOT TESTED | Three short-read failures; invalid images excluded |
 | Radio full backup with DTR true | FNR-002 | PASS | PASS | Two matching reads; stub MD5 and SHA-256 checks |
-| Radio reset/download RP GPIO mapping | FNR-002 | NOT TESTED | NOT TESTED | Physical far-button method observed independently on A/B; RP control wiring unknown |
+| Radio reset/download controls | FNR-002 | PASS | PASS | Physical button ROM entry and diagnostic app reset verified; no RP-controlled reset/download GPIO claimed |
+| Optional RP reset-control wiring / header continuity | FNR-002 | NOT TESTED | NOT TESTED | Unknown pins remain unsupported; no user-built wiring or meter check required |
 | Electrical levels/header conflicts | FNR-002 | NOT TESTED | NOT TESTED | Multimeter available; no measurements yet, schematic unavailable |
 | Radio diagnostic write/readback/software boot | FNR-002 | PASS | PASS | A CRC-protected identity response and smoke |
 | Full radio original restoration/readback | FNR-002 | PASS | PASS | Each exact complete original 1 MiB; unchanged headers |
@@ -33,7 +34,10 @@ Date: 2026-10-11. Host: native Windows 11 Pro. Evidence: adjacent JSON ledger.
 | HID raw device/configuration descriptors | FNR-003 | NOT TESTED | PASS | B mapped hub capture; HID descriptor included; raw report descriptor blocked by hub API |
 | HID unsolicited motion, 20-second idle | FNR-003 | NOT TESTED | PASS | B exact target Raw Input observation; zero events/removals/errors |
 | HID active controls / suspend-resume / neutral behavior | FNR-003 | NOT TESTED | NOT TESTED | No deterministic production input; neutral GET_REPORT separately blocked |
-| ESP-NOW pair/admission/channel/integrity | FNR-004 | NOT TESTED | NOT TESTED | Ingress software merged PR15; #5 remains open; no diagnostic pair loaded |
+| ESP-NOW positive integrity / admission / restart | FNR-004 | PASS | PASS | Both directions 1/32/128/250 bytes, burst, peer rejection, adapter restart and 6,000-packet sustained runs |
+| ESP-NOW deliberate backpressure | FNR-004 | PASS | PASS | Accepted = checked + drops; gaps = intentional drops; zero corruption |
+| ESP-NOW software-channel mismatch isolation | FNR-004 | FAIL | PASS | A received 6/100 then 78/1,000 while sampled SDK channels were A=1/B=6; unresolved |
 | Production framing/core/provisioning | FNR-005/006/007 | BLOCKED | BLOCKED | Required accepted implementations not established in this campaign |
 | Integrated receiver and actual TiltMouse | FNR-008 | BLOCKED | BLOCKED | Integrated software/reference sender acceptance absent |
-| Overall FNR-002 acceptance | FNR-002 | BLOCKED | BLOCKED | Core UART/recovery proofs complete; additional USB/RF campaign in progress; meter checks optional |
+| FNR-002 physical hardware scope | FNR-002 | PASS | PASS | Independent identity, transport pins, physical recovery, reversible deployment, cold boot, sustained link and reset recovery |
+| Programme acceptance | FNR-002 | See issue #3 | See issue #3 | Requires exact-head CI, review, merge and post-merge verification; RF/USB owners remain separate |
