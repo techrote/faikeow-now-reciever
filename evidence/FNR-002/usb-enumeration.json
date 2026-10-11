@@ -102,6 +102,79 @@
       "raw_manifest": "board-A-hid-cold-probe-1/result.json",
       "enumeration_result": "PASS after user-confirmed unheld USB cold reconnect",
       "neutral_report_result": "BLOCKED: Windows error 1; no neutral report observed"
+    },
+    {
+      "vid": 51966,
+      "pid": 61443,
+      "caps": {
+        "usage": 2,
+        "usage_page": 1,
+        "input_bytes": 4,
+        "output_bytes": 0,
+        "feature_bytes": 0,
+        "link_nodes": 2,
+        "input_button_caps": 1,
+        "input_value_caps": 2,
+        "input_data_indices": 4,
+        "output_button_caps": 0,
+        "output_value_caps": 0,
+        "output_data_indices": 0,
+        "feature_button_caps": 0,
+        "feature_value_caps": 0,
+        "feature_data_indices": 0
+      },
+      "get_input_report_succeeded": false,
+      "get_input_report_error": 1,
+      "input_report_hex": null,
+      "board": "B",
+      "captured_at_utc": "2026-10-11T11:23:50.090029+00:00",
+      "source_commit": "47246146a7e30a812c573e10136af01ae0ba802d",
+      "image_sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "mouse_caps_match": true,
+      "neutral_get_report": false,
+      "raw_manifest": "board-B-hid-probe-1/result.json",
+      "enumeration_result": "PASS",
+      "neutral_report_result": "BLOCKED: Windows error 1; no report observed"
+    },
+    {
+      "vid": 51966,
+      "pid": 61443,
+      "caps": {
+        "usage": 2,
+        "usage_page": 1,
+        "input_bytes": 4,
+        "output_bytes": 0,
+        "feature_bytes": 0,
+        "link_nodes": 2,
+        "input_button_caps": 1,
+        "input_value_caps": 2,
+        "input_data_indices": 4,
+        "output_button_caps": 0,
+        "output_value_caps": 0,
+        "output_data_indices": 0,
+        "feature_button_caps": 0,
+        "feature_value_caps": 0,
+        "feature_data_indices": 0
+      },
+      "get_input_report_succeeded": false,
+      "get_input_report_error": 1,
+      "input_report_hex": null,
+      "board": "B",
+      "captured_at_utc": "2026-10-11T11:24:33.046561+00:00",
+      "source_commit": "47246146a7e30a812c573e10136af01ae0ba802d",
+      "image_sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "mouse_caps_match": true,
+      "neutral_get_report": false,
+      "raw_manifest": "board-B-hid-cold-probe-1/result.json",
+      "enumeration_result": "PASS after user-confirmed cold reconnect",
+      "neutral_report_result": "BLOCKED: Windows error 1; no report observed"
     }
-  ]
+  ],
+  "labeled_flash_bridge_B": {
+    "vid_pid": "2e8a:000a",
+    "fixture_serial": "FNR002B",
+    "observed_port": "COM6",
+    "result": "PASS: distinct fixture descriptor observed",
+    "raw_manifest": "board-B-flash-bridge-cdc.json"
+  }
 }

@@ -34,6 +34,12 @@
     "source_commit": "c164938905ed23e60378b973b0dc69b8e217eb15",
     "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
     "raw_manifest": "board-B-radio-identification.json",
-    "backup_result": "in progress"
+    "backup_result": "PASS",
+    "backup_sha256": "f12c5e15b2b63dfec8a052be4358b10489dfa759351521fa913124ccb4c6e241",
+    "matching_independent_reads": true,
+    "stub_full_read_md5_verified": true,
+    "backup_raw_manifest": "board-B-radio-original/backup.json",
+    "initial_bare_rom_flash_id_response": 0,
+    "flash_id_method": "Official RAM stub SPI command returned 14325e; initial bare-ROM response was zero"
   }
 }

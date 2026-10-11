@@ -14,9 +14,17 @@ from link_capture import assess
 from rp2040_flash import flash_blocks
 from rf_pair_capture import validate_pair, assess as assess_rf
 from uart_fault_capture import Decoder, packet, payload
+from usb_descriptors_windows import split_configuration
 
 
 class GuardTests(unittest.TestCase):
+    def test_usb_configuration_parser_rejects_truncation_and_zero_length(self):
+        config = bytes.fromhex('090212000101008032090400000003010200')
+        self.assertEqual([x['type'] for x in split_configuration(config)], [2, 4])
+        for invalid in (config[:-1], config[:9] + b'\x00' + config[10:], config[:9] + b'\xff' + config[10:]):
+            with self.assertRaises(ValueError):
+                split_configuration(invalid)
+
     def test_fault_host_parser_rejects_damage_and_resynchronizes_with_bounds(self):
         data = bytes([0xc0, 0xdb]) * 125
         decoder = Decoder()

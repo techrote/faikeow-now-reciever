@@ -28,13 +28,13 @@ COM numbers and drive letters are enumeration observations, not board identities
 | RP flash unique ID | Privately recorded; distinct from B | Privately recorded; distinct from A |
 | RP flash JEDEC | `68 40 15`, consistent with 2 MiB; exact part unverified | Independently measured `68 40 15`, 2 MiB |
 | RP original contents | Erased (`ff`); two matching 2 MiB reads | Existing `picowutooth`; two matching 2 MiB reads |
-| Radio identity | ESP8285N08 from esptool efuse/ROM commands | NOT TESTED |
-| Radio crystal | esptool reports 26 MHz | NOT TESTED |
-| Radio flash | JEDEC `5e 32 14`, detected 1 MiB embedded flash | NOT TESTED |
-| Radio MAC | Read and privately recorded | NOT TESTED |
-| Radio backup | Two matching 1 MiB reads, stub MD5 verified | NOT TESTED |
-| Persistent writes in this campaign | Radio diagnostic/full original; accepted RP mouse-only image | None |
-| Restoration | RP full original PASS; radio full original bytes PASS; approved diagnostic cold boot PASS; factory boot unverified | NOT TESTED |
+| Radio identity | ESP8285N08 from esptool efuse/ROM commands | Independently ESP8285N08 |
+| Radio crystal | esptool reports 26 MHz | Independently reports 26 MHz |
+| Radio flash | JEDEC `5e 32 14`, detected 1 MiB embedded flash | Independently `5e 32 14`, 1 MiB |
+| Radio MAC | Read and privately recorded | Read and privately recorded; distinct from A |
+| Radio backup | Two matching 1 MiB reads, stub MD5 verified | Two matching 1 MiB reads, stub MD5 verified; differs from A |
+| Persistent writes in this campaign | Radio diagnostic/full original; accepted RP mouse-only image | Accepted RP HID/full original, labeled bridge; radio diagnostic |
+| Restoration | RP full original PASS; radio full original bytes PASS; approved diagnostic cold boot PASS; factory boot unverified | RP full original PASS; radio restoration pending |
 
 The first A preread covered the 16 MiB readable RP2040 XIP window, all `ff`.
 This is an address-window observation, **not evidence of a 16 MiB flash chip**.
@@ -43,7 +43,7 @@ Exact flash part names remain pending; B's capacity is independently measured.
 B's existing image declares SDK 2.3.1 and `pico_w`; that metadata does not prove
 CYW43 hardware or qualify the installed application for this project.
 
-## Interconnect established on A
+## Interconnect established independently on A and B
 
 | RP2040 function | Physical route | Evidence |
 |---|---|---|
@@ -54,7 +54,10 @@ CYW43 hardware or qualify the installed application for this project.
 | Hardware flow control | Unknown wiring; disabled in diagnostic | RTS/CTS are not used |
 | Header sharing/voltage | NOT TESTED | No schematic, continuity test or meter measurement |
 
-Successful bidirectional ROM commands prove the GPIO0/1 route on **A only**.
+Successful independent bidirectional ROM commands prove the GPIO0/1 route on
+both boards. Each radio has two matching full backups. B's bare-ROM flash-ID
+query initially returned zero; the official RAM stub returned the independently
+verified `5e 32 14` ID. Zero is retained as an unsuccessful initial observation.
 115200 baud, 8N1, no flow control worked for ROM identity, backup and A's
 ten-minute integrity run. Production bandwidth headroom remains dependent on
 the later production framing and cadence requirements.
@@ -85,6 +88,18 @@ Offline AT/SDK string markers do not prove a working AT application. No factory
 boot response was captured before deployment, so silence cannot be attributed
 to the diagnostic. The approved UART radio diagnostic was subsequently
 redeployed with exact readback and identified after a user-confirmed cold boot.
+
+On B, the preserved original RP application exposes no USB interface after
+ordinary/far-button boot. Holding both buttons during USB reconnect enters RP
+BOOTSEL and radio ROM together, permitting the SRAM bridge without overwriting
+RP flash. After preservation, the accepted RP HID image was written, cold-booted
+and restored with an exact full 2 MiB readback. The original again exposed no
+USB interface, matching the pre-write observation. A separately labeled
+flash-resident recovery bridge now provides repeatable access across power
+cycles. B's radio diagnostic write/readback and software identity passed; its
+full original radio restoration and sustained test remain pending. Before its
+first radio write, B's original gave no AT response after software boot at
+115200/9600/74880, establishing a recorded silent pre-write observation.
 
 The SRAM bridge/observer enumerate as SDK CDC 2e8a:000a, observed COM5 on A.
 The SRAM serial descriptor is not unique. A 1200-baud CDC request returns the
@@ -257,6 +272,6 @@ where explicitly recorded above. Their prebuilt UF2s were not loaded. All
 diagnostics in this campaign were built from repository source. The observer's
 read-only SSI implementation retains the Pico SDK license notice locally.
 
-No ESP-NOW, production internal framing, provisioning, HID-host behavior,
+No ESP-NOW, production internal framing, provisioning, full HID-host behavior,
 electrical voltage/current, latency bound, or TiltMouse interoperability is
-established by these backup observations.
+established by these measurements.

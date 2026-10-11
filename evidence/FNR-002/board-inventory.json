@@ -48,14 +48,14 @@
         "sha256": "1587014b304020593a1d5b816843e6008b34ad74bd2deca417a8a69ce670e52f",
         "matching_independent_reads": true,
         "raw_manifest": "board-B-rp2040-original/backup.json",
-        "restoration_result": "NOT TESTED"
+        "restoration_result": "PASS: full original RP bytes; accepted HID also cold-booted"
       },
       "radio": {
         "identity_result": "PASS",
         "model": "ESP8285N08",
         "flash_size_bytes": 1048576
       },
-      "persistent_flash_writes_in_campaign": false,
+      "persistent_flash_writes_in_campaign": true,
       "initial_physical_usb_port_label": 3,
       "topology_rebinding": "User B-only reconnect at port 1; old topology refused; independently confirmed B flash UID via read-only picotool before updating private map"
     }

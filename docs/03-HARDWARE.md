@@ -13,8 +13,9 @@ The user's boards have been identified as non-CYW43 clones. Exact radio package 
 
 Partial FNR-002 measurements are recorded in [BOARD-CONTRACT.md](BOARD-CONTRACT.md).
 Board A's ROM identifies ESP8285N08 and proves UART0 GPIO0 TX / GPIO1 RX at
-115200; Board B's radio route remains unverified. Both boards still require
-reversible flash recovery and sustained integrity qualification. Use the
+115200. B independently confirms the same radio model, UART route and flash
+geometry. A passed full image restoration, approved-target cold boot and a
+600-second integrity run; B's remaining radio recovery/link tests are in progress. Use the
 per-board evidence ledger before assigning any production resources.
 
 ## Relevant public prior art
