@@ -98,14 +98,18 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--board', choices=['A', 'B'], required=True)
     parser.add_argument('--identities', type=pathlib.Path, required=True)
-    parser.add_argument('--write-record', type=pathlib.Path, required=True)
+    deployment = parser.add_mutually_exclusive_group(required=True)
+    deployment.add_argument('--write-record', type=pathlib.Path)
+    deployment.add_argument('--ram-load-record', type=pathlib.Path)
     parser.add_argument('--output', type=pathlib.Path, required=True)
     args = parser.parse_args()
     repo = pathlib.Path(__file__).resolve().parents[2]
     destination = private_destination(args.output, repo)
     identity = json.loads(args.identities.read_text(encoding='utf-8-sig'))[args.board]
-    write = json.loads(args.write_record.read_text())
-    if write['board'] != args.board or not write['exact_readback']:
+    write = json.loads((args.write_record or args.ram_load_record).read_text())
+    verified = (write.get('exact_readback') if args.write_record else
+                write.get('mode') == 'sram' and write.get('verified_load') and write.get('result') == 'PASS')
+    if write['board'] != args.board or not verified:
         raise ValueError('Require exact selected image deployment record')
     destination.mkdir(parents=True)
     inventory = destination / 'inventory.json'

@@ -35,6 +35,7 @@ def main():
     if completed.returncode:
         raise ValueError('SRAM load failed; see private log')
     result = {'board': args.board, 'captured_at_utc': datetime.now(timezone.utc).isoformat(),
+              'mode': 'sram', 'verified_load': True,
               'source_commit': subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip(),
               'image_sha256': args.image_sha256, 'blocks': blocks, 'command': command, 'result': 'PASS'}
     (destination / 'result.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
