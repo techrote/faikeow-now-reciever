@@ -4,7 +4,7 @@ The authoritative devboard programming reference is maintained in the dedicated
 [techrote/picoWcloneESP8285N08](https://github.com/techrote/picoWcloneESP8285N08) hardware repository:
 
 - [Current reference](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-PROGRAMMING-REFERENCE.md)
-- [Qualified baseline at 8d48cdd](https://github.com/techrote/picoWcloneESP8285N08/blob/8d48cdde71ccba824436635858265cb31c4ed88f/docs/DEVBOARD-PROGRAMMING-REFERENCE.md)
+- [Qualified baseline at e8a80ae](https://github.com/techrote/picoWcloneESP8285N08/blob/e8a80ae21e6432d30f6ec6146ff6754605a5d469/docs/DEVBOARD-PROGRAMMING-REFERENCE.md)
 
 It covers chip capabilities, verified resources, firmware/toolchain selection, measured limits and reusable agent context.
 This local file is a navigation pointer; maintain general hardware guidance in

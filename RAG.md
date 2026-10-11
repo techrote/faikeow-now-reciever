@@ -128,7 +128,7 @@ The authoritative hardware reference is
 [techrote/picoWcloneESP8285N08](https://github.com/techrote/picoWcloneESP8285N08),
 covering chip capabilities, verified wiring, resource use, flashing and recovery.
 The qualified documentation baseline is
-`8d48cdde71ccba824436635858265cb31c4ed88f`; see `docs/03-HARDWARE.md` for current
+`e8a80ae21e6432d30f6ec6146ff6754605a5d469`; see `docs/03-HARDWARE.md` for current
 and pinned links. Local `docs/BOARD-CONTRACT.md` and `evidence/FNR-002/` preserve
 historical evidence. This repository remains authoritative for receiver code,
 locked dependencies, protocol/profile contracts and application acceptance.
