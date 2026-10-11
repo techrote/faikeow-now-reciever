@@ -33,5 +33,42 @@
     "result": "PASS",
     "image_sha256": "a1ab31c4627d8582e73dd428bbf9891e56daef36a143126f857e244c0bdbc0ed",
     "source_commit": "5e08a71aee75a466c82ccc9d41849c4d89d27399"
-  }
+  },
+  "hid_observations": [
+    {
+      "vid": 51966,
+      "pid": 61443,
+      "caps": {
+        "usage": 2,
+        "usage_page": 1,
+        "input_bytes": 4,
+        "output_bytes": 0,
+        "feature_bytes": 0,
+        "link_nodes": 2,
+        "input_button_caps": 1,
+        "input_value_caps": 2,
+        "input_data_indices": 4,
+        "output_button_caps": 0,
+        "output_value_caps": 0,
+        "output_data_indices": 0,
+        "feature_button_caps": 0,
+        "feature_value_caps": 0,
+        "feature_data_indices": 0
+      },
+      "get_input_report_succeeded": false,
+      "get_input_report_error": 1,
+      "input_report_hex": null,
+      "board": "A",
+      "captured_at_utc": "2026-10-11T02:23:20.703909+00:00",
+      "source_commit": "d25ada29ea15c2a3d309539bdc5a6aec1b73dac7",
+      "image_sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "mouse_caps_match": true,
+      "neutral_get_report": false,
+      "source_dirty": true,
+      "probe_source_committed_at": "4ce4dc2",
+      "raw_manifest": "board-A-hid-probe-1/result.json",
+      "enumeration_result": "PASS",
+      "neutral_report_result": "BLOCKED: Windows HidD_GetInputReport returned error 1; no report observed"
+    }
+  ]
 }

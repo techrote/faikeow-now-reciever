@@ -30,7 +30,7 @@
         "flash_size_bytes": 1048576,
         "identity_result": "PASS"
       },
-      "persistent_flash_writes_in_campaign": false
+      "persistent_flash_writes_in_campaign": true
     },
     {
       "board": "B",

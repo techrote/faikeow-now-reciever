@@ -9,7 +9,8 @@ matrix records completed physical tests for both boards.
   Board A ROM communication has established this route; Board B is untested.
 - `rp2040-link`: SRAM-only generator/checker for the isolated UART integrity test.
 - `esp-link/esp_link`: ESP8285 flash-resident counterpart. No networking or
-  credentials; Wi-Fi is disabled. **Not yet flashed or physically tested.**
+  credentials; Wi-Fi is disabled. **A: write/readback/boot and ten-second smoke
+  passed; original radio image restored exactly. B: not tested.**
 
 The link test uses bounded SLIP frames, reflected CRC-32/ISO-HDLC, fixed seed
 `0x002f4a91`, sequence numbers, and cycling payload lengths 1/32/128/250 bytes.

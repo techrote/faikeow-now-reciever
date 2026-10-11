@@ -24,13 +24,15 @@
       "ROM SYNC",
       "chip_id",
       "flash_id",
-      "two matching complete flash reads"
+      "two matching complete flash reads",
+      "CRC-protected application identity and deterministic 10-second bidirectional smoke"
     ],
     "bridge_source_commit": "823d45e104827bb6e6b268e421f0a9d3b3ff48ff",
     "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
     "far_button_action": "hold during USB power reconnect, then release",
     "far_button_rom_access": "PASS",
-    "sustained_integrity_result": "NOT TESTED"
+    "sustained_integrity_result": "NOT TESTED",
+    "smoke_integrity_result": "PASS"
   },
   "B": {
     "result": "NOT TESTED"

@@ -28,7 +28,7 @@
       "file": "build/rp-link/fnr_link_diag.uf2",
       "sha256": "4f9db46f307fa89bb62e51b60108e2a0dc3cb16286bae1713d93dda0ab082ec6",
       "source_content_committed_at": "8812c7b3d688c0fb9dad2df5897f0b1e36179aed",
-      "physical_state": "NOT LOADED",
+      "physical_state": "loaded into SRAM on A; ten-second smoke PASS",
       "result": "PASS: native Windows cross-build"
     },
     {
@@ -36,7 +36,16 @@
       "file": "build/esp-link/esp_link.ino.bin",
       "sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
       "source_content_committed_at": "5bff48cc8a00ae6685c5ccb6919e0d5b019fdd6e",
-      "physical_state": "NOT LOADED",
+      "physical_state": "flashed/readback/boot on A; ten-second smoke PASS; original image restored exactly afterward",
+      "result": "PASS: native Windows cross-build"
+    },
+    {
+      "name": "accepted FNR-003 mouse-only HID",
+      "file": "build/rp-hid-native-win/fnr_rp2040_hid.uf2",
+      "sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "source_content_committed_at": "d1def14ea85dcf66220b40249b8e66bd52667e4a",
+      "build_recorded_at_source": "1506dd14d3cd2280a47c6027c279fcfb4026ac5a",
+      "physical_state": "flashed/readback/USB mouse enumeration on A; RP original restoration pending",
       "result": "PASS: native Windows cross-build"
     }
   ],

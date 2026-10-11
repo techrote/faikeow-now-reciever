@@ -17,13 +17,17 @@ Date: 2026-10-11. Host: native Windows 11 Pro. Evidence: adjacent JSON ledger.
 | Radio full backup with DTR true | FNR-002 | PASS | NOT TESTED | Two matching reads; stub MD5 and SHA-256 checks |
 | Radio reset/download RP GPIO mapping | FNR-002 | NOT TESTED | NOT TESTED | Physical far-button method only on A |
 | Electrical levels/header conflicts | FNR-002 | NOT TESTED | NOT TESTED | No instruments/schematic measurements |
-| Radio diagnostic write/readback/boot | FNR-002 | NOT TESTED | NOT TESTED | Image and conservative helper prepared |
-| Full radio factory restoration/readback/boot | FNR-002 | NOT TESTED | NOT TESTED | Must prove A first |
-| RP persistent UF2 write/restore | FNR-002 | NOT TESTED | NOT TESTED | SRAM recovery alone is insufficient |
-| 600-second/10,000-frame deterministic link | FNR-002 | NOT TESTED | NOT TESTED | Both MCU diagnostics compile; not loaded |
+| Radio diagnostic write/readback/software boot | FNR-002 | PASS | NOT TESTED | A CRC-protected identity response and smoke |
+| Full radio factory restoration/readback | FNR-002 | PASS | NOT TESTED | A exact complete original bytes; unchanged headers |
+| Restored factory radio application boot | FNR-002 | NOT TESTED | NOT TESTED | A silent AT probes after software and cold boot; no baseline response |
+| RP persistent UF2 write/readback/application boot | FNR-002 | PASS | NOT TESTED | A accepted mouse-only image, Windows enumeration |
+| RP original-image restoration | FNR-002 | NOT TESTED | NOT TESTED | A restoration pending after HID replug check |
+| Ten-second deterministic link smoke | FNR-002 | PASS | NOT TESTED | A 198 requests/echoes, 240 independent streams including drain, zero errors |
+| 600-second/10,000-frame deterministic link | FNR-002 | NOT TESTED | NOT TESTED | Smoke does not qualify duration/frame target |
 | Burst/interruption/reset/soak recovery | FNR-002 | NOT TESTED | NOT TESTED | Separate failure and recovery ledger required |
 | Cold USB reconnect to ROM | FNR-002 | PASS | PASS | Does not prove application cold-boot behavior |
-| USB HID enumeration/descriptors/lifecycle | FNR-003 | NOT TESTED | NOT TESTED | Accepted source merged PR16; no physical HID load |
+| USB HID mouse enumeration / parsed caps subset | FNR-003 | PASS | NOT TESTED | A Windows mouse usage, two value caps, one button-cap range |
+| HID raw descriptors / neutral / motion / lifecycle | FNR-003 | NOT TESTED | NOT TESTED | GET_REPORT returned Windows error 1; full behavior/lifecycle pending |
 | ESP-NOW pair/admission/channel/integrity | FNR-004 | NOT TESTED | NOT TESTED | Ingress software merged PR15; #5 remains open; no diagnostic pair loaded |
 | Production framing/core/provisioning | FNR-005/006/007 | BLOCKED | BLOCKED | Required accepted implementations not established in this campaign |
 | Integrated receiver and actual TiltMouse | FNR-008 | BLOCKED | BLOCKED | Integrated software/reference sender acceptance absent |

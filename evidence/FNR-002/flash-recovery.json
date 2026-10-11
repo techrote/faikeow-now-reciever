@@ -22,8 +22,50 @@
     "rp_persistent_write_restore": "NOT TESTED",
     "radio_rom_access": "PASS",
     "radio_backup": "PASS",
-    "radio_flash_write_restore": "NOT TESTED",
-    "factory_radio_boot": "NOT TESTED"
+    "radio_flash_write_restore": "PASS: exact diagnostic and full original readbacks; original application boot unverified",
+    "factory_radio_boot": "NOT TESTED: no AT response observed after software boot or confirmed cold boot at 115200, 9600, 74880; firmware markers alone do not establish AT behavior",
+    "radio_diagnostic_deployment": {
+      "board": "A",
+      "mode": "diagnostic",
+      "captured_at_utc": "2026-10-11T02:11:08.996230+00:00",
+      "source_commit": "1506dd14d3cd2280a47c6027c279fcfb4026ac5a",
+      "image_sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
+      "size_bytes": 272800,
+      "backup_sha256": "cd4c7a680d35d95b0aca8d1207b4889d2f974af00d427b0131a2caf5d8b036cc",
+      "header_changes": false,
+      "exact_readback": true,
+      "boot_observed": true,
+      "raw_manifest": "board-A-radio-diagnostic-write-2/result.json",
+      "boot_raw_manifest": "board-A-radio-diagnostic-boot.json"
+    },
+    "radio_original_restoration": {
+      "board": "A",
+      "mode": "restore",
+      "captured_at_utc": "2026-10-11T02:16:10.956747+00:00",
+      "source_commit": "1506dd14d3cd2280a47c6027c279fcfb4026ac5a",
+      "image_sha256": "cd4c7a680d35d95b0aca8d1207b4889d2f974af00d427b0131a2caf5d8b036cc",
+      "size_bytes": 1048576,
+      "backup_sha256": "cd4c7a680d35d95b0aca8d1207b4889d2f974af00d427b0131a2caf5d8b036cc",
+      "header_changes": false,
+      "exact_readback": true,
+      "boot_observed": false,
+      "raw_manifest": "board-A-radio-restoration-1/result.json"
+    },
+    "rp_hid_deployment": {
+      "board": "A",
+      "mode": "diagnostic",
+      "captured_at_utc": "2026-10-11T02:21:48.011348+00:00",
+      "source_commit": "d25ada29ea15c2a3d309539bdc5a6aec1b73dac7",
+      "image_sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "backup_sha256": "4bda3a28f4ffe603c0ec1258c0034d65a1a0d35ab7bd523a834608adabf03cc5",
+      "image_size_bytes": 38400,
+      "readback_size_bytes": 19200,
+      "readback_sha256": "be6f198d3ed3d68eb12f7d8fe5a659ce4e4fdfaa6279c8da589edd1c27ef21c3",
+      "exact_readback": true,
+      "boot_observed": true,
+      "raw_manifest": "board-A-rp-hid-write-1/result.json"
+    },
+    "factory_boot_probe_raw_manifest": "board-A-radio-restored-cold-boot.json"
   },
   "B": {
     "rp_bootsel_physical": "PASS",
@@ -32,6 +74,6 @@
     "radio_rom_access": "NOT TESTED",
     "radio_flash_write_restore": "NOT TESTED"
   },
-  "original_firmware_flash_written": false,
-  "restoration_helpers": "prepared; guard tests pass; physical execution untested"
+  "original_firmware_flash_written": true,
+  "restoration_helpers": "radio helper physically exercised on A; RP write/readback exercised, RP restore pending"
 }

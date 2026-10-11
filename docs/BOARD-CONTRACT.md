@@ -29,8 +29,8 @@ COM numbers and drive letters are enumeration observations, not board identities
 | Radio flash | JEDEC `5e 32 14`, detected 1 MiB embedded flash | NOT TESTED |
 | Radio MAC | Read and privately recorded | NOT TESTED |
 | Radio backup | Two matching 1 MiB reads, stub MD5 verified | NOT TESTED |
-| Persistent writes in this campaign | None | None |
-| Restoration | NOT TESTED | NOT TESTED |
+| Persistent writes in this campaign | Radio diagnostic/full original; accepted RP mouse-only image | None |
+| Restoration | Radio bytes PASS; factory boot unverified; RP restore pending | NOT TESTED |
 
 The first A preread covered the 16 MiB readable RP2040 XIP window, all `ff`.
 This is an address-window observation, **not evidence of a 16 MiB flash chip**.
@@ -70,13 +70,23 @@ For A's radio, unplug A, hold the button furthest from USB, reconnect A to its
 mapped port, then release. Load the source-built SRAM bridge into RP2040 and
 connect to its CDC interface. The bridge does not control reset/download GPIOs;
 USB DTR/RTS have no radio GPIO effect. This sequence successfully exposed radio
-ROM and was repeated after interrupted reads. The radio's factory application
-boot behavior and post-write restoration remain untested.
+ROM and was repeated after interrupted reads and after a running diagnostic.
+The radio diagnostic was written, verified, booted and identified by a valid
+CRC-protected application response. The full original 1 MiB image was then
+restored with unchanged headers and exact full readback. Factory application
+boot remains unverified: read-only `AT\r\n` probes received no response after
+software boot at 115200, or after a user-confirmed cold boot at 115200/9600/74880.
+Offline AT/SDK string markers do not prove a working AT application. No factory
+boot response was captured before deployment, so silence cannot be attributed
+to the diagnostic. Keep B preserved while A's remaining recovery gates are open.
 
 The SRAM bridge/observer enumerate as SDK CDC 2e8a:000a, observed COM5 on A.
 The SRAM serial descriptor is not unique. A 1200-baud CDC request returns the
 bridge to RP2040 ROM; Windows reports the expected port-disappearance exception.
-This software return has been exercised. No persistent RP flash write occurred.
+This software return has been exercised. A later persistent deployment of the
+accepted FNR-003 mouse-only image passed picotool verification, independent
+image-region readback and application enumeration. Its original blank RP flash
+has not yet been restored after that deployment.
 
 Windows initially lacked the RP2 Boot Interface 1 driver. The user installed
 WinUSB for **2e8a:0003, MI 01 only** with Zadig 2.9. Mass-storage remained on
@@ -158,7 +168,7 @@ them: zero overruns/drops/parity/breaks, four framing errors accumulated during
 an earlier failed attempt. This is not a claim of a pristine counter baseline
 or accepted sustained transport. Raw failed-read logs are retained privately.
 
-## Prepared write/qualification procedure — NOT YET EXECUTED
+## Flash deployment and qualification observations
 
 `radio_flash.py` requires two complete, unchanged matching backup files, exact
 board/topology/MAC/model/flash identity and an explicit image SHA-256. Diagnostic
@@ -168,17 +178,52 @@ mass-erase command. esptool writes only the image's occupied sectors, keeps all
 header fields, then the helper reads back and compares every image byte before
 requesting a software boot. Separate observation must prove successful boot.
 
-After a short diagnostic smoke test, physically return A's radio to ROM using
-the far-button power cycle, reload the SRAM bridge, restore the full preserved
-image, compare complete readback, and observe factory boot. Complete this A
-recovery proof before touching B's firmware. The helper has guard unit tests;
-its physical write/restoration path is still **NOT TESTED**.
+On A, the far-button power cycle returned the running diagnostic to ROM. The
+SRAM bridge was reloaded and the full preserved radio image restored exactly.
+The first deployment attempt failed before writing flash because esptool 4.8.1
+tried to upload its RAM stub a second time. The corrected helper confirms the
+resident stub with SYNC before passing it to esptool's write command. A pinned
+fake-serial regression exercises that actual esptool object integration.
+
+`rp2040_flash.py` requires the board's observed JEDEC geometry, full matching
+backup pair, topology/flash UID, verified picotool and explicit image hash. It
+rejects non-RP2040, SRAM, duplicate or out-of-capacity UF2 destinations. Restore
+mode accepts only the complete original binary and writes it at `0x10000000`.
+Both paths independently read back every selected image byte before rebooting.
+This is a qualified image restoration, with no separate erase-all command.
+The physical RP write path has run on A; its restoration path remains pending.
+
+The radio and RP UART diagnostics passed a ten-second active smoke run on A at
+115200 8N1. A generated 198 requests and received 198 matching echoes plus 240
+independent radio streams, including the two-second drain. All CRC, pattern,
+sequence, UART and software-buffer error counters were zero, and the radio's
+final counters matched. This is smoke evidence, not the required 600-second /
+10,000-frame qualification or a measured production bandwidth guarantee.
 
 The isolated link diagnostics, build configuration and `RUN10`/`RUN600` commands
-are described in `diagnostics/README.md`. Their local builds pass; neither was
-loaded. Required UART interruption/reset/burst cases, 600-second/10,000-frame
-tests on each board, RP2040 persistent-image recovery, HID, RF pair tests, and
-full FNR-008 reference TiltMouse interoperability remain pending.
+are described in `diagnostics/README.md`. Required UART interruption/reset/burst
+cases, 600-second/10,000-frame tests on each board, RP2040 persistent-image
+recovery, full USB lifecycle/HID behavior, RF pair tests, and full FNR-008
+reference TiltMouse interoperability remain pending.
+
+## Physical USB HID subset on A
+
+The accepted FNR-003 source was built with the native Windows Arm toolchain and
+deployed to A's RP flash. Windows enumerated `cafe:f003` with a HID-compliant
+mouse child at A's mapped port, both with status OK. Windows HID parsed usage
+page 1 / usage 2, a four-byte Windows input buffer (including its report-ID
+prefix), one button-capability range and two value capabilities, with no output
+or feature reports. This is an observed descriptor subset, not a raw USB device /
+configuration / report descriptor capture. A GET_REPORT probe via
+`HidD_GetInputReport` returned Windows error 1; no neutral report was observed.
+The cause has not been isolated. The production image has no synthetic input
+generator. Physical no-motion, button/axis, suspend/resume and fail-safe behavior
+are not inferred from its source or from enumeration.
+
+`hid_probe_windows.py` checks the USB parent topology, opens the single selected
+HID collection with zero read/write access, and reads parsed capabilities plus
+GET_REPORT. It sends no synthetic input or output report. Raw results remain
+private, with allowlisted fields in `usb-enumeration.json`.
 
 ## Prior art and boundaries
 

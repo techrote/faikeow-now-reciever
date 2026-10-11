@@ -5,7 +5,10 @@ dual-board recovery, link reliability, USB HID or ESP-NOW acceptance.
 
 Native Windows 11 Pro physical USB/serial access was available. Board A was
 isolated at its mapped port; Board B was backed up and unplugged as the reference.
-No persistent MCU flash write has occurred in this campaign. Full factory dumps,
+A's radio diagnostic and full original restoration passed exact readback. Its
+factory application boot remains unverified after silent AT probes. A's accepted
+RP2040 mouse-only image has been written/read back and enumerated; RP restoration
+is pending. Full factory dumps,
 complete host paths, flash IDs, MAC and raw logs remain in the private local
 `hardware-private/FNR-002/2026-10-11` directory outside Git.
 
@@ -13,8 +16,8 @@ complete host paths, flash IDs, MAC and raw logs remain in the private local
 - `usb-enumeration.json`: ROM/CDC identities and interface-specific driver change.
 - `radio-identification.json`: A's ROM/silicon/flash identity and matching backups.
 - `interconnect-verification.json`: A's GPIO0/1 UART route; B remains unknown.
-- `flash-recovery.json`: observed ROM/SRAM recovery versus untested flash restore.
-- `link-integrity.json`: failed reads, accepted-read condition and untested soak.
+- `flash-recovery.json`: observed ROM/SRAM/deployment/restoration subsets and gaps.
+- `link-integrity.json`: failed reads, accepted reads, A smoke and untested soak.
 - `diagnostic-builds.json`: local build images, source content and hashes.
 - `raw-log-index.json`: private relative log names and immutable snapshot hashes.
 - `test-matrix.md`: acceptance state by case and owning issue.
@@ -25,10 +28,10 @@ or explicitly NOT TESTED. MAC/unique flash IDs are hashed in public evidence;
 the private mapping is required for actual operations. Backup image SHA-256s
 are published without their contents.
 
-The next physical phase is A-only: validate diagnostic image and restoration
-helper, load the temporary radio diagnostic, observe boot/smoke behavior, return
-the radio to ROM with the far-button power cycle, restore the complete original
-image and verify full readback/boot. Only after that proof should B undergo
+The next physical phase is A-only: verify the flash-resident HID image after USB
+replug, return to RP BOOTSEL using the near button, restore A's original blank
+2 MiB image and verify complete readback/ROM boot. Investigate factory radio boot
+and complete A recovery proof before B undergoes
 independent radio discovery and diagnostic deployment. See the board contract
 and diagnostics README for commands. No production pins should be inferred for B.
 
