@@ -26,7 +26,15 @@ Source rationale:
 - Board A passive observation: GPIO1 low in initial boot state and high after
   far-button reconnect; GPIO0 high in both; no output drivers enabled by observer.
 
-The blocking stdio/USB adapter is appropriate for conservative ROM discovery,
-but is not an integrity-qualified production bridge or an overrun measurement
-tool. Qualification firmware must add hardware UART error counters and explicit
-bounded buffering before drawing sustained-throughput conclusions.
+UART RX uses a single-producer interrupt and an 8192-byte bounded ring; overflow
+is counted separately from hardware overrun/framing/parity/break errors. USB
+BREAK asks for a `FNRBRIDGE` counter line and does not generate a UART break.
+Query only between ROM transactions because the response deliberately shares
+the diagnostic CDC stream. Counters are reset by reloading the bridge. They are
+32-bit diagnostic counters, not a ten-minute/10,000-frame qualification result.
+
+The first polling-only bridge (UF2 SHA-256
+`56a44cccc6123be07f086c75602d511b6502c57a9b55e1bccf173931ea46f42a`)
+successfully identified Board A's radio but lost four bytes during a 4096-byte
+flash-read response. That backup failed and is not accepted. Repeat full
+independent reads and inspect counters with the interrupt-buffered bridge.
