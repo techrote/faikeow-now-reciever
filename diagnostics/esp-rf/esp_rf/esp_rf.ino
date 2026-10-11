@@ -103,7 +103,9 @@ static void command(const char *line) {
         stop_radio(); payload_length = length; receive_config = {};
         receive_config.enabled = true; receive_config.channel = (uint8_t)channel;
         memcpy(receive_config.allowed_mac, peer, 6);
-        fnr_radio_apply_config(&receive_config); rx_active = true; reset_case(); status("rx_ready"); return;
+        fnr_radio_apply_config(&receive_config);
+        system_phy_set_max_tpw((uint8_t)power_limit_qdbm);
+        rx_active = true; reset_case(); status("rx_ready"); return;
     }
     end = 0;
     if (sscanf(line, "TX %u %17s %u %u %u%n", &channel, mac_text, &length, &count, &spacing, &end) == 5 && !line[end]
