@@ -6,9 +6,23 @@ import unittest
 
 from rp2040_backup import private_destination, validate_target
 from check_ram_uf2 import validate
+from radio_backup import validate_cdc
 
 
 class GuardTests(unittest.TestCase):
+    def test_radio_cdc_requires_exact_topology_and_port(self):
+        identity = {'location_path': 'USBROOT(0)#USB(1)'}
+        device = {'instance_id': 'USB\\VID_2E8A&PID_000A&MI_00\\TEST',
+                  'description': 'USB Serial Device (COM5)',
+                  'properties': {'DEVPKEY_Device_LocationPaths': ['USBROOT(0)#USB(1)#USBMI(0)']}}
+        validate_cdc([device], 'COM5', identity)
+        with self.assertRaises(ValueError):
+            validate_cdc([device], 'COM6', identity)
+        with self.assertRaises(ValueError):
+            validate_cdc([device, device], 'COM5', identity)
+        with self.assertRaises(ValueError):
+            validate_cdc([device], 'COM5', {'location_path': 'USBROOT(0)#USB(3)'})
+
     def setUp(self):
         self.identity = {'instance_id': 'USB\\VID_2E8A&PID_0003\\ABCD',
                          'location_path': 'USBROOT(0)#USB(1)', 'flash_id': '0123456789ABCDEF'}

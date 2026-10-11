@@ -10,6 +10,12 @@ No text/logging is inserted into the transparent byte stream.
 CDC byte forwarding remains active with DTR deasserted: esptool 4.8.1 opens
 ports with DTR/RTS false. The Pico SDK stdio default gates on DTR and causes
 write timeouts in that case; this diagnostic explicitly disables that gating.
+TinyUSB 0.18 also makes its CDC TX FIFO overwritable while DTR is false.
+For full binary reads, use `tools/hardware/radio_backup.py`, which keeps DTR
+asserted through an already-open serial object. Disabling Pico stdio's DTR
+connection gate alone did not produce valid full flash reads. DTR is purely a
+USB state on this bridge and never drives the radio. The foreground loop owns
+TinyUSB and advances UART ring consumption only by bytes accepted by its FIFO.
 
 Use the observer build procedure with this source directory, a separate build
 directory, and `-DFNR_ALLOW_CANDIDATE_UART=1`. `PICO_NO_FLASH=1` is mandatory.
