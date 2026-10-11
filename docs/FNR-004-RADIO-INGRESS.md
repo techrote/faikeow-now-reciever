@@ -28,7 +28,11 @@ There is no RSSI field in this NONOS callback ABI.
 `fnr_radio_take_foreground(fnr_datagram *out)` returns false for no pending
 record, invalid receiver state or null output; success copies the entire owned
 record into caller storage (250-byte bounded payload, exact six-byte source,
-size). The record remains owned by the caller independently of further receive
+size). The optional weak C hook `fnr_radio_foreground_consume(const fnr_datagram *)`
+is called with a foreground-owned record (valid for that call only); absent a
+consumer, the newest record remains pending for explicit retrieval.
+At most one record is extracted per foreground iteration, with no assumed
+UART/SPI wiring. The record remains owned by the caller independently of further receive
 callbacks. One pending record is held: **newest wins**, replacing an older
 unconsumed record and saturating the dropped counter. No event merging or
 hidden retransmission is performed. Order is the order of accepted callback
