@@ -1,9 +1,11 @@
 """Safety regression tests: no USB operations or firmware writes."""
 import pathlib
+import struct
 import tempfile
 import unittest
 
 from rp2040_backup import private_destination, validate_target
+from check_ram_uf2 import validate
 
 
 class GuardTests(unittest.TestCase):
@@ -45,6 +47,29 @@ class GuardTests(unittest.TestCase):
             existing.mkdir()
             with self.assertRaises(ValueError):
                 private_destination(existing, repo / 'different-repo')
+
+    def test_flash_uf2_is_rejected(self):
+        block = bytearray(512)
+        struct.pack_into('<8I', block, 0, 0x0a324655, 0x9e5d5157, 0x2000,
+                         0x10000000, 256, 0, 1, 0xe48bff56)
+        struct.pack_into('<I', block, 508, 0x0ab16f30)
+        with self.assertRaises(ValueError):
+            validate(block)
+        struct.pack_into('<I', block, 12, 0x20000000)
+        self.assertEqual(validate(block), 1)
+        struct.pack_into('<I', block, 28, 0xe48bff59)
+        with self.assertRaises(ValueError):
+            validate(block)
+
+    def test_incomplete_or_duplicate_uf2_is_rejected(self):
+        with self.assertRaises(ValueError):
+            validate(b'')
+        block = bytearray(512)
+        struct.pack_into('<8I', block, 0, 0x0a324655, 0x9e5d5157, 0x2000,
+                         0x20000000, 256, 0, 2, 0xe48bff56)
+        struct.pack_into('<I', block, 508, 0x0ab16f30)
+        with self.assertRaises(ValueError):
+            validate(block + block)
 
 
 if __name__ == '__main__':

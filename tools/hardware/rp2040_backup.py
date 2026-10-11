@@ -53,6 +53,8 @@ def main():
     parser.add_argument('--picotool-sha256', required=True)
     parser.add_argument('--expected-size', type=int, required=True,
                         help='Previously observed full flash size in bytes')
+    parser.add_argument('--explicit-range', action='store_true',
+                        help='Use measured capacity as an address range when erased flash defeats save -a')
     parser.add_argument('--output', type=pathlib.Path, required=True)
     args = parser.parse_args()
     repo = pathlib.Path(__file__).resolve().parents[2]
@@ -86,7 +88,9 @@ def main():
     run(['info', '-a', '--ser', serial], 'info')
     images = [destination / f'original-{n}.bin' for n in (1, 2)]
     for index, image in enumerate(images, 1):
-        run(['save', '-a', '-v', str(image), '--ser', serial], f'read-{index}')
+        selection = (['-r', '0x10000000', hex(0x10000000 + args.expected_size)]
+                     if args.explicit_range else ['-a'])
+        run(['save', *selection, '-v', str(image), '--ser', serial], f'read-{index}')
         if image.stat().st_size != args.expected_size:
             raise ValueError('Backup size differs from observed flash capacity')
     hashes = [sha256(image) for image in images]
@@ -97,6 +101,7 @@ def main():
                 'identity': identity, 'picotool_sha256': sha256(tool),
                 'source_commit': subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip(),
                 'commands': records, 'size_bytes': args.expected_size,
+                'explicit_range': args.explicit_range,
                 'sha256': hashes[0], 'matching_independent_reads': True,
                 'restoration_tested': False}
     (destination / 'backup.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
