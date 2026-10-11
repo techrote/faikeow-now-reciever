@@ -13,9 +13,25 @@ from radio_flash import validate_backup, validate_image
 from link_capture import assess
 from rp2040_flash import flash_blocks
 from rf_pair_capture import validate_pair, assess as assess_rf
+from uart_fault_capture import Decoder, packet, payload
 
 
 class GuardTests(unittest.TestCase):
+    def test_fault_host_parser_rejects_damage_and_resynchronizes_with_bounds(self):
+        data = bytes([0xc0, 0xdb]) * 125
+        decoder = Decoder()
+        self.assertEqual(decoder.feed(packet(129, 42, data)), [(129, 42, data)])
+        damaged = bytearray(packet(1, 0, payload(0, False)))
+        self.assertNotIn(damaged[-2], (0xc0, 0xdb))
+        damaged[-2] ^= 1
+        self.assertEqual(decoder.feed(damaged), [])
+        self.assertEqual(decoder.bad_frames, 1)
+        decoder.feed(b'\xc0\x01\x00\xc0')
+        decoder.feed(b'\xc0' + b'\x01' * 10000 + b'\xc0')
+        self.assertEqual(decoder.bad_frames, 3)
+        self.assertLessEqual(len(decoder.raw), 261)
+        self.assertEqual(decoder.feed(packet(5, 123, b'identity')), [(5, 123, b'identity')])
+
     def test_rf_pair_requires_both_labels_ports_and_independent_topologies(self):
         devices = []
         identities = {b: {'location_path': 'USBROOT(0)#USB(' + str(i) + ')'} for b, i in [('A', 1), ('B', 3)]}
