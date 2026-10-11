@@ -93,6 +93,8 @@ def main():
     parser.add_argument('--mismatch-count', type=bounded_integer(1, 20000), default=100)
     parser.add_argument('--separation-cm', type=bounded_integer(1, 100000),
                         help='Operator-reported antenna separation; recorded, not measured by this tool')
+    parser.add_argument('--power-limit-qdbm', type=bounded_integer(0, 82),
+                        help='Optional diagnostic SDK ceiling, quarter dBm; requires POWER-capable image')
     parser.add_argument('--case', action='append', choices=['one_byte', 'representative_32',
                         'representative_128', 'full_250', 'burst', 'backpressure',
                         'reject_source', 'wrong_channel', 'receiver_restart', 'sustained'],
@@ -160,6 +162,10 @@ def main():
         for board in ('A', 'B'):
             streams[board].dtr = True; streams[board].rts = False
             command(board, 'INFO')  # Verify both live MACs before configuring RF.
+            if args.power_limit_qdbm is not None:
+                power = command(board, f'POWER {args.power_limit_qdbm}', 'power_set')
+                if power.get('power_limit_qdbm') != args.power_limit_qdbm:
+                    raise ValueError('Diagnostic did not acknowledge requested power ceiling')
         recipes = [('one_byte', 1, 100, 50), ('representative_32', 32, 200, 10),
                    ('representative_128', 128, 400, 10), ('full_250', 250, 2000, 10),
                    ('burst', 250, 500, 0), ('backpressure', 250, 500, 2),
@@ -219,6 +225,7 @@ def main():
                   'direction_selection': args.direction, 'case_selection': args.case,
                   'receive_channel': args.receive_channel, 'mismatch_channel': args.mismatch_channel,
                   'mismatch_count': args.mismatch_count, 'operator_reported_separation_cm': args.separation_cm,
+                  'requested_power_limit_qdbm': args.power_limit_qdbm,
                   'expected_cases': expected_cases,
                   'elapsed_seconds': time.monotonic() - started, 'cases_completed': len(cases),
                   'result': 'PASS' if expected_cases is not None and len(cases) == expected_cases

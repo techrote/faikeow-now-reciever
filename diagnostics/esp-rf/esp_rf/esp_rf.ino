@@ -16,6 +16,8 @@ static uint32_t attempted, queued, enqueue_fail, next_send, finish_at, total, in
 static uint32_t checked, integrity_errors, gaps, duplicates, expected_seq, pause_until;
 static uint32_t uart_overruns, uart_rx_errors;
 static unsigned payload_length;
+// Requested SDK ceiling, in quarter dBm; this is not measured radiated power.
+static unsigned power_limit_qdbm = 82;
 static uint8_t peer[6], last_source[6];
 static fnr_radio_config receive_config;
 static fnr_radio_counters baseline;
@@ -54,7 +56,9 @@ static void status(const char *event) {
         "\"tx_ok\":%lu,\"tx_callback_fail\":%lu,\"outstanding\":%u,"
         "\"received\":%lu,\"accepted\":%lu,\"rejected_source\":%lu,\"invalid_length\":%lu,"
         "\"dropped\":%lu,\"consumed\":%lu,\"checked\":%lu,\"integrity_errors\":%lu,"
-        "\"gaps\":%lu,\"duplicates\":%lu,\"uart_overrun\":%lu,\"uart_rx_error\":%lu}\n",
+        "\"gaps\":%lu,\"duplicates\":%lu,\"uart_overrun\":%lu,\"uart_rx_error\":%lu,"
+        "\"power_limit_qdbm\":%u,\"opmode\":%u,\"station_status\":%u,"
+        "\"auto_connect\":%u,\"auto_reconnect\":%u,\"sleep_type\":%u}\n",
         (unsigned)wifi_get_channel(), rx_active, tx_active, (unsigned)snapshot.state,
         payload_length, (unsigned long)attempted, (unsigned long)queued, (unsigned long)enqueue_fail,
         (unsigned long)tx_ok, (unsigned long)tx_callback_fail, outstanding,
@@ -62,7 +66,10 @@ static void status(const char *event) {
         (unsigned long)(c.rejected_source - baseline.rejected_source), (unsigned long)(c.invalid_length - baseline.invalid_length),
         (unsigned long)(c.dropped - baseline.dropped), (unsigned long)(c.consumed - baseline.consumed),
         (unsigned long)checked, (unsigned long)integrity_errors, (unsigned long)gaps, (unsigned long)duplicates,
-        (unsigned long)uart_overruns, (unsigned long)uart_rx_errors);
+        (unsigned long)uart_overruns, (unsigned long)uart_rx_errors,
+        power_limit_qdbm, (unsigned)wifi_get_opmode(), (unsigned)wifi_station_get_connect_status(),
+        (unsigned)wifi_station_get_auto_connect(), (unsigned)wifi_station_get_reconnect_policy(),
+        (unsigned)wifi_get_sleep_type());
 }
 static void reset_case() {
     attempted = queued = enqueue_fail = tx_ok = tx_callback_fail = 0;
@@ -73,13 +80,20 @@ static void reset_case() {
     baseline = snapshot.counters;
 }
 static void command(const char *line) {
-    unsigned channel, length, count, spacing, pause; char mac_text[18]; int end = 0;
+    unsigned channel, length, count, spacing, pause, power; char mac_text[18]; int end = 0;
     if (!strcmp(line, "STATS") || !strcmp(line, "INFO")) { status("status"); return; }
     if (!strcmp(line, "OFF")) { stop_radio(); status("off"); return; }
     if (!strcmp(line, "RESET")) { Serial.flush(); ESP.restart(); return; }
     if (!strcmp(line, "RESTART") && rx_active) {
         fnr_radio_restart(); reset_case(); status("restarted"); return;
     }
+    if (sscanf(line, "POWER %u%n", &power, &end) == 1 && !line[end] && power <= 82
+        && !sending && !outstanding && !finishing) {
+        power_limit_qdbm = power;
+        system_phy_set_max_tpw((uint8_t)power_limit_qdbm);
+        status("power_set"); return;
+    }
+    end = 0;
     if (sscanf(line, "PAUSE %u%n", &pause, &end) == 1 && !line[end] && pause <= 10000 && rx_active) {
         pause_until = millis() + pause; status("paused"); return;
     }
@@ -106,6 +120,7 @@ static void command(const char *line) {
             || esp_now_add_peer(peer, ESP_NOW_ROLE_SLAVE, (uint8_t)channel, nullptr, 0) != 0) {
             stop_radio(); Serial.println("{\"event\":\"error\",\"stage\":\"tx_peer\"}"); return;
         }
+        system_phy_set_max_tpw((uint8_t)power_limit_qdbm);
         reset_case(); sending = true; next_send = millis() + 100; status("tx_started"); return;
     }
     Serial.println("{\"event\":\"error\",\"stage\":\"command\"}");
