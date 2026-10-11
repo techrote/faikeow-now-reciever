@@ -15,7 +15,7 @@ make -f "$D/makeEspArduino/makeEspArduino.mk" \
   ARDUINO_EXTRA_DESC="$ROOT/firmware/esp8266/recipe-overrides.txt" \
   SKETCH="$ROOT/firmware/esp8266/main.cpp" \
   LIBS="$ROOT/firmware/esp8266/radio_adapter.cpp $ROOT/shared/src/datagram.c $ROOT/shared/src/radio_ingress.c" \
-  USER_INC_DIRS="$ROOT/shared/include $ROOT/firmware/esp8266" \
+  USER_INC_DIRS="$ROOT/shared/include $ROOT/firmware/esp8266 $D/esp8266/libraries/ESP8266WiFi/src" \
   MK_FS_PATH="$D/mkspiffs/mkspiffs" \
   BUILD_DIR="$ROOT/build/esp8266" MAIN_NAME=fnr_esp8266_ingress \
   BUILD_DATE=2026-10-03 BUILD_TIME=22:53:53 \
