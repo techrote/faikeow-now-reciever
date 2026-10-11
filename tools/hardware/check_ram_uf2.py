@@ -10,6 +10,7 @@ def validate(data):
         raise ValueError('UF2 must contain complete 512-byte blocks')
     blocks = len(data) // 512
     seen = set()
+    destinations = set()
     for offset in range(0, len(data), 512):
         magic0, magic1, flags, address, size, number, total, family = struct.unpack_from('<8I', data, offset)
         if (magic0, magic1, struct.unpack_from('<I', data, offset + 508)[0]) != (
@@ -21,7 +22,10 @@ def validate(data):
             raise ValueError('UF2 includes a non-SRAM or malformed destination')
         if total != blocks or number >= blocks or number in seen:
             raise ValueError('UF2 block numbering mismatch')
+        if address in destinations:
+            raise ValueError('UF2 destination is repeated')
         seen.add(number)
+        destinations.add(address)
     return blocks
 
 

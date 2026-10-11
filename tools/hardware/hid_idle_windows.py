@@ -35,6 +35,8 @@ def observe(device_path, seconds):
     user.GetRawInputDeviceList.argtypes = [c.POINTER(Device),c.POINTER(w.UINT),w.UINT]
     user.GetRawInputDeviceInfoW.argtypes = [w.HANDLE,w.UINT,c.c_void_p,c.POINTER(w.UINT)]
     user.GetRawInputData.argtypes = [w.HANDLE,w.UINT,c.c_void_p,c.POINTER(w.UINT),w.UINT]
+    for function in (user.GetRawInputDeviceList,user.GetRawInputDeviceInfoW,user.GetRawInputData):
+        function.restype = w.UINT
     user.RegisterRawInputDevices.argtypes = [c.POINTER(Registration),w.UINT,w.UINT]
     user.RegisterClassExW.argtypes = [c.POINTER(WindowClass)]
     user.CreateWindowExW.argtypes = [w.DWORD,w.LPCWSTR,w.LPCWSTR,w.DWORD,c.c_int,c.c_int,c.c_int,c.c_int,w.HWND,w.HANDLE,w.HANDLE,c.c_void_p]
@@ -101,7 +103,8 @@ def observe(device_path, seconds):
             raise c.WinError(c.get_last_error())
         beginning = time.monotonic(); message = w.MSG()
         while time.monotonic()-beginning < seconds:
-            while user.PeekMessageW(c.byref(message),None,0,0,1):
+            for _ in range(256):
+                if not user.PeekMessageW(c.byref(message),None,0,0,1): break
                 user.TranslateMessage(c.byref(message)); user.DispatchMessageW(c.byref(message))
             time.sleep(.005)
         if selected_device()!=selected: removed = True

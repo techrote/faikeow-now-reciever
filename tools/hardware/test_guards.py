@@ -214,6 +214,12 @@ class GuardTests(unittest.TestCase):
         struct.pack_into('<I', block, 508, 0x0ab16f30)
         with self.assertRaises(ValueError):
             validate(block + block)
+        second = bytearray(block)
+        struct.pack_into('<I', second, 20, 1)
+        with self.assertRaises(ValueError):
+            validate(block + second)
+        struct.pack_into('<I', second, 12, 0x20000100)
+        self.assertEqual(validate(block + second), 2)
 
 
 if __name__ == '__main__':
