@@ -18,8 +18,8 @@ Date: 2026-10-11. Host: native Windows 11 Pro. Evidence: adjacent JSON ledger.
 | Radio reset/download RP GPIO mapping | FNR-002 | NOT TESTED | NOT TESTED | Physical far-button method observed independently on A/B; RP control wiring unknown |
 | Electrical levels/header conflicts | FNR-002 | NOT TESTED | NOT TESTED | Multimeter available; no measurements yet, schematic unavailable |
 | Radio diagnostic write/readback/software boot | FNR-002 | PASS | PASS | A CRC-protected identity response and smoke |
-| Full radio factory restoration/readback | FNR-002 | PASS | PASS | Each exact complete original 1 MiB; unchanged headers |
-| Restored factory radio application boot | FNR-002 | BLOCKED | BLOCKED | Both silent AT probes after cold boot; functional factory behavior unverified |
+| Full radio original restoration/readback | FNR-002 | PASS | PASS | Each exact complete original 1 MiB; unchanged headers |
+| Pre-existing radio application behavior | FNR-002 | NOT TESTED | NOT TESTED | Both silent AT probes after cold boot; intended application protocol unknown; not a project acceptance gate |
 | RP persistent UF2 write/readback/application boot | FNR-002 | PASS | PASS | A accepted mouse-only image, Windows enumeration |
 | RP original-image restoration | FNR-002 | PASS | PASS | Each full 2 MiB exact original readback; A blank ROM, B original no USB |
 | Ten-second deterministic link smoke | FNR-002 | PASS | PASS | Each 198 requests/echoes; A 240 and B 239 streams including drain; zero errors |
@@ -36,4 +36,4 @@ Date: 2026-10-11. Host: native Windows 11 Pro. Evidence: adjacent JSON ledger.
 | ESP-NOW pair/admission/channel/integrity | FNR-004 | NOT TESTED | NOT TESTED | Ingress software merged PR15; #5 remains open; no diagnostic pair loaded |
 | Production framing/core/provisioning | FNR-005/006/007 | BLOCKED | BLOCKED | Required accepted implementations not established in this campaign |
 | Integrated receiver and actual TiltMouse | FNR-008 | BLOCKED | BLOCKED | Integrated software/reference sender acceptance absent |
-| Overall FNR-002 acceptance | FNR-002 | BLOCKED | BLOCKED | Unknown reset/download GPIO and electrical/header facts; further dependency-ready USB/RF tests in progress |
+| Overall FNR-002 acceptance | FNR-002 | BLOCKED | BLOCKED | Core UART/recovery proofs complete; additional USB/RF campaign in progress; meter checks optional |

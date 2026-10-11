@@ -6,14 +6,14 @@ dual-board recovery, link reliability, USB HID or ESP-NOW acceptance.
 Native Windows 11 Pro physical USB/serial access was available. Board A was
 isolated at its mapped port; Board B was backed up and unplugged as the reference.
 A's radio diagnostic and full original restoration passed exact readback. Its
-factory application boot remains unverified after silent AT probes. A's accepted
+pre-existing application boot remains unverified after silent AT probes. A's accepted
 RP2040 mouse-only image has been written/read back, enumerated and cold-booted;
 its full original blank RP image has now been restored and verified. A's approved
 radio diagnostic cold-booted and passed 600-second UART integrity and six
 software fault/recovery cases. B independently passed full RP and radio original
 restoration/readback, accepted HID cold boot, approved radio diagnostic cold boot,
 600-second UART integrity and six software fault/recovery cases.
-Full factory dumps,
+Full original dumps,
 complete host paths, flash IDs, MAC and raw logs remain in the private local
 `hardware-private/FNR-002/2026-10-11` directory outside Git.
 

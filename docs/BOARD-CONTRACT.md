@@ -35,7 +35,7 @@ COM numbers and drive letters are enumeration observations, not board identities
 | Radio MAC | Read and privately recorded | Read and privately recorded; distinct from A |
 | Radio backup | Two matching 1 MiB reads, stub MD5 verified | Two matching 1 MiB reads, stub MD5 verified; differs from A |
 | Persistent writes in this campaign | Radio diagnostic/full original; accepted RP mouse-only image | Accepted RP HID/full original, labeled bridge; radio diagnostic |
-| Restoration | RP full original PASS; radio full original bytes PASS; approved diagnostic cold boot PASS; factory boot unverified | Independently RP and radio full originals restored exactly; approved radio diagnostic cold boot PASS; factory boot unverified |
+| Restoration | RP full original PASS; radio full original bytes PASS; approved diagnostic cold boot PASS; pre-existing application boot unverified | Independently RP and radio full originals restored exactly; approved radio diagnostic cold boot PASS; pre-existing application boot unverified |
 
 The first A preread covered the 16 MiB readable RP2040 XIP window, all `ff`.
 This is an address-window observation, **not evidence of a 16 MiB flash chip**.
@@ -82,10 +82,10 @@ USB DTR/RTS have no radio GPIO effect. This sequence successfully exposed radio
 ROM and was repeated after interrupted reads and after a running diagnostic.
 The radio diagnostic was written, verified, booted and identified by a valid
 CRC-protected application response. The full original 1 MiB image was then
-restored with unchanged headers and exact full readback. Factory application
+restored with unchanged headers and exact full readback. Pre-existing application
 boot remains unverified: read-only `AT\r\n` probes received no response after
 software boot at 115200, or after a user-confirmed cold boot at 115200/9600/74880.
-Offline AT/SDK string markers do not prove a working AT application. No factory
+Offline AT/SDK string markers do not prove a working AT application. No pre-existing
 boot response was captured before deployment, so silence cannot be attributed
 to the diagnostic. The approved UART radio diagnostic was subsequently
 redeployed with exact readback and identified after a user-confirmed cold boot.
@@ -98,7 +98,7 @@ and restored with an exact full 2 MiB readback. The original again exposed no
 USB interface, matching the pre-write observation. A separately labeled
 flash-resident recovery bridge now provides repeatable access across power
 cycles. B's radio diagnostic write/readback and software identity passed; its
-full original radio restoration and sustained test remain pending. Before its
+full original radio restoration and sustained test also passed. Before its
 first radio write, B's original gave no AT response after software boot at
 115200/9600/74880, establishing a recorded silent pre-write observation.
 
@@ -244,7 +244,7 @@ radio counters. Its observed payload counts matched A's; separate firmware,
 board and source provenance is retained in the ledger. B's complete original
 radio image was restored with unchanged headers and exact 1 MiB readback.
 After a user-confirmed cold reconnect, it remained silent at 115200/9600/74880,
-consistent with the pre-write software-boot observation. Factory application
+consistent with the pre-write software-boot observation. Pre-existing application
 function remains unverified. Redeploying the approved diagnostic passed exact
 readback and a user-confirmed cold-boot CRC-protected identity probe.
 
@@ -287,3 +287,16 @@ read-only SSI implementation retains the Pico SDK license notice locally.
 No ESP-NOW, production internal framing, provisioning, full HID-host behavior,
 electrical voltage/current, latency bound, or TiltMouse interoperability is
 established by these measurements.
+
+The preserved images are the firmware present before this campaign. The user
+reported previous use of one board; their factory provenance and intended
+application protocols are unknown. Silent AT probes do not identify a project
+defect and will not be repeated as a receiver qualification gate. Verified
+restoration and approved diagnostic boots already establish the recovery path.
+
+The wireless hop terminates at ESP8285. Its existing PCB UART connection to
+RP2040 carries data onward to USB. That GPIO0/1 route is functionally proven
+on both units. Additional continuity, voltage and header measurements are
+optional characterization; no user-built wiring or multimeter check is required
+to proceed. Unknown RP-controlled reset/download wiring remains documented as
+unknown, with the physical button recovery procedures verified instead.

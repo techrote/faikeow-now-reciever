@@ -908,6 +908,31 @@
       "sha256": "9944ea12c2ea84ffb48839cebc2d61addbd483956581918b1ea511b237d8f19c"
     },
     {
+      "private_relative_path": "board-B-radio-rf-software-boot-1/inventory.json",
+      "size_bytes": 14565,
+      "sha256": "7cbcdd99f0ec4a6402a7f668c2fe7c8a88821183027c4bf91f48ae5b08314dba"
+    },
+    {
+      "private_relative_path": "board-B-radio-rf-software-boot-1/result.json",
+      "size_bytes": 1667,
+      "sha256": "7a93351fcfb4652579124cb1a8f5566a520976c31aaf1239f523f019a103b550"
+    },
+    {
+      "private_relative_path": "board-B-radio-rf-write-1/inventory.json",
+      "size_bytes": 14566,
+      "sha256": "b19a8a71329abdc02c5a9ec6d1f75a1a801e9ccc051a266c59c233557dabf32a"
+    },
+    {
+      "private_relative_path": "board-B-radio-rf-write-1/result.json",
+      "size_bytes": 805,
+      "sha256": "df8e998c5d5d2442c388dbbe7fe7146b9688391608900324781edf34446d7efc"
+    },
+    {
+      "private_relative_path": "board-B-radio-rf-write-1/write-readback.txt",
+      "size_bytes": 1150,
+      "sha256": "4d97c278ed06e9a8dc996ad94383a450df306c9886cd943e7ea7fb0155bb0f59"
+    },
+    {
       "private_relative_path": "board-B-radio-rom-bridge-load/inventory.json",
       "size_bytes": 15825,
       "sha256": "ba13e839340a681f4d9bfe736b4b2a685fddb91a92179d3c20bfeff2a46a6bc2"

@@ -23,7 +23,7 @@
     "radio_rom_access": "PASS",
     "radio_backup": "PASS",
     "radio_flash_write_restore": "PASS: exact diagnostic and full original readbacks; original application boot unverified",
-    "factory_radio_boot": "BLOCKED: boot confirmation unavailable; no AT response after software boot or confirmed cold boot at 115200, 9600, 74880; no pre-write response baseline",
+    "pre_existing_radio_at_probe": "BLOCKED: boot confirmation unavailable; no AT response after software boot or confirmed cold boot at 115200, 9600, 74880; no pre-write response baseline",
     "radio_diagnostic_deployment": {
       "board": "A",
       "mode": "diagnostic",
@@ -65,8 +65,8 @@
       "boot_observed": true,
       "raw_manifest": "board-A-rp-hid-write-1/result.json"
     },
-    "factory_boot_probe_raw_manifest": "board-A-radio-restored-cold-boot.json",
-    "factory_at_probe_result": "FAIL: expected OK response was not observed; this does not isolate a firmware or hardware fault",
+    "pre_existing_at_probe_raw_manifest": "board-A-radio-restored-cold-boot.json",
+    "pre_existing_at_probe_result": "FAIL: expected OK response was not observed; this does not isolate a firmware or hardware fault",
     "rp_original_restoration": {
       "board": "A",
       "mode": "restore",
@@ -111,7 +111,7 @@
     "rp_backup": "PASS",
     "rp_sram_diagnostics": "PASS: input-only observer; independent UID and 684015 JEDEC, 2 MiB; zero GPIO output-enable",
     "radio_rom_access": "PASS",
-    "radio_flash_write_restore": "PASS: full original restoration and diagnostic redeployment exact readbacks; factory boot separately assessed",
+    "radio_flash_write_restore": "PASS: full original restoration and diagnostic redeployment exact readbacks; pre-existing boot separately assessed",
     "rp_software_return_bootsel": "PASS",
     "radio_backup": "PASS",
     "rp_persistent_write_restore": "PASS: HID write/cold boot, full original restoration/readback",
@@ -180,13 +180,13 @@
       "result": "PASS",
       "raw_manifest": "board-B-radio-diagnostic-software-boot-1/result.json"
     },
-    "factory_radio_prewrite_boot": {
+    "pre_existing_radio_prewrite_probe": {
       "board": "B",
       "captured_at_utc": "2026-10-11T11:22:29.324824+00:00",
       "source_commit": "47246146a7e30a812c573e10136af01ae0ba802d",
       "command": "original radio full backup, official stub software application boot, AT probes before first radio write",
       "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
-      "factory_boot_observed": false,
+      "at_response_observed": false,
       "raw_manifest": "board-B-radio-factory-prewrite-boot.json",
       "at_probe_result": "FAIL: no OK at 115200/9600/74880 after software boot before first radio write; does not isolate fault"
     },
@@ -214,16 +214,16 @@
       "exact_readback": true,
       "raw_manifest": "board-B-radio-diagnostic-write-2/result.json"
     },
-    "radio_factory_restored_cold_boot": {
+    "pre_existing_radio_restored_cold_probe": {
       "board": "B",
       "captured_at_utc": "2026-10-11T11:44:29.725843+00:00",
       "source_commit": "84f38aa4f16e3cb00cbc718baee3b1ae398d997f",
       "cold_boot_user_confirmed": true,
-      "factory_boot_observed": false,
+      "at_response_observed": false,
       "bridge_sha256": "7f8972c51422c8d1a6e15e69b8a58d8e2eef255b4bb1fe08d8f5531045cd2655",
       "original_sha256": "f12c5e15b2b63dfec8a052be4358b10489dfa759351521fa913124ccb4c6e241",
       "raw_manifest": "board-B-radio-restored-cold-boot.json",
-      "result": "BLOCKED: no AT response at 115200/9600/74880; no factory response baseline; exact full original bytes restored"
+      "result": "BLOCKED: no AT response at 115200/9600/74880; no pre-existing response baseline; exact full original bytes restored"
     },
     "radio_diagnostic_cold_boot": {
       "board": "B",
@@ -239,5 +239,6 @@
     }
   },
   "original_firmware_flash_written": true,
-  "restoration_helpers": "Radio diagnostic/full original and RP diagnostic/full original paths physically exercised independently on A and B; factory application function unverified"
+  "restoration_helpers": "Radio diagnostic/full original and RP diagnostic/full original paths physically exercised independently on A and B; pre-existing application function unverified",
+  "pre_existing_firmware_scope": "Provenance is pre-campaign, not known factory. One board was previously used. Intended application protocols unknown; AT silence is not a project defect or acceptance gate. Full byte restoration and approved diagnostic cold boots already verify recovery."
 }
