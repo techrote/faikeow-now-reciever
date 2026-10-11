@@ -30,9 +30,33 @@ Exact final PR head and post-merge main require their own green checks.
 - Inert output images must not be described as working receiver firmware.
 - Toolchain acquisition and compilation do not establish physical operation.
 
-## Pending FNR-001 acceptance
+## Reproducibility evidence (post-manifest integration)
 
-- Final exact-head CI success after manifest/doc changes.
-- Final artifact manifests and hashes verified.
-- Reconcile PR, squash merge if accepted and confirm main CI.
-- Update the programme tracker and close #2 only after verification.
+Both independent clean runs on source head
+`f98dc23853e658d8e384dfd7f649a5050dd9c04b`
+passed all four CI gates:
+
+- [Push run 38099780518](https://github.com/techrote/faikeow-now-reciever/actions/runs/38099780518)
+- [PR run 38099783197](https://github.com/techrote/faikeow-now-reciever/actions/runs/38099783197)
+
+The two runs produced identical SHA-256 values for each pair of output images:
+
+| Compile surrogate | Artifact | SHA-256 |
+|---|---|---|
+| RP2040 | `fnr_rp2040_inert.uf2` | `fcd83cdc2d1a7b20c89109fdbffcb5b7626dd944e6c2a1b48625d530113a2203` |
+| RP2040 | `fnr_rp2040_inert.elf` | `2f0c22c53bf02418d54d958a0aa56fab47a7f90fcbe1f87f7f9992e675ca3278` |
+| ESP8266 | `fnr_esp8266_inert.bin` | `f298fa1eb0f1fd7f3b5c03a3595782d13d7e343d165d29a329ca29019a388f8b` |
+| ESP8266 | `fnr_esp8266_inert.elf` | `8f19de1f41601fe280acd442cffe8346ec7d65f3dd4d36d3bca36c1ad94692b6` |
+
+These hashes apply only to the stated prior source head. The source ID is
+embedded in ESP firmware metadata, so later commits are not expected to keep
+the same output hash. Check the **exact final head** in Actions before merging.
+
+## Acceptance and release record
+
+The issue #2 acceptance comment and final PR/main workflow runs are the
+authoritative acceptance record. This document records implementation
+provenance and build-only evidence, not physical hardware acceptance.
+
+FNR-002 remains responsible for board characterization. FNR-003/FNR-004
+remain responsible for production USB and ESP-NOW functionality.
