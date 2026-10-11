@@ -10,6 +10,7 @@ target_link_libraries(fnr_candidate_bridge pico_stdlib hardware_uart)
 target_compile_options(fnr_candidate_bridge PRIVATE -Wall -Wextra -Werror)
 target_compile_definitions(fnr_candidate_bridge PRIVATE
   PICO_STDIO_USB_ENABLE_RESET_VIA_BAUD_RATE=0
+  PICO_STDIO_USB_ENABLE_IRQ_BACKGROUND_TASK=0
   PICO_STDIO_USB_CONNECTION_WITHOUT_DTR=1)
 pico_enable_stdio_usb(fnr_candidate_bridge 1)
 pico_enable_stdio_uart(fnr_candidate_bridge 0)

@@ -61,16 +61,27 @@ int main(void) {
     stdio_set_translate_crlf(&stdio_usb, false);
     char bytes[64];
     while (true) {
+        // One foreground owner for TinyUSB: no stdio background task and no
+        // concurrent FIFO reader. Advance ring tail only for accepted bytes.
+        tud_task();
         unsigned count = 0;
-        while (count < sizeof(bytes) && tail != head) {
-            bytes[count++] = (char)ring[tail]; __dmb();
-            tail = (tail + 1u) & (RX_CAPACITY - 1u);
+        uint32_t cursor = tail;
+        unsigned available = tud_cdc_write_available();
+        while (count < sizeof(bytes) && count < available && cursor != head) {
+            bytes[count++] = (char)ring[cursor];
+            cursor = (cursor + 1u) & (RX_CAPACITY - 1u);
         }
-        if (count) stdio_put_string(bytes, (int)count, false, false);
+        if (count) {
+            unsigned accepted = tud_cdc_write(bytes, count);
+            __dmb();
+            tail = (tail + accepted) & (RX_CAPACITY - 1u);
+        }
+        tud_cdc_write_flush();
         // Bound each direction's work so continuous USB data cannot starve RX.
         for (unsigned n = 0; n < sizeof(bytes) && uart_is_writable(uart0); ++n) {
-            int ch = getchar_timeout_us(0);
-            if (ch == PICO_ERROR_TIMEOUT) break;
+            if (!tud_cdc_available()) break;
+            int ch = tud_cdc_read_char();
+            if (ch < 0) break;
             uart_putc_raw(uart0, (char)ch);
             tx_bytes++;
         }
