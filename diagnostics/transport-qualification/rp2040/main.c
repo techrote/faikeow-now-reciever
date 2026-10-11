@@ -5,6 +5,7 @@
 #include "pico/bootrom.h"
 #include "pico/stdio_usb.h"
 #include "flash_identity.h"
+#include "hardware/flash.h"
 #include "tusb.h"
 #include <stdio.h>
 #include <string.h>
@@ -126,6 +127,8 @@ static void execute(void) {
     } else ++commands_bad;
 }
 int main(void) {
+    /* As in the accepted FNR-002 SRAM observer, initialize QSPI before UID reads. */
+    flash_start_xip();
     stdio_init_all(); stdio_set_translate_crlf(&stdio_usb, false);
     fnr_rp_transport_init();
     while (true) {
