@@ -22,11 +22,14 @@ get_filename_component(FNR_ROOT "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
 add_executable(fnr_rp2040_hid
   main.c
   usb_adapter.c
+  transport_adapter.c
   ${FNR_ROOT}/shared/src/datagram.c
+  ${FNR_ROOT}/shared/src/transport.c
+  ${FNR_ROOT}/shared/src/uart_buffer.c
   ${FNR_ROOT}/shared/src/hid.c
   ${FNR_ROOT}/shared/src/hid_relative_mouse.c)
 target_include_directories(fnr_rp2040_hid PRIVATE . ${FNR_ROOT}/shared/include)
-target_link_libraries(fnr_rp2040_hid PRIVATE pico_stdlib tinyusb_device)
+target_link_libraries(fnr_rp2040_hid PRIVATE pico_stdlib tinyusb_device hardware_uart hardware_irq)
 pico_enable_stdio_usb(fnr_rp2040_hid 0)
 pico_enable_stdio_uart(fnr_rp2040_hid 0)
 pico_add_extra_outputs(fnr_rp2040_hid)

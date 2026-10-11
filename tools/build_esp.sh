@@ -14,7 +14,7 @@ make -f "$D/makeEspArduino/makeEspArduino.mk" \
   FLASH_MODE=dout FLASH_SPEED=40 F_CPU=80000000L LWIP_VARIANT=lm2f \
   ARDUINO_EXTRA_DESC="$ROOT/firmware/esp8266/recipe-overrides.txt" \
   SKETCH="$ROOT/firmware/esp8266/main.cpp" \
-  LIBS="$ROOT/firmware/esp8266/radio_adapter.cpp $ROOT/shared/src/datagram.c $ROOT/shared/src/radio_ingress.c" \
+  LIBS="$ROOT/firmware/esp8266/radio_adapter.cpp $ROOT/firmware/esp8266/transport_adapter.cpp $ROOT/shared/src/datagram.c $ROOT/shared/src/radio_ingress.c $ROOT/shared/src/transport.c $ROOT/shared/src/transport_tx.c" \
   USER_INC_DIRS="$ROOT/shared/include $ROOT/firmware/esp8266 $D/esp8266/libraries/ESP8266WiFi/src" \
   MK_FS_PATH="$D/mkspiffs/mkspiffs" \
   BUILD_DIR="$ROOT/build/esp8266" MAIN_NAME=fnr_esp8266_ingress \

@@ -76,6 +76,15 @@ Use exact versions pinned by FNR-001 rather than master-only APIs.
 
 FNR-002 records the exact version/commands proven on the target board.
 
+## FNR-005 pinned software integration references
+
+- [Internal wire v1 and ownership](FNR-005-TRANSPORT.md).
+- [Production physical handoff](FNR-005-HARDWARE-HANDOFF.md).
+- [ESP8266 Arduino 3.1.2 HardwareSerial](https://github.com/esp8266/Arduino/blob/210897ef83305496947c4e73c937bab52a33cb48/cores/esp8266/HardwareSerial.h).
+- [Pinned ESP UART FIFO/write implementation](https://github.com/esp8266/Arduino/blob/210897ef83305496947c4e73c937bab52a33cb48/cores/esp8266/uart.cpp).
+- [Pico SDK 2.2.0 UART API](https://github.com/raspberrypi/pico-sdk/blob/a1438dff1d38bd9c65dbd693f0e5db4b9ae91779/src/rp2_common/hardware_uart/include/hardware/uart.h).
+- [Pinned RP2040 UART register definitions](https://github.com/raspberrypi/pico-sdk/blob/a1438dff1d38bd9c65dbd693f0e5db4b9ae91779/src/rp2040/hardware_regs/include/hardware/regs/uart.h).
+
 ## Evidence rule
 
 Official silicon documentation and similar-board prior art are engineering

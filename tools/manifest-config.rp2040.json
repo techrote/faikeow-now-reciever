@@ -1,16 +1,26 @@
 {
-  "board": "RP2040 pico compile surrogate (not verified clone board)",
+  "board": "FNR-002 characterized RP2040; Pico SDK pico selection; GP0/GP1 UART0 only",
   "flash": {
     "mode": "UF2",
     "measured": false
   },
   "profile": "relative_mouse TinyUSB HID backend",
   "platform_protocol": null,
-  "internal_link_protocol": null,
+  "internal_link_protocol": "FNR-005/v1 (COBS + CRC-16/CCITT-FALSE)",
   "profile_schema": null,
   "command": [
     "bash",
     "tools/build_rp2040.sh"
   ],
-  "evidence_class": "locked cross-build plus native descriptor/state-machine qualification; no physical USB/hardware acceptance"
+  "evidence_class": "locked cross-build and native software qualification; accepted hardware inputs from FNR-002; no new physical transport/RF/USB acceptance",
+  "hardware_reference_commit": "8d48cdde71ccba824436635858265cb31c4ed88f",
+  "uart": {
+    "baud": 115200,
+    "format": "8N1",
+    "flow_control": false,
+    "maximum_wire_frame_bytes": 277,
+    "rx_gpio": 1,
+    "tx_gpio": 0,
+    "software_rx_capacity_bytes": 1024
+  }
 }

@@ -82,7 +82,12 @@ Carry generic ESP-NOW datagrams and radio/control status across the board-intern
 
 The internal protocol must not name TiltMouse or mouse fields.
 
-If UART is confirmed, use the COBS + CRC bounded baseline unless evidence justifies otherwise.
+The accepted FNR-002 UART supports the
+[FNR-005 v1 software implementation](FNR-005-TRANSPORT.md): COBS + CRC16,
+bounded producer/consumer storage, foreground ESP TX, RP2040 IRQ RX, and
+generic failure/restart events. Its
+[production physical campaign](FNR-005-HARDWARE-HANDOFF.md) remains open under
+#6. Existing diagnostic UART evidence does not accept production framing.
 
 ## FNR-006 — Generic receiver core, profile dispatch and relative mouse
 

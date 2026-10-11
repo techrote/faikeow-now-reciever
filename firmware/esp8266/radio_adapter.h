@@ -11,6 +11,10 @@ void fnr_radio_restart(void);
 void fnr_radio_apply_config(const fnr_radio_config *config);
 bool fnr_radio_take_foreground(fnr_datagram *out);
 void fnr_radio_status_foreground(fnr_radio_ingress *out);
+/* Foreground lifecycle token, modulo 2^32; increments for EVERY start attempt,
+ * including disabled/error configurations. Not a saturating diagnostic or
+ * sender session. Callers must observe between 2^32 lifecycle operations. */
+uint32_t fnr_radio_generation_foreground(void);
 void fnr_radio_station_mac(uint8_t out[FNR_MAC_SIZE]);
 #ifdef __cplusplus
 }

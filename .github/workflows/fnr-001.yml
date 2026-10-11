@@ -1,7 +1,7 @@
 name: FNR platform CI
 on:
   push:
-    branches: [main, fnr-001-dual-firmware-ci, fnr-003-generic-tinyusb-hid]
+    branches: [main, fnr-001-dual-firmware-ci, fnr-003-generic-tinyusb-hid, fnr-005-software-transport]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
       - name: Whitespace and source integrity
         shell: bash
@@ -46,11 +47,13 @@ jobs:
           build/hardware-tools-test/bin/python tools/hardware/test_esptool_integration.py
 
   native:
-    name: Native tests (UBSan)
+    name: Native tests (UBSan and ASan)
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Configure
         run: |
           cmake -S . -B build/native -G Ninja -DCMAKE_BUILD_TYPE=Debug \
@@ -60,13 +63,22 @@ jobs:
         run: cmake --build build/native --parallel 2
       - name: Test
         run: ctest --test-dir build/native --output-on-failure
+      - name: Address and undefined sanitizer regression
+        run: |
+          cmake -S . -B build/native-asan -G Ninja -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_C_FLAGS="-fsanitize=address,undefined -fno-sanitize-recover=all" \
+            -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-sanitize-recover=all"
+          cmake --build build/native-asan --parallel 2
+          ctest --test-dir build/native-asan --output-on-failure
 
   rp2040:
-    name: RP2040 locked cross-build (TinyUSB HID)
+    name: RP2040 locked cross-build (UART transport and HID)
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Acquire exact dependencies
         run: python3 tools/acquire_deps.py --lane rp2040
       - name: Cross-compile
@@ -97,6 +109,8 @@ jobs:
             }
           done
           echo "PASS: production TinyUSB descriptor/lifecycle/service symbols linked"
+      - name: Verify production UART parser and consumer seam are linked
+        run: python3 tools/check_transport_symbols.py rp2040
       - name: Record UF2 hashes and manifest
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -111,19 +125,22 @@ jobs:
           cat build/rp2040/SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: fnr-003-rp2040-hid
+          name: fnr-005-rp2040-transport
           path: |
             build/rp2040/fnr_rp2040_hid.uf2
             build/rp2040/fnr_rp2040_hid.elf
             build/rp2040/SHA256SUMS
             build/rp2040/manifest.json
+            build/rp2040/TRANSPORT_SYMBOLS
 
   esp8266:
-    name: ESP8266 locked cross-build (radio ingress)
+    name: ESP8285 locked cross-build (radio ingress and UART transport)
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Acquire exact dependencies
         run: python3 tools/acquire_deps.py --lane esp
       - name: Cross-compile
@@ -144,7 +161,7 @@ jobs:
         run: |
           test -s build/esp8266/fnr_esp8266_ingress.bin
           test -s build/esp8266/fnr_esp8266_ingress.elf
-          .deps/xtensa/bin/xtensa-lx106-elf-nm build/esp8266/fnr_esp8266_ingress.elf | grep -q 'esp_now_register_recv_cb'
+          python3 tools/check_transport_symbols.py esp
           sha256sum build/esp8266/fnr_esp8266_ingress.bin build/esp8266/fnr_esp8266_ingress.elf > build/esp8266/SHA256SUMS
           python3 tools/artifact_manifest.py --lane esp --source-id "$FNR_SOURCE_ID" \
             --compiler .deps/xtensa/bin/xtensa-lx106-elf-gcc \
@@ -155,9 +172,10 @@ jobs:
           cat build/esp8266/SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: fnr-004-esp8266-ingress
+          name: fnr-005-esp8285-transport
           path: |
             build/esp8266/*.bin
             build/esp8266/*.elf
             build/esp8266/SHA256SUMS
             build/esp8266/manifest.json
+            build/esp8266/TRANSPORT_SYMBOLS

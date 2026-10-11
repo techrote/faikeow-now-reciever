@@ -134,16 +134,18 @@ locked dependencies, protocol/profile contracts and application acceptance.
 ## Internal link
 
 FNR-002 established UART0 GP0/GP1 at 115200 8N1 on both measured boards.
-FNR-005 owns production framing, separate from diagnostic framing. Preferred
-v0.1 framing remains:
+FNR-005 defines [internal protocol v1](docs/FNR-005-TRANSPORT.md), separate from
+FNR-002 diagnostic framing: COBS, zero delimiter, a 16-byte explicit header,
+little-endian length/sequence/transport generation, and CRC-16/CCITT-FALSE.
+It carries only `RADIO_DATAGRAM` and `RADIO_STATUS`; no control exchange is
+needed in v1. Maximum raw/encoded/wire sizes are 274/276/277 bytes.
 
-- COBS;
-- explicit version/type/length/local sequence;
-- CRC-16/CCITT;
-- bounded buffers;
-- deterministic resynchronization.
-
-The internal link carries generic ESP-NOW datagrams and radio/control status; it does not carry a mouse-specific frame type.
+The foreground ESP serializer and RP2040 UART0 IRQ/parser use fixed storage,
+explicit drops and sticky events before generic consumers may take data.
+The default radio remains unprovisioned and no transport output feeds HID.
+The software implementation does not establish production physical framing;
+[FNR-005's exact physical handoff](docs/FNR-005-HARDWARE-HANDOFF.md) remains open
+under #6. FNR-006 owns sender/session/freshness and profile interpretation.
 
 ## USB policy
 

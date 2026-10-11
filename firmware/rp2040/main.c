@@ -3,6 +3,7 @@
 #include "fnr/hid.h"
 #include "fnr/hid_relative_mouse.h"
 #include "usb_adapter.h"
+#include "transport_adapter.h"
 
 static fnr_hid_device fnr_usb_device;
 static fnr_relative_mouse_state fnr_mouse_state;
@@ -25,15 +26,17 @@ static bool fnr_usb_profile_init(void) {
 }
 
 int main(void) {
+    fnr_rp_transport_init();
     if (!fnr_usb_profile_init()) {
         for (;;) {
             tight_loop_contents();
         }
     }
 
-    /* Production firmware services USB only. FNR-003 deliberately has no
-     * synthetic mouse activity; FNR-006 will feed authorized logical input. */
+    /* UART reception continues in its bounded IRQ while USB is serviced.
+     * FNR-006 will consume framed input and feed authorized logical output. */
     for (;;) {
+        fnr_rp_transport_task();
         fnr_usb_adapter_task();
         tight_loop_contents();
     }

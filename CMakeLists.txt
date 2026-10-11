@@ -10,6 +10,9 @@ include(CTest)
 add_library(fnr_shared STATIC
   shared/src/datagram.c
   shared/src/radio_ingress.c
+  shared/src/transport.c
+  shared/src/transport_tx.c
+  shared/src/uart_buffer.c
   shared/src/hid.c
   shared/src/hid_relative_mouse.c)
 target_include_directories(fnr_shared PUBLIC shared/include)
@@ -34,3 +37,27 @@ add_executable(fnr_rf_diag_tests tests/native/test_rf_diag.cpp)
 target_include_directories(fnr_rf_diag_tests PRIVATE diagnostics/common)
 target_compile_options(fnr_rf_diag_tests PRIVATE -Wall -Wextra -Werror -UNDEBUG)
 add_test(NAME diagnostic_rf_payload_integrity COMMAND fnr_rf_diag_tests)
+add_executable(fnr_transport_tests tests/native/test_transport.cpp)
+target_link_libraries(fnr_transport_tests PRIVATE fnr_shared)
+target_compile_options(fnr_transport_tests PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME transport_codec_stream_ownership_properties COMMAND fnr_transport_tests)
+add_executable(fnr_transport_pipeline_tests tests/native/test_transport_pipeline.cpp)
+target_link_libraries(fnr_transport_pipeline_tests PRIVATE fnr_shared)
+target_compile_options(fnr_transport_pipeline_tests PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME transport_tx_uart_pipeline COMMAND fnr_transport_pipeline_tests)
+add_executable(fnr_transport_esp_adapter_tests
+  tests/native/test_transport_esp_adapter.cpp
+  firmware/esp8266/transport_adapter.cpp)
+target_include_directories(fnr_transport_esp_adapter_tests PRIVATE
+  tests/native/fake_esp firmware/esp8266)
+target_link_libraries(fnr_transport_esp_adapter_tests PRIVATE fnr_shared)
+target_compile_options(fnr_transport_esp_adapter_tests PRIVATE
+  -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME transport_esp_production_adapter COMMAND fnr_transport_esp_adapter_tests)
+add_executable(fnr_transport_rp_adapter_tests tests/native/test_transport_rp_adapter.c)
+target_include_directories(fnr_transport_rp_adapter_tests PRIVATE
+  tests/native/fake_pico firmware/rp2040)
+target_link_libraries(fnr_transport_rp_adapter_tests PRIVATE fnr_shared)
+target_compile_options(fnr_transport_rp_adapter_tests PRIVATE
+  -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME transport_rp_production_adapter COMMAND fnr_transport_rp_adapter_tests)

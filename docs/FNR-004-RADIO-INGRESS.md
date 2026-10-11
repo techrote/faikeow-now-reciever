@@ -16,8 +16,10 @@ all eight compile-time definitions:
 They are build parameters, not hard-coded source secrets. Alternatively,
 `fnr_radio_apply_config(const fnr_radio_config *)` accepts a copied foreground
 configuration and restarts reception; null revokes admission. This seam makes
-the real registration path link-reachable in an otherwise unprovisioned image. The build still uses
-an unverified ESP8285 flash surrogate. FNR-007 owns persisted configuration.
+the real registration path link-reachable in an otherwise unprovisioned image.
+The build uses the ESP8285 1 MiB target consistent with accepted FNR-002 identity.
+That hardware evidence is separate from software compilation. FNR-007 owns
+persisted configuration.
 The MAC admission check excludes zero, broadcast and multicast addresses.
 The exact MAC match is **not cryptographic sender authentication**.
 No infrastructure association, SoftAP, DHCP application or socket is used.
@@ -28,11 +30,11 @@ There is no RSSI field in this NONOS callback ABI.
 `fnr_radio_take_foreground(fnr_datagram *out)` returns false for no pending
 record, invalid receiver state or null output; success copies the entire owned
 record into caller storage (250-byte bounded payload, exact six-byte source,
-size). The optional weak C hook `fnr_radio_foreground_consume(const fnr_datagram *)`
-is called with a foreground-owned record (valid for that call only); absent a
-consumer, the newest record remains pending for explicit retrieval.
-At most one record is extracted per foreground iteration, with no assumed
-UART/SPI wiring. The record remains owned by the caller independently of further receive
+size). FNR-005's production foreground task now owns this explicit take seam;
+the former optional weak consumer in ESP `main.cpp` has been removed so there
+are no competing consumers. At most one record is extracted per foreground
+iteration, then serialized through the accepted UART configuration. The record
+remains owned by the caller independently of further receive
 callbacks. One pending record is held: **newest wins**, replacing an older
 unconsumed record and saturating the dropped counter. No event merging or
 hidden retransmission is performed. Order is the order of accepted callback
@@ -44,6 +46,13 @@ Reset invalidates the pending record and counts its discard. The status includes
 (channel + allowed MAC), state and accepted/rejected/loss counters, but no keys.
 The current implementation provisions one exact source MAC. Extending to a
 bounded peer list belongs to FNR-007.
+
+`fnr_radio_generation_foreground()` is an additional foreground lifecycle token.
+It advances modulo 2^32 on every start attempt, including unconfigured/error
+attempts, independently of saturating counters. FNR-005 observes it between
+lifecycle operations, retires old transport-owned records, advances its separate
+wire generation and emits a RESET status. It is not an RF sender session or a
+physical restart proof. See [the FNR-005 contract](FNR-005-TRANSPORT.md).
 
 ## Concurrency and callback behavior
 
@@ -76,6 +85,8 @@ configuration, filtering, overflow, ordering, restart and saturation.
 Target compilation/CI must independently establish the pinned SDK symbol/API
 compatibility, ELF/BIN provenance and RP2040 regression status. **Neither a
 cross-build nor native simulation proves physical ESP-NOW reception.**
-FNR-002 still needs to establish the actual chip, flashing/recovery, internal
-MCU interconnect and board resource contract. FNR-005 must attach its own
-framed generic consumer once that contract exists.
+FNR-002 has separately accepted the actual chip, flashing/recovery and internal
+UART contract. Its additional RF campaign passed 19/20 cases; the reproduced
+reverse channel-isolation anomaly remains open under #5. FNR-005's software
+consumer is now attached, while its [production physical framing campaign](FNR-005-HARDWARE-HANDOFF.md)
+remains separate. No new RF or hardware evidence is claimed by that integration.

@@ -18,6 +18,7 @@ static fnr_radio_ingress ingress = {};
 static bool now_active = false;
 static fnr_radio_config runtime_config = {};
 static volatile bool runtime_config_present = false;
+static uint32_t lifecycle_generation = 0; /* foreground owner only */
 static void rx(uint8_t *mac, uint8_t *bytes, uint8_t length) {
     noInterrupts();
     fnr_radio_receive(&ingress, mac, bytes, length);
@@ -40,6 +41,7 @@ static fnr_radio_config configured() {
     return c;
 }
 void fnr_radio_start(void) {
+    ++lifecycle_generation;
     if (now_active) {
         esp_now_unregister_recv_cb();
         esp_now_deinit();
@@ -99,6 +101,7 @@ void fnr_radio_status_foreground(fnr_radio_ingress *out) {
     fnr_radio_snapshot(&ingress,out);
     interrupts();
 }
+uint32_t fnr_radio_generation_foreground(void) { return lifecycle_generation; }
 void fnr_radio_station_mac(uint8_t out[FNR_MAC_SIZE]) {
     if (out) WiFi.macAddress(out);
 }
