@@ -19,6 +19,10 @@ radio-generated payload. UART and software-buffer errors are counted separately.
 Radio stats are: accepted requests, pattern errors, sequence discontinuities,
 streams sent, UART overruns, UART RX errors, CRC errors, length errors, and parser
 overflows. These are diagnostics, unrelated to FNR-005's production framing.
+The host `tools/hardware/link_capture.py` checks target topology and the radio
+write/readback record, captures bounded JSON lines, and rejects missing final
+markers, short duration, insufficient frames, differing MCU counters and any
+unexplained error/drop counter. Its outcome is smoke-only for a ten-second run.
 
 `RUN10` starts a smoke test; `RUN600` starts a 600-second test plus a two-second
 drain and final stats request. Capture CDC JSON output privately. Acceptance

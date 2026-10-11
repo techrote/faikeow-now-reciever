@@ -26,8 +26,8 @@
     {
       "name": "RP UART diagnostic",
       "file": "build/rp-link/fnr_link_diag.uf2",
-      "sha256": "84b0c482dc33ba0f4958c78db213ae5068972cf6b4eceec37e8f87835abb1791",
-      "source_content_committed_at": "5bff48cc8a00ae6685c5ccb6919e0d5b019fdd6e",
+      "sha256": "4f9db46f307fa89bb62e51b60108e2a0dc3cb16286bae1713d93dda0ab082ec6",
+      "source_content_committed_at": "8812c7b3d688c0fb9dad2df5897f0b1e36179aed",
       "physical_state": "NOT LOADED",
       "result": "PASS: native Windows cross-build"
     },
