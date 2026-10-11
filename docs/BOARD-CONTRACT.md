@@ -1,8 +1,8 @@
 # Clone-board contract — FNR-002, partial physical evidence
 
-**FNR-002 is OPEN. A has passed reversible image deployment/restoration and
-600-second UART integrity plus software fault/recovery tests. B qualification
-is in progress. Do not generalize Board A's measurements to B.**
+**FNR-002 is OPEN. Both boards independently passed reversible image
+deployment/restoration, diagnostic cold boot and 600-second UART integrity.
+Additional recovery, wiring, USB and RF observations remain separately gated.**
 Observations below were made on 2026-10-11 with native Windows 11 Pro USB access.
 The source/test ledger is in `evidence/FNR-002/`; original dumps, host inventory,
 complete device identifiers and raw serial logs remain outside Git.
@@ -10,7 +10,8 @@ complete device identifiers and raw serial logs remain outside Git.
 ## Physical identity and preservation
 
 The user designated two visually identical boards A and B and reported that one
-had previously been used. Board markings/revision and electrical measurements
+had previously been used, and that both came from the same order. The user has
+a multimeter available. Board markings/revision and electrical measurements
 have not been captured. Cable/port isolation established A at USB root port 1
 and B initially at root port 3 on the same observed hub. B was later connected
 at port 1; the guard refused its previous mapping, and read-only picotool
@@ -34,7 +35,7 @@ COM numbers and drive letters are enumeration observations, not board identities
 | Radio MAC | Read and privately recorded | Read and privately recorded; distinct from A |
 | Radio backup | Two matching 1 MiB reads, stub MD5 verified | Two matching 1 MiB reads, stub MD5 verified; differs from A |
 | Persistent writes in this campaign | Radio diagnostic/full original; accepted RP mouse-only image | Accepted RP HID/full original, labeled bridge; radio diagnostic |
-| Restoration | RP full original PASS; radio full original bytes PASS; approved diagnostic cold boot PASS; factory boot unverified | RP full original PASS; radio restoration pending |
+| Restoration | RP full original PASS; radio full original bytes PASS; approved diagnostic cold boot PASS; factory boot unverified | Independently RP and radio full originals restored exactly; approved radio diagnostic cold boot PASS; factory boot unverified |
 
 The first A preread covered the 16 MiB readable RP2040 XIP window, all `ff`.
 This is an address-window observation, **not evidence of a 16 MiB flash chip**.
@@ -58,8 +59,8 @@ Successful independent bidirectional ROM commands prove the GPIO0/1 route on
 both boards. Each radio has two matching full backups. B's bare-ROM flash-ID
 query initially returned zero; the official RAM stub returned the independently
 verified `5e 32 14` ID. Zero is retained as an unsuccessful initial observation.
-115200 baud, 8N1, no flow control worked for ROM identity, backup and A's
-ten-minute integrity run. Production bandwidth headroom remains dependent on
+115200 baud, 8N1, no flow control worked for ROM identity, backup and each board's
+independent ten-minute integrity run. Production bandwidth headroom remains dependent on
 the later production framing and cadence requirements.
 
 The input-only SRAM observer enabled no GPIO output drivers. It observed GPIO1
@@ -228,7 +229,7 @@ echo/stream receive payload throughput was approximately 4,102 B/s over the
 602-second observation including drain. These are measured diagnostic loads,
 not a production bandwidth guarantee.
 
-A also passed contiguous 20-frame bursts, deliberate CRC damage/truncation/
+Each board independently passed contiguous 20-frame bursts, deliberate CRC damage/truncation/
 bounded-overflow resynchronization, radio application restart during traffic,
 and RP2040 return to ROM while the radio continued streaming. Each restart was
 followed by a clean 20-frame recovery burst. The deliberate damage produced
@@ -236,9 +237,20 @@ exactly one CRC, length and overflow count; losses during MCU restart were
 intentional and excluded from the clean qualification. Radio reset used its
 application command; no unknown reset GPIO was driven.
 
+Board B independently completed 600.000002 active seconds, 11,998 requests and
+matching echoes, and 12,039 independent radio streams including drain. Every
+CRC, pattern, sequence, UART and buffer error counter was zero, with matching
+radio counters. Its observed payload counts matched A's; separate firmware,
+board and source provenance is retained in the ledger. B's complete original
+radio image was restored with unchanged headers and exact 1 MiB readback.
+After a user-confirmed cold reconnect, it remained silent at 115200/9600/74880,
+consistent with the pre-write software-boot observation. Factory application
+function remains unverified. Redeploying the approved diagnostic passed exact
+readback and a user-confirmed cold-boot CRC-protected identity probe.
+
 The isolated link diagnostics, build configuration and `RUN10`/`RUN600` commands
-are described in `diagnostics/README.md`. B's independent deployment/recovery,
-600-second integrity and fault cases, full USB lifecycle/HID behavior, RF pair
+are described in `diagnostics/README.md`. Full USB
+lifecycle/HID behavior, RF pair
 tests, electrical/header facts and full FNR-008
 reference TiltMouse interoperability remain pending.
 

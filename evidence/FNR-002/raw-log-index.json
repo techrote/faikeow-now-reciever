@@ -558,6 +558,11 @@
       "sha256": "fa502fc738452d78d954e7f3283bd5d9d429d25075e411fbafea4af4dfa69d69"
     },
     {
+      "private_relative_path": "board-B-before-hid-ram-inventory.json",
+      "size_bytes": 14594,
+      "sha256": "26178a999d0ad4a685b27fd1ed03619fef9bd4376a55390d10b1ab4ebb3f7e86"
+    },
+    {
       "private_relative_path": "board-B-bootsel.json",
       "size_bytes": 3967,
       "sha256": "0c6295478a344a70f537e074843010f835ecfe88993b961787da610230dc2887"
@@ -573,9 +578,34 @@
       "sha256": "57ae03a626ebc58d83b4a5a2ddc773033088ea03be80e12cf0b9d871d29da2a1"
     },
     {
+      "private_relative_path": "board-B-checker-before-faults-inventory.json",
+      "size_bytes": 14596,
+      "sha256": "93457f5b5749b2851cd651a506c0ee424f28ed10fe5bb4db2ff9872adb005529"
+    },
+    {
+      "private_relative_path": "board-B-factory-image-structure.txt",
+      "size_bytes": 328,
+      "sha256": "036f12e2f4d1a30602459e775a2695d77b0a1b1a917821e83f23502b7d016ae6"
+    },
+    {
       "private_relative_path": "board-B-far-button-inventory.json",
       "size_bytes": 11187,
       "sha256": "5bd1b20c9d7d533d967b1b207891c05e1fec7c9dcbab94841b698cca2b45f006"
+    },
+    {
+      "private_relative_path": "board-B-faults-bridge-load/inventory.json",
+      "size_bytes": 15826,
+      "sha256": "ac8085cbec814020a1ad4dd3d4a153b7365158639b9ed805d0fcd4ec3616e486"
+    },
+    {
+      "private_relative_path": "board-B-faults-bridge-load/load.txt",
+      "size_bytes": 1161,
+      "sha256": "db58c6809adb48e05970eef6366bb7eec75ced9b5bd34ba9607028975851862f"
+    },
+    {
+      "private_relative_path": "board-B-faults-bridge-load/result.json",
+      "size_bytes": 588,
+      "sha256": "cd389fed5ff5cbfd0c823fd6450b55afd03820382a3c9c28456b648e4feedf61"
     },
     {
       "private_relative_path": "board-B-flash-bridge-cdc.json",
@@ -593,6 +623,41 @@
       "sha256": "8f83be85aee72752f5ba85f37baf41e0c9c680b847e350584b0a01e49e4a45d6"
     },
     {
+      "private_relative_path": "board-B-hid-descriptors-1/inventory.json",
+      "size_bytes": 12251,
+      "sha256": "c32a9278b76511c17ed930639eb1f6159647296d9b5a7be95975cf803ba0fdf8"
+    },
+    {
+      "private_relative_path": "board-B-hid-descriptors-1/result.json",
+      "size_bytes": 901,
+      "sha256": "d65a98c187cf8e2cf65d39d9c0c9d0feb026fcc086ded3aa14cb5a211fecc8f4"
+    },
+    {
+      "private_relative_path": "board-B-hid-idle-1/inventory.json",
+      "size_bytes": 12251,
+      "sha256": "a80e75cfd80200e7b5e0133cc089beca64fbfd2db216f611070a7443f5a8dc2b"
+    },
+    {
+      "private_relative_path": "board-B-hid-idle-1/path-comparison.json",
+      "size_bytes": 215,
+      "sha256": "34fb2717ced88650aa936916d3d84054bf6228fbe2c8d4455b6e707b96e291ae"
+    },
+    {
+      "private_relative_path": "board-B-hid-idle-1/result.json",
+      "size_bytes": 389,
+      "sha256": "6164f0b1eddf871ec3d28cb80a76132ba06d9ba6d78aa45d25b1c6c60481bd85"
+    },
+    {
+      "private_relative_path": "board-B-hid-idle-2/inventory.json",
+      "size_bytes": 12251,
+      "sha256": "7104c312a12f799ee0ae38cd4da73fbc3667efbdab9a0b0a223aae9020ca51bf"
+    },
+    {
+      "private_relative_path": "board-B-hid-idle-2/result.json",
+      "size_bytes": 571,
+      "sha256": "fbaa3c249a6d9ad9857ed7be9d3e37014365a65996019e865d960defcf1cc7ca"
+    },
+    {
       "private_relative_path": "board-B-hid-probe-1/inventory.json",
       "size_bytes": 12252,
       "sha256": "508039f1d20bdeafb5280ffc10fb21efefcdacb78e1c90dd053f42c73e24188d"
@@ -603,9 +668,79 @@
       "sha256": "1f11b7a8ce45a6146a2f16d258073afc9f6d3595016597401de70113471e52d9"
     },
     {
+      "private_relative_path": "board-B-hid-ram-load/inventory.json",
+      "size_bytes": 15825,
+      "sha256": "37820c503e00fa4ede2131cff286351cde280112167572bd041109454eb5e137"
+    },
+    {
+      "private_relative_path": "board-B-hid-ram-load/load.txt",
+      "size_bytes": 795,
+      "sha256": "43e1c4821efc72158abb27316ac12bbba30db94d94403018e4eb4331c5d4f46b"
+    },
+    {
+      "private_relative_path": "board-B-hid-ram-load/result.json",
+      "size_bytes": 579,
+      "sha256": "11bbd62427a1716515f8d2b09be82fbadd7a571f7188bfc824295de5cb590853"
+    },
+    {
+      "private_relative_path": "board-B-hid-ram-probe-1/inventory.json",
+      "size_bytes": 12251,
+      "sha256": "9bce7f01f17a6bc41c0e9ae53adfc6fe33def49d1486ef24ca5c0bf5ffe172e6"
+    },
+    {
+      "private_relative_path": "board-B-hid-ram-probe-1/result.json",
+      "size_bytes": 955,
+      "sha256": "42bf2e77bab7273ceb3bb459bc925a318ae9fd7410af4ba5e3aa45bfdb63b9b3"
+    },
+    {
       "private_relative_path": "board-B-info-unfiltered.txt",
       "size_bytes": 490,
       "sha256": "0cb62253f835e1d62733aa62e2b595aaabe70587281625dc744c745862dd573c"
+    },
+    {
+      "private_relative_path": "board-B-link-checker-load/inventory.json",
+      "size_bytes": 15826,
+      "sha256": "f900067e649071e399f52b2c62022085178a1153c8328cef9a4585837cbe4c08"
+    },
+    {
+      "private_relative_path": "board-B-link-checker-load/load.txt",
+      "size_bytes": 1283,
+      "sha256": "94db6b1a594567c9c28cf11db8c3adecb404954b1241e22e24360f6f23ce574c"
+    },
+    {
+      "private_relative_path": "board-B-link-checker-load/result.json",
+      "size_bytes": 572,
+      "sha256": "012fd23ceb1d2c08f47506d9c986511c81ebeae3bf8cca246cca4fdd7548969a"
+    },
+    {
+      "private_relative_path": "board-B-link-smoke-1/capture.jsonl",
+      "size_bytes": 971,
+      "sha256": "be7685c3a3bd1e32e272adf2542410ebbec66b9e841cc37739be1e00f9f446fd"
+    },
+    {
+      "private_relative_path": "board-B-link-smoke-1/inventory.json",
+      "size_bytes": 14596,
+      "sha256": "9968699b474d1309f2b1a34171dd10a68f1f51b25d1233f91c9dc29134261a8c"
+    },
+    {
+      "private_relative_path": "board-B-link-smoke-1/result.json",
+      "size_bytes": 1211,
+      "sha256": "1a582f7803ab07b9ebe4686ebef43cffb2e34ca96f5fc8084c6fb766b08fcba5"
+    },
+    {
+      "private_relative_path": "board-B-link-soak-1/capture.jsonl",
+      "size_bytes": 10509,
+      "sha256": "5574a301a82cb6da481b0efcf7276acd2892e6f0dda325a03d8090d0a436129b"
+    },
+    {
+      "private_relative_path": "board-B-link-soak-1/inventory.json",
+      "size_bytes": 14596,
+      "sha256": "19a8b908d0c902f9fae34a00ab69f571209ba9294730a4933bd322a51a274967"
+    },
+    {
+      "private_relative_path": "board-B-link-soak-1/result.json",
+      "size_bytes": 1235,
+      "sha256": "df48a76e05ceabaaf4592bed756fb5940951d3f4c909a004d2edf3a1cca427cb"
     },
     {
       "private_relative_path": "board-B-observer-cdc.json",
@@ -653,6 +788,16 @@
       "sha256": "e29b10f1236e1bf45fd06508b6036fd5f4b14fe77df1f86e0cdb126112363c76"
     },
     {
+      "private_relative_path": "board-B-radio-diagnostic-cold-boot-1/inventory.json",
+      "size_bytes": 14567,
+      "sha256": "63143f94bd2a81025dd369c0140fb3c21fcfabd51e223c1055440e5e0eff75e1"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-cold-boot-1/result.json",
+      "size_bytes": 660,
+      "sha256": "60b970c320fabe2f56e25b64c458558eca90400a27ea2f1bd2125f62aacd993b"
+    },
+    {
       "private_relative_path": "board-B-radio-diagnostic-software-boot-1/inventory.json",
       "size_bytes": 14567,
       "sha256": "c46487a4a5069a6652e62c4d3e13cd49fefa9f25bd793cbd4d0ef421ac491d6e"
@@ -674,6 +819,21 @@
     },
     {
       "private_relative_path": "board-B-radio-diagnostic-write-1/write-readback.txt",
+      "size_bytes": 1150,
+      "sha256": "5bf6cd5601b9f829455ca0eb8392e462f7ccd2795cdd307e36d7ae087f639140"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-write-2/inventory.json",
+      "size_bytes": 14566,
+      "sha256": "10ce310f69f429cba79c3a70944b530f0b41140220d16dd20c7074a0f3c10a19"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-write-2/result.json",
+      "size_bytes": 809,
+      "sha256": "ee5a7db971f41de0b5b8506033ccd9e85ee824bb9f1dd1417236080e2fa39a07"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-write-2/write-readback.txt",
       "size_bytes": 1150,
       "sha256": "5bf6cd5601b9f829455ca0eb8392e462f7ccd2795cdd307e36d7ae087f639140"
     },
@@ -721,6 +881,31 @@
       "private_relative_path": "board-B-radio-original/read-2.txt",
       "size_bytes": 343,
       "sha256": "7fe380488286fbefce64f382286cccbc7784570542964e1c9b97bf01121bfed7"
+    },
+    {
+      "private_relative_path": "board-B-radio-restoration-1/inventory.json",
+      "size_bytes": 14567,
+      "sha256": "5a8c9ed315f45fc4bff55d2e9928e7fedb0370605b587869297bea0900edda5a"
+    },
+    {
+      "private_relative_path": "board-B-radio-restoration-1/result.json",
+      "size_bytes": 845,
+      "sha256": "d584b5d7ed290284d7de9944fa17159e4f68d42d3e72da14b9edbb753dc7dda8"
+    },
+    {
+      "private_relative_path": "board-B-radio-restoration-1/write-readback.txt",
+      "size_bytes": 1876,
+      "sha256": "165957ec04efaa649e66228cce2170019bf61477028531066f84b4cdd3bfa5da"
+    },
+    {
+      "private_relative_path": "board-B-radio-restored-cold-boot.json",
+      "size_bytes": 866,
+      "sha256": "31cc3ca906daa330ae0e4715b2b17349f1e4f1aa6e2936c8cd55de165e032114"
+    },
+    {
+      "private_relative_path": "board-B-radio-restored-cold-inventory.json",
+      "size_bytes": 14566,
+      "sha256": "9944ea12c2ea84ffb48839cebc2d61addbd483956581918b1ea511b237d8f19c"
     },
     {
       "private_relative_path": "board-B-radio-rom-bridge-load/inventory.json",
@@ -946,6 +1131,41 @@
       "private_relative_path": "board-B-topology-rebind-1.json",
       "size_bytes": 896,
       "sha256": "fbccbae09def6c4b9cb7b9ad55488e2d4c1a8f770feecbbaa6c966ffebf9be50"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/after-rp-reset-inventory.json",
+      "size_bytes": 14595,
+      "sha256": "161949b51773cb7d24e8579aa646812a85d7d6f73ad20485837e098f4f6aaba3"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/capture.jsonl",
+      "size_bytes": 41282,
+      "sha256": "641b128c5aaeb4288f48325780b2072b47f22164a9607036666d6842c19a65c5"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/initial-inventory.json",
+      "size_bytes": 14596,
+      "sha256": "53908238deab8a4dcffdfcf4b0fa6805b3f3acafc578d01d40dfd9330c4be1e9"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/result.json",
+      "size_bytes": 2189,
+      "sha256": "245d69901f33ec378e5047747cd1e5d813266bf65377f287dd577c45f92c50d6"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/rp-reload/inventory.json",
+      "size_bytes": 15826,
+      "sha256": "f8ba2323df0f15a2a363400c8063cfc1a8c1ea8c0f9a20357770e95b766e0d34"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/rp-reload/load.txt",
+      "size_bytes": 1161,
+      "sha256": "db58c6809adb48e05970eef6366bb7eec75ced9b5bd34ba9607028975851862f"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/rp-reload/result.json",
+      "size_bytes": 588,
+      "sha256": "3f3c7007a8a6cd80cca68795a126fb4ca7cabd388beb4a824757601952a2bc76"
     },
     {
       "private_relative_path": "board-identities.json",
