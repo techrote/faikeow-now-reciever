@@ -105,6 +105,7 @@ jobs:
         run: |
           test -s build/esp8266/fnr_esp8266_ingress.bin
           test -s build/esp8266/fnr_esp8266_ingress.elf
+          .deps/xtensa/bin/xtensa-lx106-elf-nm build/esp8266/fnr_esp8266_ingress.elf | grep -q 'esp_now_register_recv_cb'
           sha256sum build/esp8266/fnr_esp8266_ingress.bin build/esp8266/fnr_esp8266_ingress.elf > build/esp8266/SHA256SUMS
           python3 tools/artifact_manifest.py --lane esp --source-id "$FNR_SOURCE_ID" \
             --compiler .deps/xtensa/bin/xtensa-lx106-elf-gcc \
