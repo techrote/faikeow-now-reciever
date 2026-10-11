@@ -86,6 +86,28 @@ v0.1 implements one production profile:
 
 `techrote/ESP32-QMI8658C-TiltMouse` is the first reference sender and physical interoperability target, not the product definition of this repository.
 
+## Developer builds (FNR-001)
+
+The repository contains buildable **inert firmware foundations**, not functioning
+ESP-NOW reception or USB HID. Do **not flash these artifacts as a working dongle**.
+
+A canonical Linux x86_64 environment (including WSL2) can run:
+
+```sh
+python3 tools/acquire_deps.py --lane rp2040
+bash tools/build_rp2040.sh
+python3 tools/acquire_deps.py --lane esp
+FNR_SOURCE_ID="$(git rev-parse HEAD)" bash tools/build_esp.sh
+cmake -S . -B build/native -G Ninja
+cmake --build build/native
+ctest --test-dir build/native --output-on-failure
+```
+
+The acquisition step downloads/checks explicitly pinned dependencies; build scripts
+do not fetch SDKs implicitly. See [exact commands and limitations](docs/05-BUILDING.md)
+and [toolchain provenance](docs/prepasses/FNR-001-DEPENDENCIES.md).
+CI runs both target cross-builds and produces separate checksummed manifests.
+
 ## Programme
 
 - [#1 — v0.1 programme tracker](https://github.com/techrote/faikeow-now-reciever/issues/1)

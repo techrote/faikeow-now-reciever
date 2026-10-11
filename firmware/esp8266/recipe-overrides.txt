@@ -1,0 +1,7 @@
+# makeEspArduino first-definition-wins overrides. Not a patch to upstream files.
+build.sdk=NONOSDK22x_190703
+build.stdcpp_level=-std=gnu++17
+build.exception_flags=-fno-exceptions
+build.stdcpp_lib=-lstdc++
+# No sketch globals/options feature: command-line options are explicit instead.
+recipe.hooks.prebuild.2.pattern=true

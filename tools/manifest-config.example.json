@@ -1,0 +1,18 @@
+{
+  "board": "compile-surrogate-only",
+  "flash": {
+    "size_bytes": 1048576,
+    "mode": "dout",
+    "clock_mhz": 40,
+    "measured": false
+  },
+  "profile": "none/inert",
+  "platform_protocol": null,
+  "internal_link_protocol": null,
+  "profile_schema": null,
+  "command": [
+    "bash",
+    "tools/build_esp.sh"
+  ],
+  "evidence_class": "unexecuted-example"
+}
