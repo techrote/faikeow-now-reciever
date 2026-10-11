@@ -65,7 +65,7 @@
       "mouse_caps_match": true,
       "neutral_get_report": false,
       "source_dirty": true,
-      "probe_source_committed_at": "4ce4dc2",
+      "probe_source_committed_at": "4ce4dc2f7a2538a3404b771a945d62851ed8b7c4",
       "raw_manifest": "board-A-hid-probe-1/result.json",
       "enumeration_result": "PASS",
       "neutral_report_result": "BLOCKED: Windows HidD_GetInputReport returned error 1; no report observed"

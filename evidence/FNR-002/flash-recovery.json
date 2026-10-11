@@ -23,7 +23,7 @@
     "radio_rom_access": "PASS",
     "radio_backup": "PASS",
     "radio_flash_write_restore": "PASS: exact diagnostic and full original readbacks; original application boot unverified",
-    "factory_radio_boot": "NOT TESTED: no AT response observed after software boot or confirmed cold boot at 115200, 9600, 74880; firmware markers alone do not establish AT behavior",
+    "factory_radio_boot": "BLOCKED: boot confirmation unavailable; no AT response after software boot or confirmed cold boot at 115200, 9600, 74880; no pre-write response baseline",
     "radio_diagnostic_deployment": {
       "board": "A",
       "mode": "diagnostic",
@@ -65,7 +65,8 @@
       "boot_observed": true,
       "raw_manifest": "board-A-rp-hid-write-1/result.json"
     },
-    "factory_boot_probe_raw_manifest": "board-A-radio-restored-cold-boot.json"
+    "factory_boot_probe_raw_manifest": "board-A-radio-restored-cold-boot.json",
+    "factory_at_probe_result": "FAIL: expected OK response was not observed; this does not isolate a firmware or hardware fault"
   },
   "B": {
     "rp_bootsel_physical": "PASS",
