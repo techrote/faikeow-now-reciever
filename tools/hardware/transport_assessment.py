@@ -68,8 +68,16 @@ def assess_traffic(rp_before, rp_after, esp_before, esp_after, *, count, length,
         errors.append('UART/ring/parser byte disagreement')
     if delivered + rx_drop != sent:
         errors.append('consumer ownership/replacement disagreement')
+    if delta(rp_before['parser'], rp_after['parser'], 'datagrams_consumed') != delivered + 1:
+        errors.append('consumer handoff counter disagreement')
     if delta(rp_before['parser'], rp_after['parser'], 'datagrams_dropped') != rx_drop:
         errors.append('unexplained consumer retirement')
+    status_drop = delta(rp_before['parser'], rp_after['parser'], 'status_dropped')
+    if (delta(rp_before['parser'], rp_after['parser'], 'status_consumed') != delta(rp_before, rp_after, 'statuses') or
+            delta(rp_before, rp_after, 'statuses') + status_drop != status or
+            status_drop != delta(rp_before['parser'], rp_after['parser'], 'status_replaced') or
+            (mode != 'consumer_delay' and status_drop)):
+        errors.append('status handoff/replacement disagreement')
     for key in ('pattern_errors', 'metadata_errors', 'duplicates', 'backwards', 'commands_bad'):
         if delta(rp_before, rp_after, key): errors.append('observer ' + key)
     for key in ('command_errors', 'invalid_offers', 'aborted', 'raw_written', 'uart_overrun', 'uart_rx_error'):
@@ -95,4 +103,32 @@ def assess_traffic(rp_before, rp_after, esp_before, esp_after, *, count, length,
         errors.append('consumer payload byte disagreement')
     if esp_after.get('active_us', -1) < minimum_us:
         errors.append('insufficient active duration')
+    return errors
+
+
+def assess_corruption(before, after, *, expected_rejections, oversized=False, empty=False):
+    """Assess a bad-only phase between drained telemetry boundaries.
+
+    Exactly one new telemetry datagram is valid; no pattern record may escape.
+    Recovery traffic is separately assessed with assess_traffic.
+    """
+    errors = []
+    reject_names = ['bad_cobs', 'bad_crc', 'bad_length', 'bad_version', 'bad_type', 'bad_payload', 'oversized_frames']
+    observed = {key: delta(before['parser'], after['parser'], key) for key in reject_names}
+    if sum(observed.values()) != expected_rejections:
+        errors.append('rejection count disagreement')
+    if oversized and observed['oversized_frames'] != expected_rejections:
+        errors.append('oversize boundary not observed')
+    if empty and delta(before['parser'], after['parser'], 'empty_delimiters') < 8:
+        errors.append('repeated delimiters not observed')
+    if delta(before, after, 'delivered') or delta(before, after, 'statuses'):
+        errors.append('invalid payload escaped')
+    if delta(before['parser'], after['parser'], 'frames_valid') != 1:
+        errors.append('unexpected valid frame or absent telemetry')
+    for key in ('pattern_errors', 'metadata_errors', 'duplicates', 'backwards', 'commands_bad'):
+        if delta(before, after, key): errors.append('observer ' + key)
+    for key in ('framing', 'parity', 'breaks', 'overruns'):
+        if delta(before, after, key): errors.append('unrelated UART fault')
+    if delta(before['uart'], after['uart'], 'overflows'):
+        errors.append('unrelated ring overflow')
     return errors

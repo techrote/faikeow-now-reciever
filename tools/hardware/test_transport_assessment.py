@@ -1,15 +1,16 @@
 """Synthetic FNR-005 assessment/guard regressions; never physical evidence."""
 import copy
 import unittest
-from transport_assessment import ESP_FIELDS, PARSER_ERRORS, assess_traffic, esp_values
+from transport_assessment import ESP_FIELDS, PARSER_ERRORS, assess_traffic, assess_corruption, esp_values
 from transport_capture import validate_plan, validate_selected_cdc
 
 
 class AssessmentTests(unittest.TestCase):
     def setUp(self):
         parser = dict.fromkeys(PARSER_ERRORS + ['bytes_received', 'frames_valid', 'datagrams_received',
-            'status_received', 'datagrams_replaced', 'datagrams_dropped'], 0)
-        self.before = dict.fromkeys(['delivered', 'pattern_errors', 'metadata_errors', 'duplicates',
+            'status_received', 'datagrams_replaced', 'datagrams_dropped', 'datagrams_consumed',
+            'status_consumed', 'status_dropped', 'status_replaced', 'empty_delimiters'], 0)
+        self.before = dict.fromkeys(['delivered', 'statuses', 'pattern_errors', 'metadata_errors', 'duplicates',
             'backwards', 'commands_bad', 'gaps', 'payload_bytes', 'framing', 'parity', 'breaks', 'overruns',
             'datagram_pending', 'status_pending', 'encoded_pending', 'ring_pending'], 0)
         self.before.update(parser=parser, uart=dict.fromkeys(['received', 'popped', 'dropped', 'overflows', 'faults'], 0), digest='0000000000000007')
@@ -21,8 +22,9 @@ class AssessmentTests(unittest.TestCase):
             sent_data=100, sent_status=1, frames_started=102, frames_completed=102,
             bytes_written=27870, hash_lo=7)
         self.e1.update(values=[values[k] for k in ESP_FIELDS], active_us=600000000)
-        self.after.update(delivered=100, payload_bytes=25000)
-        self.after['parser'].update(bytes_received=27870, frames_valid=102, datagrams_received=101, status_received=1)
+        self.after.update(delivered=100, statuses=1, payload_bytes=25000)
+        self.after['parser'].update(bytes_received=27870, frames_valid=102, datagrams_received=101,
+            status_received=1, datagrams_consumed=101, status_consumed=1)
         self.after['uart'].update(received=27870, popped=27870)
 
     def assess(self, **kwargs):
@@ -67,7 +69,7 @@ class AssessmentTests(unittest.TestCase):
         self.e1['values'][ESP_FIELDS.index('frames_completed')] = 82
         self.e1['values'][ESP_FIELDS.index('bytes_written')] = 22350
         self.after.update(delivered=80, payload_bytes=20000, gaps=20)
-        self.after['parser'].update(datagrams_received=81, frames_valid=82, bytes_received=22350)
+        self.after['parser'].update(datagrams_received=81, datagrams_consumed=81, frames_valid=82, bytes_received=22350)
         self.after['uart'].update(received=22350, popped=22350)
         self.assertEqual(self.assess(mode='tx_overload'), [])
         self.after['parser']['bad_crc'] = 1
@@ -75,7 +77,7 @@ class AssessmentTests(unittest.TestCase):
 
     def test_consumer_delay_has_separate_drop_policy(self):
         self.after.update(delivered=80, payload_bytes=20000, gaps=20, digest='0000000000000008')
-        self.after['parser'].update(datagrams_replaced=20, datagrams_dropped=20)
+        self.after['parser'].update(datagrams_replaced=20, datagrams_dropped=20, datagrams_consumed=81)
         self.assertEqual(self.assess(mode='consumer_delay'), [])
         self.assertTrue(self.assess())
         self.after['parser']['datagrams_dropped'] = 21
@@ -91,6 +93,18 @@ class AssessmentTests(unittest.TestCase):
         self.before['delivered'] = 0; self.after['delivered'] = 0xffffffff
         with self.assertRaises(ValueError): self.assess()
         with self.assertRaises(ValueError): esp_values({'event': 'esp', 'values': [0]})
+
+    def test_corruption_requires_rejection_and_zero_escaped_payloads(self):
+        after = copy.deepcopy(self.before)
+        after['parser'].update(bad_crc=1, frames_valid=1)
+        self.assertEqual(assess_corruption(self.before, after, expected_rejections=1), [])
+        after['delivered'] = 1
+        self.assertIn('invalid payload escaped', assess_corruption(self.before, after, expected_rejections=1))
+        after['delivered'] = 0; after['parser']['bad_crc'] = 0
+        self.assertTrue(assess_corruption(self.before, after, expected_rejections=1))
+        after['parser']['oversized_frames'] = 1
+        self.assertEqual(assess_corruption(self.before, after, expected_rejections=1, oversized=True), [])
+        self.assertTrue(assess_corruption(self.before, after, expected_rejections=1, empty=True))
 
 
 class GuardTests(unittest.TestCase):
