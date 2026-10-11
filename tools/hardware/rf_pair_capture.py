@@ -37,11 +37,15 @@ def validate_pair(devices, identities, ports):
             raise ValueError('Explicit port/fixture label/topology mismatch')
 
 
-def assess(tx, rx, kind, count, sender_mac, receive_channel=None, transmit_channel=None):
+def assess(tx, rx, kind, count, sender_mac, receive_channel=None, transmit_channel=None,
+           power_limit_qdbm=None):
     reasons = []
     if ((receive_channel is not None and rx['channel'] != receive_channel)
             or (transmit_channel is not None and tx['channel'] != transmit_channel)):
         reasons.append('final SDK channel differs from requested configuration')
+    if power_limit_qdbm is not None and any(
+            sample.get('power_limit_qdbm') != power_limit_qdbm for sample in (tx, rx)):
+        reasons.append('final diagnostic power ceiling differs from request')
     if tx['attempted'] != count or tx['queued'] != count or tx['enqueue_fail'] or tx['outstanding']:
         reasons.append('TX queue/callback completion')
     if tx['tx_ok'] + tx['tx_callback_fail'] != count:
@@ -199,7 +203,8 @@ def main():
                 tx = wait_event(sender, 'tx_end', count * spacing / 1000 + 30)
                 time.sleep(.1)
                 rx = command(receiver, 'STATS')
-                failures = assess(tx, rx, kind, count, macs[sender], args.receive_channel, channel)
+                failures = assess(tx, rx, kind, count, macs[sender], args.receive_channel, channel,
+                                  args.power_limit_qdbm)
                 result = {'sender': sender, 'receiver': receiver, 'case': kind, 'length': length,
                           'count': count, 'interval_ms': spacing, 'tx_channel': channel,
                           'rx_channel': args.receive_channel,

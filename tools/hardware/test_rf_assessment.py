@@ -67,6 +67,23 @@ class RfAssessmentTests(unittest.TestCase):
             with self.assertRaises(argparse.ArgumentTypeError):
                 parse(value)
 
+    def test_power_comparison_requires_matching_final_requested_ceilings(self):
+        def check():
+            return assess(self.tx, self.rx, 'wrong_channel', 100, self.peer, 1, 6, 0)
+        self.assertIn('final diagnostic power ceiling differs from request', check())
+        self.tx['power_limit_qdbm'] = self.rx['power_limit_qdbm'] = 0
+        self.assertEqual(check(), [])
+        self.tx['power_limit_qdbm'] = 82
+        self.assertIn('final diagnostic power ceiling differs from request', check())
+
+    def test_power_option_includes_both_sdk_endpoints(self):
+        parse = bounded_integer(0, 82)
+        self.assertEqual(parse('0'), 0)
+        self.assertEqual(parse('82'), 82)
+        for value in ('-1', '83'):
+            with self.assertRaises(argparse.ArgumentTypeError):
+                parse(value)
+
 
 if __name__ == '__main__':
     unittest.main()
