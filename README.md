@@ -86,10 +86,12 @@ v0.1 implements one production profile:
 
 `techrote/ESP32-QMI8658C-TiltMouse` is the first reference sender and physical interoperability target, not the product definition of this repository.
 
-## Developer builds (FNR-001)
+## Developer builds (FNR-001 / FNR-004)
 
-The repository contains buildable **inert firmware foundations**, not functioning
-ESP-NOW reception or USB HID. Do **not flash these artifacts as a working dongle**.
+The RP2040 build remains inert. The ESP8266 build contains real ESP-NOW
+initialization and bounded generic radio ingress but **defaults unprovisioned**;
+physical reception, board wiring and complete USB HID functionality are
+not yet accepted. Do **not flash these as a working dongle**.
 
 A canonical Linux x86_64 environment (including WSL2) can run:
 
