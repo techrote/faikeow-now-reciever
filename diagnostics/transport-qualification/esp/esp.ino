@@ -4,6 +4,7 @@
  * Ordinary records still traverse rx -> real foreground take -> real TX task.
  * Raw damage stimuli deliberately bypass TX framing, never the RP parser. */
 #include "pattern.h"
+#include <ESP8266WiFi.h> /* Explicit dependency for makeEspArduino's source scanner. */
 #include "radio_adapter.cpp"
 #include "transport_adapter.cpp"
 #ifndef FNR_SOURCE_ID
@@ -11,6 +12,7 @@
 #endif
 #define Q_STRING_INNER(x) #x
 #define Q_STRING(x) Q_STRING_INNER(x)
+static_assert(sizeof(Q_STRING(FNR_SOURCE_ID)) == 41, "Exact 40-character source SHA required");
 static uint32_t generated, next_id, remaining, interval_us, next_due;
 static uint32_t sent_data, sent_status, raw_written, command_errors;
 static uint64_t sent_hash = UINT64_C(14695981039346656037);

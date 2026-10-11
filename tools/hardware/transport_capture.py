@@ -158,6 +158,7 @@ def main():
                     raise ValueError('Observer/source/RP UID mismatch; no stimulus sent')
                 # Qualification telemetry uses production CRC framing. Compare
                 # its actual radio identity with the preserved deployment target.
+                send('X ZERO'); receive(.1)  # explicit post-load/watchdog boundary
                 send('X SNAP')
                 radio = receive(5, 'esp')
                 expected_mac = manifest['radio_mac']

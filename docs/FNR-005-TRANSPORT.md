@@ -438,7 +438,7 @@ separately rather than treating this protocol reference as a CI result.
 
 The accepted FNR-002 pins, rate and diagnostic integrity remain inputs. New
 production-frame transit, sustained integrity, overload accounting, physical
-restart/recovery and ISR/foreground behavior on both boards remain the
+restart/recovery and ISR/foreground behavior on one representative board remain the
 [physical handoff](FNR-005-HARDWARE-HANDOFF.md). This software contract establishes
 no new RF channel-isolation result, USB/profile behavior or FNR-006 sender
 semantics. The unrelated FNR-004 channel-isolation anomaly does not change the
