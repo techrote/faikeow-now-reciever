@@ -11,7 +11,7 @@ add_executable(fnr_transport_observer main.c
   ${FNR_ROOT}/shared/src/datagram.c ${FNR_ROOT}/shared/src/transport.c
   ${FNR_ROOT}/shared/src/uart_buffer.c)
 target_include_directories(fnr_transport_observer PRIVATE .. ${FNR_ROOT}/shared/include)
-target_link_libraries(fnr_transport_observer pico_stdlib pico_unique_id hardware_uart hardware_irq)
+target_link_libraries(fnr_transport_observer pico_stdlib hardware_uart hardware_irq)
 target_compile_options(fnr_transport_observer PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow)
 target_compile_definitions(fnr_transport_observer PRIVATE
   FNR_SOURCE_ID="${FNR_SOURCE_ID}"

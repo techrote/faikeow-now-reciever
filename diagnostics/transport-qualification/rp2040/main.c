@@ -4,7 +4,7 @@
 #include "pattern.h"
 #include "pico/bootrom.h"
 #include "pico/stdio_usb.h"
-#include "pico/unique_id.h"
+#include "flash_identity.h"
 #include "tusb.h"
 #include <stdio.h>
 #include <string.h>
@@ -99,8 +99,8 @@ void fnr_transport_foreground_consume(const fnr_transport_consumer_api *api) {
 static void execute(void) {
     unsigned value; int end = 0;
     if (!strcmp(command, "INFO")) {
-        char uid[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
-        pico_get_unique_board_id_string(uid, sizeof(uid));
+        char uid[17];
+        qualification_flash_uid(uid);
         printf("{\"event\":\"identity\",\"identity\":\"FNR-005 observer v1\",\"uid\":\"%s\",\"source\":\"%s\"}\n", uid, FNR_SOURCE_ID);
     } else if (!strcmp(command, "S")) summary("snapshot");
     else if (!strcmp(command, "H")) { digest = UINT64_C(14695981039346656037); summary("hash_reset"); }
