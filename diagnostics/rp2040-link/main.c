@@ -13,8 +13,8 @@ static volatile uint32_t head,tail,overruns,framing,parity,breaks,drops;
 static diag_parser parser;
 static uint32_t sent,echoes,streams,echo_next,stream_next,gaps,pattern_errors,payload_bytes;
 static uint32_t radio_stats[9],radio_id;
-static uint64_t started,next_send,ends,stops,report_at;
-static bool running,draining,have_stats,seen_radio;
+static uint64_t started,next_send,ends,stops,report_at,active_duration;
+static bool running,draining,have_stats,seen_radio,stop_requested;
 static void rx_irq(void) {
     while(uart_is_readable(uart0)) {
         uint32_t v=uart_get_hw(uart0)->dr;
@@ -29,7 +29,8 @@ static void rx_irq(void) {
 }
 static void out(uint8_t b) {uart_putc_raw(uart0,b);}
 static void frame(uint8_t type,uint32_t seq,const uint8_t *data,unsigned n) {
-    if(type==DIAG_INFO) {seen_radio=true; radio_id=seq;}
+    const char identity[]="FNR-002 ESP link diagnostic v1";
+    if(type==DIAG_INFO && n==sizeof(identity)-1 && !memcmp(data,identity,n)) {seen_radio=true; radio_id=seq;}
     if(type==DIAG_STATS && n==36) {
         for(unsigned i=0;i<9;i++) radio_stats[i]=diag_get32(data+4*i);
         have_stats=true;
@@ -46,12 +47,13 @@ static void frame(uint8_t type,uint32_t seq,const uint8_t *data,unsigned n) {
     }
 }
 static void report(const char *event) {
-    printf("{\"event\":\"%s\",\"duration_us\":%llu,\"sent\":%lu,\"echoes\":%lu,\"streams\":%lu,"
+    printf("{\"event\":\"%s\",\"duration_us\":%llu,\"active_duration_us\":%llu,\"sent\":%lu,\"echoes\":%lu,\"streams\":%lu,"
            "\"payload_rx_bytes\":%lu,\"gaps\":%lu,\"pattern_errors\":%lu,\"crc_errors\":%lu,"
            "\"length_errors\":%lu,\"parser_overflows\":%lu,\"uart_overruns\":%lu,\"uart_framing\":%lu,"
            "\"uart_parity\":%lu,\"uart_breaks\":%lu,\"ring_drops\":%lu,\"radio_seen\":%u,\"radio_id\":%lu,"
            "\"radio_stats_received\":%u,\"radio_stats\":[%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu]}\n",
            event,(unsigned long long)(started?time_us_64()-started:0),
+           (unsigned long long)(running?time_us_64()-started:active_duration),
            (unsigned long)sent,(unsigned long)echoes,(unsigned long)streams,(unsigned long)payload_bytes,
            (unsigned long)gaps,(unsigned long)pattern_errors,(unsigned long)parser.crc_errors,
            (unsigned long)parser.length_errors,(unsigned long)parser.overflows,
@@ -65,7 +67,7 @@ static void start(unsigned seconds) {
     if(running || draining) {puts("BUSY"); return;}
     sent=echoes=streams=echo_next=stream_next=gaps=pattern_errors=payload_bytes=0;
     memset(&parser,0,sizeof(parser)); memset(radio_stats,0,sizeof(radio_stats));
-    have_stats=seen_radio=false;
+    have_stats=seen_radio=stop_requested=false; active_duration=0;
     // Clear stale startup UART data before the bounded qualification interval.
     irq_set_enabled(UART0_IRQ,false); tail=head;
     overruns=framing=parity=breaks=drops=0; irq_set_enabled(UART0_IRQ,true);
@@ -100,17 +102,17 @@ int main(void) {
             else used=0;
         }
         uint64_t now=time_us_64();
-        if(running && now>=ends) {running=false; draining=true; stops=now+2000000;}
+        if(running && now>=ends) {active_duration=now-started; running=false; draining=true; stops=now+2000000;}
         if(running && now>=next_send) {
             uint8_t data[250]; unsigned n=diag_length(sent);
             diag_payload(data,n,sent,false); diag_send(out,DIAG_PING,sent++,data,n);
             next_send=now+50000;
         }
         if(running && now>=report_at) {if(stdio_usb_connected()) report("progress"); report_at=now+30000000;}
-        if(draining && now>=stops) {
-            diag_send(out,DIAG_STOP,0,NULL,0); draining=false; stops=now+1000000;
+        if(draining && !stop_requested && now>=stops) {
+            diag_send(out,DIAG_STOP,0,NULL,0); stop_requested=true; stops=now+1000000;
         }
-        if(!running && !draining && stops && (have_stats || now>=stops)) {report("end"); stops=0;}
+        if(draining && stop_requested && (have_stats || now>=stops)) {draining=false; report("end"); stops=0;}
         tight_loop_contents();
     }
 }

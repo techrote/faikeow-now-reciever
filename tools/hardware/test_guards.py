@@ -10,9 +10,28 @@ from rp2040_backup import private_destination, validate_target
 from check_ram_uf2 import validate
 from radio_backup import validate_cdc
 from radio_flash import validate_backup, validate_image
+from link_capture import assess
 
 
 class GuardTests(unittest.TestCase):
+    def test_link_acceptance_rejects_short_runs_missing_echoes_and_errors(self):
+        end = {name: 0 for name in ['gaps', 'pattern_errors', 'crc_errors', 'length_errors',
+               'parser_overflows', 'uart_overruns', 'uart_framing', 'uart_parity',
+               'uart_breaks', 'ring_drops']}
+        end.update(active_duration_us=600000000, sent=12000, echoes=12000, streams=12000,
+                   radio_seen=1, radio_id=123, radio_stats_received=1,
+                   radio_stats=[12000, 0, 0, 12000, 0, 0, 0, 0, 0])
+        self.assertEqual(assess(end, 600, 123), [])
+        end['active_duration_us'] = 10000000
+        self.assertIn('duration too short', assess(end, 600, 123))
+        end['active_duration_us'] = 600000000
+        end['echoes'] -= 1
+        self.assertIn('missing echoes/timeouts', assess(end, 600, 123))
+        end['uart_framing'] = 1
+        self.assertIn('uart_framing', assess(end, 600, 123))
+        end['radio_stats_received'] = 0
+        self.assertIn('radio statistics missing or disagree', assess(end, 600, 123))
+
     def test_radio_write_requires_both_complete_unchanged_backups(self):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
