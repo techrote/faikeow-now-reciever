@@ -39,7 +39,10 @@ remain unknown; use the reference's tested physical recovery sequences.
 
 FNR-002 passed independent complete backup/restoration, diagnostic cold boot,
 600-second UART integrity and software fault/recovery cases on both boards.
-The separate reverse RF channel-isolation anomaly remains under FNR-004.
+The [FNR-004 follow-up](../evidence/FNR-004/README.md) established distance- and
+requested-power-sensitive mismatch reception. SDK channel selection is not a
+per-packet physical-channel admission guarantee; the exact RF mechanism remains
+unmeasured. Preserve those failed negative tests when planning later acceptance.
 Full USB/profile/integrated receiver acceptance is not implied by this baseline.
 
 ## Authority and maintenance boundaries

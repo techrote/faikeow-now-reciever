@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "captured_at_utc": "2026-10-11T22:40:25.8852378Z",
+  "source_commit": "096dd45ad78f4c6ead09d19c45ee7f19377dd53f",
+  "source_dirty": false,
+  "result": "PASS",
+  "both_connected": true,
+  "serial_handles_closed": true,
+  "radio_image_sha256": "aa68778ae10238417c92739f506f09c93a796ee1e61ad0f2fd60e7d6d6bd084d",
+  "rp_firmware": "Unchanged labeled persistent UART recovery bridges; FNR-002 hashes",
+  "boards": {
+    "A": {
+      "rx_active": 0,
+      "tx_active": 0,
+      "outstanding": 0,
+      "opmode": 0,
+      "power_limit_qdbm": 82
+    },
+    "B": {
+      "rx_active": 0,
+      "tx_active": 0,
+      "outstanding": 0,
+      "opmode": 0,
+      "power_limit_qdbm": 82
+    }
+  },
+  "private_final_state_sha256": "86096adf4d8b256c9340a5dd6191fc5c0206efc3ded52912a67badc64b6601bd",
+  "private_inventory_sha256": "c1b7fc9230fd944b86a49a99214da7e7854b957b4792ab941da0d66da675a956",
+  "mapping": "A and B retain their existing individually labeled USB ports; exact topology/COM/UID/MAC remain private"
+}

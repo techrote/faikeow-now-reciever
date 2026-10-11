@@ -80,14 +80,26 @@ physical receive-channel metadata. Exact-source admission is performed in the
 portable ingress module; channel selection cannot substitute for that check or
 for future cryptographic policy.
 
-The FNR-002 mismatch failure is preserved unchanged. The FNR-004 follow-up in
-[PR #19](https://github.com/techrote/faikeow-now-reciever/pull/19) reproduced
-reception at 20 cm and observed substantially less reception at 180 cm using
-the same deployed diagnostic. These are operator-reported separations.
+The [FNR-004 follow-up evidence](../evidence/FNR-004/README.md) resolves the
+receiver contract: mismatch reception varies with distance and requested power,
+and zero delivery across software-reported channels is not guaranteed. The
+original FNR-002 failure is preserved unchanged. At fixed operator-reported
+20 cm, B-to-A high/low/high power tests accepted 36/300, 2/1,000 and 12/300
+mismatch packets; all same-channel burst and source-rejection controls passed.
+At 180 cm, original-channel focused tests received zero in both directions,
+while two other matrix channel pairs still received packets. Lower power and
+greater separation reduce observed mismatch reception but do not establish
+isolation. Every observed mismatch reception remains a failed zero-reception
+test, including residual low-power reception.
+
 SDK channel values alone do not establish actual over-the-air frequency, and
-neither a failed transmit callback nor a channel difference proves that no
-packet reached the receiver. Every observed mismatch reception remains a
-failed zero-reception test. Universal RF channel isolation is not accepted.
+a failed transmit callback does not prove that no packet reached the receiver.
+The precise RF mechanism was not measured; strong-signal/selectivity effects
+are a hypothesis, not a diagnosed circuit fault. No production software cure
+is asserted or required to uphold the documented source/length/handoff contract.
+Channel choice is not authentication or per-packet physical-channel admission.
+FNR-007 owns future key/provisioning policy. FNR-008 still owns integrated
+receiver/profile acceptance.
 
 ## Evidence limits
 

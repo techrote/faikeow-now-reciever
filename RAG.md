@@ -118,9 +118,11 @@ Pico W boards.
 FNR-002 is accepted: UART0 GP0 TX -> radio RX, GP1 RX <- radio TX at 115200
 8N1, physical-button ROM recovery, complete original restoration/readback and
 600-second integrity/fault recovery passed independently on both boards.
-RP-controlled radio reset/download pins remain unknown. The additional reverse
-RF channel-isolation anomaly remains open under FNR-004; full receiver/profile
-acceptance is separate.
+RP-controlled radio reset/download pins remain unknown. The FNR-004 follow-up
+established distance- and requested-power-sensitive mismatch reception: SDK
+channel selection does not guarantee per-packet channel exclusion. See
+`evidence/FNR-004/README.md`; all negative failures are preserved, and the exact
+RF mechanism remains unmeasured. Full receiver/profile acceptance is separate.
 
 The authoritative hardware reference is
 [techrote/picoWcloneESP8285N08](https://github.com/techrote/picoWcloneESP8285N08),
