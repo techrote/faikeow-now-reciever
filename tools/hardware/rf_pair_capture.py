@@ -96,7 +96,8 @@ def main():
     inventory = destination / 'inventory.json'
     subprocess.run(['pwsh', '-NoProfile', '-File', str(repo / 'tools/hardware/discover_windows.ps1'),
                     '-OutputPath', str(inventory)], check=True)
-    validate_pair(json.loads(inventory.read_text(encoding='utf-8-sig'))['devices'], identities, ports)
+    initial_inventory = json.loads(inventory.read_text(encoding='utf-8-sig'))
+    validate_pair(initial_inventory['devices'], identities, ports)
     streams = {b: serial.Serial(ports[b], 115200, timeout=.2) for b in ('A', 'B')}
     cases = []
     started = time.monotonic()
@@ -176,6 +177,8 @@ def main():
             streams[board].close()
         log.close()
         result = {'captured_at_utc': datetime.now(timezone.utc).isoformat(),
+                  'source_commit_at_start': initial_inventory['source_commit'],
+                  'source_dirty_at_start': initial_inventory['source_dirty'],
                   'source_commit': subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip(),
                   'radio_image_sha256': args.radio_image_sha256, 'radio_deployments': writes,
                   'elapsed_seconds': time.monotonic() - started, 'cases_completed': len(cases),
