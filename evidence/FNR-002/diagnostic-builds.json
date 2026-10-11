@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "host": {
+    "os": "Windows 11 Pro",
+    "execution": "native PowerShell and native Windows Python USB/serial access",
+    "date_utc": "2026-10-11",
+    "private_inventory_sha256": "5237a9d6c920d31b6c81784e2e3f7d9464d0d1e7df7452d6d9160bde4ef834df"
+  },
+  "builds": [
+    {
+      "name": "observer",
+      "file": "build/observer/fnr_observer.uf2",
+      "sha256": "a1ab31c4627d8582e73dd428bbf9891e56daef36a143126f857e244c0bdbc0ed",
+      "source_content_committed_at": "5e08a71aee75a466c82ccc9d41849c4d89d27399",
+      "physical_state": "loaded on A and B, zero GPIO output-enable, independent JEDEC/UID",
+      "result": "PASS: native Windows cross-build"
+    },
+    {
+      "name": "foreground-bridge",
+      "file": "build/candidate-bridge/fnr_candidate_bridge.uf2",
+      "sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
+      "source_content_committed_at": "823d45e104827bb6e6b268e421f0a9d3b3ff48ff",
+      "physical_state": "loaded in SRAM on A and B; independent radio ROM communication/backups",
+      "result": "PASS: native Windows cross-build"
+    },
+    {
+      "name": "RP UART diagnostic",
+      "file": "build/rp-link/fnr_link_diag.uf2",
+      "sha256": "4f9db46f307fa89bb62e51b60108e2a0dc3cb16286bae1713d93dda0ab082ec6",
+      "source_content_committed_at": "8812c7b3d688c0fb9dad2df5897f0b1e36179aed",
+      "physical_state": "A and B SRAM smoke and 600-second integrity; fault states in link-integrity.json",
+      "result": "PASS: native Windows cross-build"
+    },
+    {
+      "name": "ESP UART diagnostic",
+      "file": "build/esp-link/esp_link.ino.bin",
+      "sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
+      "source_content_committed_at": "5bff48cc8a00ae6685c5ccb6919e0d5b019fdd6e",
+      "physical_state": "A and B write/readback/cold boot; full originals restored and diagnostics redeployed; qualification in link-integrity.json",
+      "result": "PASS: native Windows cross-build"
+    },
+    {
+      "name": "accepted FNR-003 mouse-only HID",
+      "file": "build/rp-hid-native-win/fnr_rp2040_hid.uf2",
+      "sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "source_content_committed_at": "d1def14ea85dcf66220b40249b8e66bd52667e4a",
+      "build_recorded_at_source": "1506dd14d3cd2280a47c6027c279fcfb4026ac5a",
+      "physical_state": "A and B write/readback/Windows enumeration/cold re-enumeration; full originals restored",
+      "result": "PASS: native Windows cross-build"
+    },
+    {
+      "name": "labeled flash bridge A",
+      "file": "build/bridge-flash-A/fnr_candidate_bridge.uf2",
+      "sha256": "17ecb9aea9766867aed0a7d1fca38dd751858ce6a1e665ae6aa92de7af06d464",
+      "source_content_committed_at": "81de11045e729f5bf194074c042e1b31d6f1eee1",
+      "physical_state": "Independently A and B deployed/readback; exact labeled CDC/topology guards and live radio identity",
+      "result": "PASS: native Windows cross-build"
+    },
+    {
+      "name": "labeled flash bridge B",
+      "file": "build/bridge-flash-B/fnr_candidate_bridge.uf2",
+      "sha256": "7f8972c51422c8d1a6e15e69b8a58d8e2eef255b4bb1fe08d8f5531045cd2655",
+      "source_content_committed_at": "81de11045e729f5bf194074c042e1b31d6f1eee1",
+      "physical_state": "Independently A and B deployed/readback; exact labeled CDC/topology guards and live radio identity",
+      "result": "PASS: native Windows cross-build"
+    },
+    {
+      "name": "accepted FNR-003 HID built for SRAM",
+      "file": "build/rp-hid-ram-win/fnr_rp2040_hid.uf2",
+      "sha256": "4dc4bde79cba3e5a9f18953f04249769d214bd4a19a12748ad2b0eeddef08e80",
+      "source_content_committed_at": "d1def14ea85dcf66220b40249b8e66bd52667e4a",
+      "build_configuration": "Unchanged firmware/rp2040 source; PICO_NO_FLASH=1",
+      "physical_state": "See separate SRAM load, capability, descriptor and idle records",
+      "result": "PASS: native Windows cross-build; 72 validated SRAM UF2 blocks"
+    },
+    {
+      "name": "isolated ESP-NOW diagnostic using accepted FNR-004 ingress",
+      "file": "build/esp-rf/esp_rf.ino.bin",
+      "sha256": "83e67685b82f4f2a5b90cb6356ff26377ab4ca67656893c4853ce976b2f1c3c3",
+      "source_content_committed_at": "81de11045e729f5bf194074c042e1b31d6f1eee1",
+      "physical_state": "A and B deployment/readback/live identity; actual RF outcomes recorded separately",
+      "result": "PASS: native Windows ESP8285 cross-build"
+    }
+  ],
+  "windows_tool_archives": {
+    "picotool_2.2.0": "7e8467cd93aca1ded3091f0b72cc1753b566ba2263f17b0f4e5373289c9dee77",
+    "arm_gnu_13.3_rel1": "e46fda043c0ce83582bc8db4b3ef85f77f4beb7333344c2f4193c17e1167a095",
+    "arduino_cli_1.5.1": "fabe42e0eb04d00e776a66178299ff95a46c623dbc260f997e58fd514853dd40"
+  }
+}

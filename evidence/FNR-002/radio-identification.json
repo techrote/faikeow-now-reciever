@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "host": {
+    "os": "Windows 11 Pro",
+    "execution": "native PowerShell and native Windows Python USB/serial access",
+    "date_utc": "2026-10-11",
+    "private_inventory_sha256": "5237a9d6c920d31b6c81784e2e3f7d9464d0d1e7df7452d6d9160bde4ef834df"
+  },
+  "A": {
+    "result": "PASS",
+    "model": "ESP8285N08",
+    "crystal_mhz_reported": 26,
+    "flash_jedec": "5e3214",
+    "detected_flash_size_bytes": 1048576,
+    "mac_sha256": "eff3b866a351996b138597576ccd72a50879eb3e031b17443d089c3bd903b6aa",
+    "esptool": "4.8.1",
+    "pyserial": "3.5",
+    "source_commit": "d04ec713fb9bd604acf51aabc2628c7ab3c1d75f",
+    "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
+    "backup_sha256": "cd4c7a680d35d95b0aca8d1207b4889d2f974af00d427b0131a2caf5d8b036cc",
+    "matching_independent_reads": true,
+    "stub_full_read_md5_verified": true,
+    "raw_manifest": "board-A-radio-original-dtr/backup.json"
+  },
+  "B": {
+    "result": "PASS",
+    "model": "ESP8285N08",
+    "crystal_mhz_reported": 26,
+    "flash_jedec": "5e3214",
+    "detected_flash_size_bytes": 1048576,
+    "mac_sha256": "73903bd432340326afd55d456b76561dc3b907e3f020b17387996f81786fd339",
+    "esptool": "4.8.1",
+    "pyserial": "3.5",
+    "source_commit": "c164938905ed23e60378b973b0dc69b8e217eb15",
+    "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
+    "raw_manifest": "board-B-radio-identification.json",
+    "backup_result": "PASS",
+    "backup_sha256": "f12c5e15b2b63dfec8a052be4358b10489dfa759351521fa913124ccb4c6e241",
+    "matching_independent_reads": true,
+    "stub_full_read_md5_verified": true,
+    "backup_raw_manifest": "board-B-radio-original/backup.json",
+    "initial_bare_rom_flash_id_response": 0,
+    "flash_id_method": "Official RAM stub SPI command returned 14325e; initial bare-ROM response was zero"
+  }
+}

@@ -1,0 +1,525 @@
+{
+  "schema_version": 1,
+  "host": {
+    "os": "Windows 11 Pro",
+    "execution": "native PowerShell and native Windows Python USB/serial access",
+    "date_utc": "2026-10-11",
+    "private_inventory_sha256": "5237a9d6c920d31b6c81784e2e3f7d9464d0d1e7df7452d6d9160bde4ef834df"
+  },
+  "qualification_result": "PASS: both boards independently completed sustained integrity and six software fault/recovery cases at 115200",
+  "boards": {
+    "A": {
+      "rom_read_baud": 115200,
+      "full_radio_reads": "PASS",
+      "sustained_frames": {
+        "requests": 11998,
+        "echoes": 11998,
+        "independent_streams_including_drain": 12039
+      },
+      "duration_seconds": 600.000001,
+      "effective_payload_throughput": {
+        "rp_to_radio_payload_bytes": 1232622,
+        "rp_to_radio_active_seconds": 600.000001,
+        "radio_to_rp_payload_bytes_including_echo_and_drain": 2469482,
+        "radio_to_rp_observation_seconds_including_drain": 602.005749,
+        "rp_to_radio_bytes_per_second": 2054.36999657605,
+        "radio_to_rp_bytes_per_second_including_drain": 4102.090393824461
+      },
+      "smoke": {
+        "board": "A",
+        "captured_at_utc": "2026-10-11T02:12:46.754132+00:00",
+        "source_commit": "1506dd14d3cd2280a47c6027c279fcfb4026ac5a",
+        "rp_image_sha256": "4f9db46f307fa89bb62e51b60108e2a0dc3cb16286bae1713d93dda0ab082ec6",
+        "radio_image_sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
+        "baud": 115200,
+        "seed": "0x002f4a91",
+        "requested_seconds": 10,
+        "test_kind": "smoke only",
+        "end": {
+          "event": "end",
+          "duration_us": 12028417,
+          "active_duration_us": 10000000,
+          "sent": 198,
+          "echoes": 198,
+          "streams": 240,
+          "payload_rx_bytes": 44832,
+          "gaps": 0,
+          "pattern_errors": 0,
+          "crc_errors": 0,
+          "length_errors": 0,
+          "parser_overflows": 0,
+          "uart_overruns": 0,
+          "uart_framing": 0,
+          "uart_parity": 0,
+          "uart_breaks": 0,
+          "ring_drops": 0,
+          "radio_seen": 1,
+          "radio_stats_received": 1,
+          "radio_stats": [
+            198,
+            0,
+            0,
+            240,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "result": "PASS",
+        "failures": [],
+        "raw_manifest": "board-A-link-smoke-1/result.json"
+      },
+      "soak": {
+        "board": "A",
+        "captured_at_utc": "2026-10-11T11:05:02.160453+00:00",
+        "source_commit": "bb77606c948774d2966dd0892bd9a4a19da59a78",
+        "rp_image_sha256": "4f9db46f307fa89bb62e51b60108e2a0dc3cb16286bae1713d93dda0ab082ec6",
+        "radio_image_sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
+        "baud": 115200,
+        "seed": "0x002f4a91",
+        "requested_seconds": 600,
+        "test_kind": "sustained integrity",
+        "end": {
+          "event": "end",
+          "duration_us": 602005749,
+          "active_duration_us": 600000001,
+          "sent": 11998,
+          "echoes": 11998,
+          "streams": 12039,
+          "payload_rx_bytes": 2469482,
+          "gaps": 0,
+          "pattern_errors": 0,
+          "crc_errors": 0,
+          "length_errors": 0,
+          "parser_overflows": 0,
+          "uart_overruns": 0,
+          "uart_framing": 0,
+          "uart_parity": 0,
+          "uart_breaks": 0,
+          "ring_drops": 0,
+          "radio_seen": 1,
+          "radio_stats_received": 1,
+          "radio_stats": [
+            11998,
+            0,
+            0,
+            12039,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "result": "PASS",
+        "failures": [],
+        "source_commit_at_start": "bb77606c948774d2966dd0892bd9a4a19da59a78",
+        "source_dirty_at_start": true,
+        "provenance_annotation": "Starting commit/dirty state transcribed from contemporaneous inventory; unrelated RF diagnostics were committed during this run; loaded UART images unchanged.",
+        "raw_manifest": "board-A-link-soak-1/result.json",
+        "effective_payload_throughput": {
+          "rp_to_radio_payload_bytes": 1232622,
+          "rp_to_radio_active_seconds": 600.000001,
+          "radio_to_rp_payload_bytes_including_echo_and_drain": 2469482,
+          "radio_to_rp_observation_seconds_including_drain": 602.005749,
+          "rp_to_radio_bytes_per_second": 2054.36999657605,
+          "radio_to_rp_bytes_per_second_including_drain": 4102.090393824461
+        }
+      },
+      "fault_cases": {
+        "board": "A",
+        "captured_at_utc": "2026-10-11T11:13:09.497928+00:00",
+        "source_commit": "c164938905ed23e60378b973b0dc69b8e217eb15",
+        "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
+        "radio_image_sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
+        "baud": 115200,
+        "cases": [
+          {
+            "case": "bursty_bidirectional",
+            "result": "PASS",
+            "radio_stats": [
+              20,
+              0,
+              0,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "echoes": 20,
+            "streams_observed": 5,
+            "host_bad_frames": 0
+          },
+          {
+            "case": "deliberate_damage_and_resynchronization",
+            "result": "PASS",
+            "radio_stats": [
+              1,
+              0,
+              0,
+              4,
+              0,
+              0,
+              1,
+              1,
+              1
+            ],
+            "echoes": 1,
+            "streams_observed": 4,
+            "host_bad_frames": 0
+          },
+          {
+            "case": "radio_application_reset",
+            "result": "PASS",
+            "requests_attempted_during_reset": 10,
+            "loss_during_reset": "intentional; not part of integrity qualification"
+          },
+          {
+            "case": "recovery_after_radio_reset",
+            "result": "PASS",
+            "radio_stats": [
+              20,
+              0,
+              0,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "echoes": 20,
+            "streams_observed": 5,
+            "host_bad_frames": 0
+          },
+          {
+            "case": "rp_rom_restart_while_radio_streams",
+            "result": "PASS",
+            "stream_sequence_before": 0,
+            "stream_sequence_after": 259,
+            "radio_stats": [
+              0,
+              0,
+              0,
+              261,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "frames_lost_during_rp_rom": "intentional/unobserved"
+          },
+          {
+            "case": "recovery_after_rp_restart",
+            "result": "PASS",
+            "radio_stats": [
+              20,
+              0,
+              0,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "echoes": 20,
+            "streams_observed": 5,
+            "host_bad_frames": 0
+          }
+        ],
+        "result": "PASS",
+        "raw_manifest": "board-A-uart-faults-1/result.json"
+      }
+    },
+    "B": {
+      "smoke": {
+        "board": "B",
+        "captured_at_utc": "2026-10-11T11:48:24.156604+00:00",
+        "source_commit_at_start": "7ea12f798edc6e024843d79da5077f0dabe02410",
+        "source_dirty_at_start": false,
+        "source_commit": "7ea12f798edc6e024843d79da5077f0dabe02410",
+        "rp_image_sha256": "4f9db46f307fa89bb62e51b60108e2a0dc3cb16286bae1713d93dda0ab082ec6",
+        "radio_image_sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
+        "baud": 115200,
+        "seed": "0x002f4a91",
+        "requested_seconds": 10,
+        "test_kind": "smoke only",
+        "end": {
+          "event": "end",
+          "duration_us": 12005756,
+          "active_duration_us": 10000002,
+          "sent": 198,
+          "echoes": 198,
+          "streams": 239,
+          "payload_rx_bytes": 44582,
+          "gaps": 0,
+          "pattern_errors": 0,
+          "crc_errors": 0,
+          "length_errors": 0,
+          "parser_overflows": 0,
+          "uart_overruns": 0,
+          "uart_framing": 0,
+          "uart_parity": 0,
+          "uart_breaks": 0,
+          "ring_drops": 0,
+          "radio_seen": 1,
+          "radio_stats_received": 1,
+          "radio_stats": [
+            198,
+            0,
+            0,
+            239,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "result": "PASS",
+        "failures": [],
+        "raw_manifest": "board-B-link-smoke-1/result.json"
+      },
+      "soak": {
+        "board": "B",
+        "captured_at_utc": "2026-10-11T11:58:44.002124+00:00",
+        "source_commit_at_start": "7ea12f798edc6e024843d79da5077f0dabe02410",
+        "source_dirty_at_start": false,
+        "source_commit": "cc00760905f97eb6d45421384458c4c3ec918af3",
+        "rp_image_sha256": "4f9db46f307fa89bb62e51b60108e2a0dc3cb16286bae1713d93dda0ab082ec6",
+        "radio_image_sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
+        "baud": 115200,
+        "seed": "0x002f4a91",
+        "requested_seconds": 600,
+        "test_kind": "sustained integrity",
+        "end": {
+          "event": "end",
+          "duration_us": 602005748,
+          "active_duration_us": 600000002,
+          "sent": 11998,
+          "echoes": 11998,
+          "streams": 12039,
+          "payload_rx_bytes": 2469482,
+          "gaps": 0,
+          "pattern_errors": 0,
+          "crc_errors": 0,
+          "length_errors": 0,
+          "parser_overflows": 0,
+          "uart_overruns": 0,
+          "uart_framing": 0,
+          "uart_parity": 0,
+          "uart_breaks": 0,
+          "ring_drops": 0,
+          "radio_seen": 1,
+          "radio_stats_received": 1,
+          "radio_stats": [
+            11998,
+            0,
+            0,
+            12039,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "result": "PASS",
+        "failures": [],
+        "raw_manifest": "board-B-link-soak-1/result.json",
+        "effective_payload_throughput": {
+          "rp_to_radio_payload_bytes": 1232622,
+          "rp_to_radio_active_seconds": 600.000002,
+          "radio_to_rp_payload_bytes_including_echo_and_drain": 2469482,
+          "radio_to_rp_observation_seconds_including_drain": 602.005748,
+          "rp_to_radio_bytes_per_second": 2054.3699931521,
+          "radio_to_rp_bytes_per_second_including_drain": 4102.0904006385
+        }
+      },
+      "fault_cases": {
+        "board": "B",
+        "captured_at_utc": "2026-10-11T11:59:40.791082+00:00",
+        "source_commit": "cc00760905f97eb6d45421384458c4c3ec918af3",
+        "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
+        "radio_image_sha256": "3bf4cf9cd15bbf25fbd671f3e6a88092740d34920d58f1c7062792f955f78975",
+        "baud": 115200,
+        "cases": [
+          {
+            "case": "bursty_bidirectional",
+            "result": "PASS",
+            "radio_stats": [
+              20,
+              0,
+              0,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "echoes": 20,
+            "streams_observed": 5,
+            "host_bad_frames": 0
+          },
+          {
+            "case": "deliberate_damage_and_resynchronization",
+            "result": "PASS",
+            "radio_stats": [
+              1,
+              0,
+              0,
+              4,
+              0,
+              0,
+              1,
+              1,
+              1
+            ],
+            "echoes": 1,
+            "streams_observed": 4,
+            "host_bad_frames": 0
+          },
+          {
+            "case": "radio_application_reset",
+            "result": "PASS",
+            "requests_attempted_during_reset": 10,
+            "loss_during_reset": "intentional; not part of integrity qualification"
+          },
+          {
+            "case": "recovery_after_radio_reset",
+            "result": "PASS",
+            "radio_stats": [
+              20,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "echoes": 20,
+            "streams_observed": 6,
+            "host_bad_frames": 0
+          },
+          {
+            "case": "rp_rom_restart_while_radio_streams",
+            "result": "PASS",
+            "stream_sequence_before": 0,
+            "stream_sequence_after": 255,
+            "radio_stats": [
+              0,
+              0,
+              0,
+              257,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "frames_lost_during_rp_rom": "intentional/unobserved"
+          },
+          {
+            "case": "recovery_after_rp_restart",
+            "result": "PASS",
+            "radio_stats": [
+              20,
+              0,
+              0,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "echoes": 20,
+            "streams_observed": 5,
+            "host_bad_frames": 0
+          }
+        ],
+        "result": "PASS",
+        "raw_manifest": "board-B-uart-faults-1/result.json"
+      },
+      "sustained_frames": {
+        "requests": 11998,
+        "echoes": 11998,
+        "independent_streams_including_drain": 12039
+      },
+      "duration_seconds": 600.000002,
+      "effective_payload_throughput": {
+        "rp_to_radio_payload_bytes": 1232622,
+        "rp_to_radio_active_seconds": 600.000002,
+        "radio_to_rp_payload_bytes_including_echo_and_drain": 2469482,
+        "radio_to_rp_observation_seconds_including_drain": 602.005748,
+        "rp_to_radio_bytes_per_second": 2054.3699931521,
+        "radio_to_rp_bytes_per_second_including_drain": 4102.0904006385
+      }
+    }
+  },
+  "read_failures": [
+    {
+      "bridge": "polling",
+      "result": "FAIL",
+      "first_block_expected_bytes": 4096,
+      "received_bytes": 4092
+    },
+    {
+      "bridge": "IRQ-buffered stdio",
+      "result": "FAIL",
+      "first_block_expected_bytes": 4096,
+      "received_bytes": 4093,
+      "counter_query": {
+        "rx": 4775,
+        "tx": 10176,
+        "drops": 0,
+        "overruns": 0,
+        "framing": 0,
+        "parity": 0,
+        "breaks": 0
+      }
+    },
+    {
+      "bridge": "foreground TinyUSB",
+      "result": "FAIL",
+      "first_block_expected_bytes": 4096,
+      "received_bytes": 84,
+      "counter_query": {
+        "rx": 4775,
+        "tx": 10176,
+        "drops": 0,
+        "overruns": 0,
+        "framing": 4,
+        "parity": 0,
+        "breaks": 0
+      }
+    }
+  ],
+  "accepted_read_condition": "DTR asserted through already-open serial object; exact full read digest and independent SHA256 checks",
+  "accepted_read_counters": "FNRBRIDGE rx=2126043 tx=13702 drops=0 overruns=0 framing=4 parity=0 breaks=0",
+  "second_read_counters": "FNRBRIDGE rx=3188919 tx=15676 drops=0 overruns=0 framing=4 parity=0 breaks=0",
+  "counter_interpretation": "four framing errors predate accepted reads; counters unchanged except rx/tx; not a clean qualification baseline",
+  "diagnostic_protocol": {
+    "seed": "0x002f4a91",
+    "payload_lengths": [
+      1,
+      32,
+      128,
+      250
+    ],
+    "crc": "CRC-32/ISO-HDLC",
+    "nominal_cadence_each_mcu_hz": 20,
+    "required_run_seconds": 600,
+    "required_minimum_frames": 10000,
+    "physical_execution": "A and B smoke, 600-second integrity and six software fault/recovery cases PASS"
+  }
+}

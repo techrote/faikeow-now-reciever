@@ -1,0 +1,1446 @@
+{
+  "schema_version": 1,
+  "note": "Hashes and relative names only. Original files contain private host/device data and remain outside Git. Firmware dumps excluded.",
+  "files": [
+    {
+      "private_relative_path": "after-A-unplug.json",
+      "size_bytes": 191,
+      "sha256": "5934b7d2f45dc4d11e66b36e1d951b038820276049beec06eda1130ded254c71"
+    },
+    {
+      "private_relative_path": "arduino-core-install.txt",
+      "size_bytes": 2500,
+      "sha256": "24f5f0158fbe419643aa04a10ef5ff54224d70d1453621a31315dd2abe01aa28"
+    },
+    {
+      "private_relative_path": "board-A-RAM-after-radio-button.txt",
+      "size_bytes": 2865,
+      "sha256": "97e1eb3a95ac6c51a970ed01f536d53f2f602d92087654faf0fd8c87cd217184"
+    },
+    {
+      "private_relative_path": "board-A-RAM-load.txt",
+      "size_bytes": 2865,
+      "sha256": "97e1eb3a95ac6c51a970ed01f536d53f2f602d92087654faf0fd8c87cd217184"
+    },
+    {
+      "private_relative_path": "board-A-after-radio-backup-bootsel.txt",
+      "size_bytes": 172,
+      "sha256": "4dc1f7269012dea9dabab98869dc7bcf0614b6058ff0c267ab15abe3933c7ca8"
+    },
+    {
+      "private_relative_path": "board-A-after-radio-backup-rp2040/backup.json",
+      "size_bytes": 1772,
+      "sha256": "77019718bfd3dda41bbc49fba98178e57c560c16f9f3298d8eb4f1b198b83cdf"
+    },
+    {
+      "private_relative_path": "board-A-after-radio-backup-rp2040/info-inventory.json",
+      "size_bytes": 15824,
+      "sha256": "79ad7f669f8abd5acd07b80aafad00426f05b4b06be0062616f0f97de05d6635"
+    },
+    {
+      "private_relative_path": "board-A-after-radio-backup-rp2040/info.txt",
+      "size_bytes": 172,
+      "sha256": "4dc1f7269012dea9dabab98869dc7bcf0614b6058ff0c267ab15abe3933c7ca8"
+    },
+    {
+      "private_relative_path": "board-A-after-radio-backup-rp2040/inventory.json",
+      "size_bytes": 15824,
+      "sha256": "da69719059cd546bf5debc584622f9122b670ef464e8521437e4a4a2f27f0636"
+    },
+    {
+      "private_relative_path": "board-A-after-radio-backup-rp2040/read-1-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "213555442e9d0071859aa37e532bf0aefb4abe0e70e821fb019641c1704523c8"
+    },
+    {
+      "private_relative_path": "board-A-after-radio-backup-rp2040/read-1.txt",
+      "size_bytes": 10735,
+      "sha256": "52d5b9d4f1603b762c8ca056bf2e87e7b02192d5de86d68ab05701002ee8822f"
+    },
+    {
+      "private_relative_path": "board-A-after-radio-backup-rp2040/read-2-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "342b984b23cd5a198801e6b5d6c5792c1fbd8653e42bbafdaf5dd8253bf78b68"
+    },
+    {
+      "private_relative_path": "board-A-after-radio-backup-rp2040/read-2.txt",
+      "size_bytes": 10735,
+      "sha256": "ea65c9b1652459ea9c4c11b2fb0e6baec88d2937994ac0c020fed0766fad2cc3"
+    },
+    {
+      "private_relative_path": "board-A-bootsel.json",
+      "size_bytes": 15822,
+      "sha256": "ad730c82e3ead5e9ad80b6a00a05006677312339cd40d466bd1acba2708eaf22"
+    },
+    {
+      "private_relative_path": "board-A-buffered-bridge-load.txt",
+      "size_bytes": 1283,
+      "sha256": "1db2b3a14ea2e795ab6ddd14d53c33b8ceb08127a6d82fd0667bf7ab79031a21"
+    },
+    {
+      "private_relative_path": "board-A-button-observation.json",
+      "size_bytes": 12117,
+      "sha256": "de5a774dca266f035512d46cbdd7a2c761a3600fbd1a7a3c666c02c09b189a38"
+    },
+    {
+      "private_relative_path": "board-A-candidate-bridge-DTR-fixed-load.txt",
+      "size_bytes": 917,
+      "sha256": "f4f7dc74ddfe928c8e6142416e30249e697703535ae2f7640bca8bce9630eafc"
+    },
+    {
+      "private_relative_path": "board-A-candidate-bridge-load.txt",
+      "size_bytes": 917,
+      "sha256": "f4f7dc74ddfe928c8e6142416e30249e697703535ae2f7640bca8bce9630eafc"
+    },
+    {
+      "private_relative_path": "board-A-candidate-bridge-reload.txt",
+      "size_bytes": 917,
+      "sha256": "f4f7dc74ddfe928c8e6142416e30249e697703535ae2f7640bca8bce9630eafc"
+    },
+    {
+      "private_relative_path": "board-A-diagnostic-cold-bridge-load.txt",
+      "size_bytes": 1143,
+      "sha256": "aeeaccb39e7a1a2da8a4f5e861154c7574b1d98ef793f2393d360e11352bc3ae"
+    },
+    {
+      "private_relative_path": "board-A-diagnostic-cold-inventory.json",
+      "size_bytes": 14595,
+      "sha256": "a4d9e8336b89ca6ec16a0b4ceed6555faa3d08238027c8a217d44be8f6ff5319"
+    },
+    {
+      "private_relative_path": "board-A-factory-image-structure.txt",
+      "size_bytes": 328,
+      "sha256": "036f12e2f4d1a30602459e775a2695d77b0a1b1a917821e83f23502b7d016ae6"
+    },
+    {
+      "private_relative_path": "board-A-faults-bridge-load/inventory.json",
+      "size_bytes": 15825,
+      "sha256": "b4b86d9b004b74b1dada15432651d505d85e32b63236dc0b8b4218bdf6d0a31e"
+    },
+    {
+      "private_relative_path": "board-A-faults-bridge-load/load.txt",
+      "size_bytes": 1161,
+      "sha256": "db58c6809adb48e05970eef6366bb7eec75ced9b5bd34ba9607028975851862f"
+    },
+    {
+      "private_relative_path": "board-A-faults-bridge-load/result.json",
+      "size_bytes": 543,
+      "sha256": "2b8b60838edd638734397490cd52e64a8a0eedda9c53b0e838fe6cf5be0c533a"
+    },
+    {
+      "private_relative_path": "board-A-foreground-bridge-load.txt",
+      "size_bytes": 1161,
+      "sha256": "db58c6809adb48e05970eef6366bb7eec75ced9b5bd34ba9607028975851862f"
+    },
+    {
+      "private_relative_path": "board-A-hid-cold-probe-1/inventory.json",
+      "size_bytes": 12251,
+      "sha256": "3e15c6cff92b8eac7eed54ee1408be51c3f21d1bf68a9dd8aa8a5f82e06b5384"
+    },
+    {
+      "private_relative_path": "board-A-hid-cold-probe-1/result.json",
+      "size_bytes": 955,
+      "sha256": "50b9fa2d389e3ff751a44fe54fa1b1311d93712bb9f8010298713b34ab3deca1"
+    },
+    {
+      "private_relative_path": "board-A-hid-inventory.json",
+      "size_bytes": 12249,
+      "sha256": "fe9a5e4626578a1367322f69a4b146df526e56d290c1cc67f4b2d7a80885f667"
+    },
+    {
+      "private_relative_path": "board-A-hid-probe-1/inventory.json",
+      "size_bytes": 12248,
+      "sha256": "08c6bc91ff434745e1f682335afba799b0c7c231f0aab3ac5c5bfab527f485a8"
+    },
+    {
+      "private_relative_path": "board-A-hid-probe-1/result.json",
+      "size_bytes": 1023,
+      "sha256": "a3c972c6295adfa6ca0d8acfafe4d30c1bcec872b594eebd06f6a0ee7aa8dfac"
+    },
+    {
+      "private_relative_path": "board-A-link-checker-load.txt",
+      "size_bytes": 1283,
+      "sha256": "94db6b1a594567c9c28cf11db8c3adecb404954b1241e22e24360f6f23ce574c"
+    },
+    {
+      "private_relative_path": "board-A-link-smoke-1/capture.jsonl",
+      "size_bytes": 971,
+      "sha256": "d396490491f31fd9204615d128d53f7e4350ffb2c431641c378b2dc106e5d053"
+    },
+    {
+      "private_relative_path": "board-A-link-smoke-1/inventory.json",
+      "size_bytes": 14595,
+      "sha256": "de081d5ef1dad21c295f61e83e085ab8209b58a7bc1b8b5a0a4e8cee75a3dcfe"
+    },
+    {
+      "private_relative_path": "board-A-link-smoke-1/result.json",
+      "size_bytes": 1103,
+      "sha256": "c151a4401f7e3b95b2cae92b9145ededec4363b009817a9a27999b40bc458cdd"
+    },
+    {
+      "private_relative_path": "board-A-link-soak-1/capture.jsonl",
+      "size_bytes": 10514,
+      "sha256": "f7e136b5ba7ac1235379c95b3aa3bdc845ea4e585c3b2ce1ecb51947b1096484"
+    },
+    {
+      "private_relative_path": "board-A-link-soak-1/inventory.json",
+      "size_bytes": 14595,
+      "sha256": "6118a065b009770f2570e74fa8b08d7f6a6886e2265b2269c4c13c8a8a1ddb00"
+    },
+    {
+      "private_relative_path": "board-A-link-soak-1/result.json",
+      "size_bytes": 1375,
+      "sha256": "0a721941ecc13fddf4745bd77b08baa1809ce824bd70d005082026a044248fab"
+    },
+    {
+      "private_relative_path": "board-A-observer-identity.json",
+      "size_bytes": 801,
+      "sha256": "ac208811c71ded03200f8d42ba10e23ae017ef19316a1e24a0dd2189bb7f5e64"
+    },
+    {
+      "private_relative_path": "board-A-passive-uart.json",
+      "size_bytes": 728,
+      "sha256": "8b5dc18cee1338f744f0c3ca662643e9ecb1caae5df6c8879035a41ce36268f0"
+    },
+    {
+      "private_relative_path": "board-A-picotool-info.txt",
+      "size_bytes": 172,
+      "sha256": "4dc1f7269012dea9dabab98869dc7bcf0614b6058ff0c267ab15abe3933c7ca8"
+    },
+    {
+      "private_relative_path": "board-A-pre-hid-observer-load.txt",
+      "size_bytes": 2819,
+      "sha256": "7aee2ff58a78436b1aeb0149c8c591424a5541f75d3007fe29cba656fde15946"
+    },
+    {
+      "private_relative_path": "board-A-radio-button-passive.json",
+      "size_bytes": 791,
+      "sha256": "d1e58e3159fe0e011b80698ba7eaf2dcac2eadb4198b8b70d236b85b9435a07e"
+    },
+    {
+      "private_relative_path": "board-A-radio-chip-id-retry.txt",
+      "size_bytes": 476,
+      "sha256": "ee96ad296ba5fac8f77c74361edd6a14603be9d06e7d7babd91907944667462e"
+    },
+    {
+      "private_relative_path": "board-A-radio-chip-id-success.txt",
+      "size_bytes": 359,
+      "sha256": "347c1b9f1a941ef38ce40c63637fd7475d8ebc5999a90dde2c8263f777c85101"
+    },
+    {
+      "private_relative_path": "board-A-radio-chip-id-trace.txt",
+      "size_bytes": 1401,
+      "sha256": "268ffeec9097eac95808d6fba5658c795f1f4e97762962d0ae5c64f782d7f50f"
+    },
+    {
+      "private_relative_path": "board-A-radio-chip-id.txt",
+      "size_bytes": 285,
+      "sha256": "737861c99907fb299acfef7d0a5910fb889b4401b332b7019d9e73cb22f5a5f4"
+    },
+    {
+      "private_relative_path": "board-A-radio-diagnostic-boot.json",
+      "size_bytes": 732,
+      "sha256": "02328af29b7f8c228e750ec25e7a04aa5c4a8dc26c2fc5d81112b5f89aa92f3c"
+    },
+    {
+      "private_relative_path": "board-A-radio-diagnostic-cold-boot.json",
+      "size_bytes": 708,
+      "sha256": "d068bdc1587faca6db0618f4fc74595b2241cfa39e8c53a61c668f110711c8ab"
+    },
+    {
+      "private_relative_path": "board-A-radio-diagnostic-write-1/inventory.json",
+      "size_bytes": 14595,
+      "sha256": "452525782b758bb83f7039ec125a552353e90fc8b9a3552d649a01848c9f5e04"
+    },
+    {
+      "private_relative_path": "board-A-radio-diagnostic-write-1/write-readback.txt",
+      "size_bytes": 351,
+      "sha256": "c62fb39e39c6aea9a63a99e4ee45d806c986fef507b9c05a6d46b0caec272589"
+    },
+    {
+      "private_relative_path": "board-A-radio-diagnostic-write-2/inventory.json",
+      "size_bytes": 14595,
+      "sha256": "300962129b7347ac35a4cdb1e2c550242a5aaf8900a6281bd1f7368d988cb9d1"
+    },
+    {
+      "private_relative_path": "board-A-radio-diagnostic-write-2/result.json",
+      "size_bytes": 809,
+      "sha256": "2a8f34536f4725a4d815ccf5fc5f9a9b587622806b056d1059b0509281c05d14"
+    },
+    {
+      "private_relative_path": "board-A-radio-diagnostic-write-2/write-readback.txt",
+      "size_bytes": 1146,
+      "sha256": "e1ba4d3fa21c1d79ae0e54cddc629e34a775d6209607cc27bc85cde905ca8acd"
+    },
+    {
+      "private_relative_path": "board-A-radio-diagnostic-write-3/inventory.json",
+      "size_bytes": 10055,
+      "sha256": "0a49c990953395c6960e55651f4aa29cf83ab0f1b837d66a64ce1e9b6fb9cdb7"
+    },
+    {
+      "private_relative_path": "board-A-radio-diagnostic-write-3/result.json",
+      "size_bytes": 809,
+      "sha256": "46f1649efcfa06c45345d1d4c2ef8853009d2d12b78c3f912e6e8446804aa93d"
+    },
+    {
+      "private_relative_path": "board-A-radio-diagnostic-write-3/write-readback.txt",
+      "size_bytes": 1150,
+      "sha256": "22b5ef90f4435ecdb10f37c4b04e61e60baeeed184c5b49708f354cf306b2c0b"
+    },
+    {
+      "private_relative_path": "board-A-radio-flash-id.txt",
+      "size_bytes": 396,
+      "sha256": "126f0c2e3b97d83595f8fc97115790ad5d88a28646eaa8123e784707a1e95e2b"
+    },
+    {
+      "private_relative_path": "board-A-radio-original-buffered/read-1.txt",
+      "size_bytes": 447,
+      "sha256": "19fa28747f8cbcd2e3c3aafc6d0b32eed6e0a0fc9f5f1ee65d73784526f6b243"
+    },
+    {
+      "private_relative_path": "board-A-radio-original-dtr/backup.json",
+      "size_bytes": 922,
+      "sha256": "f794e91cb8d297e7298aa8c30d89efa997c66bc9b25cf4cdda9020b00a9a88fc"
+    },
+    {
+      "private_relative_path": "board-A-radio-original-dtr/inventory-1.json",
+      "size_bytes": 14594,
+      "sha256": "2becbf1c54dfa6bfa2ae6addf42cb53d4b37df4ac004d72dc3c6b221f125c213"
+    },
+    {
+      "private_relative_path": "board-A-radio-original-dtr/inventory-2.json",
+      "size_bytes": 14594,
+      "sha256": "bf761558b5cdb4ac4c7b0687eabc945ef0449cb809fc53371ec957359f271825"
+    },
+    {
+      "private_relative_path": "board-A-radio-original-dtr/read-1.txt",
+      "size_bytes": 343,
+      "sha256": "747241c8740e226a6489a3e07d0161cc4aa4eef5ebff67ac4f53ab767a75ea7a"
+    },
+    {
+      "private_relative_path": "board-A-radio-original-dtr/read-2.txt",
+      "size_bytes": 343,
+      "sha256": "471a2889b8cb5c5bf43b8cf64c31161b9d5f205679fb9b237b6283d4354e8cdd"
+    },
+    {
+      "private_relative_path": "board-A-radio-original-foreground/read-1.txt",
+      "size_bytes": 446,
+      "sha256": "9b153821c39bd5c9a73e3f52465611101e4dfa45472c5d89d256d1d795aa0016"
+    },
+    {
+      "private_relative_path": "board-A-radio-original/read-1.txt",
+      "size_bytes": 447,
+      "sha256": "d4b384464886a1c260717d0c803783e4c4447991c0334564eee4e3771d5e1ee6"
+    },
+    {
+      "private_relative_path": "board-A-radio-restoration-1/inventory.json",
+      "size_bytes": 14595,
+      "sha256": "927f1393294aa7b1c388ee028c303d6c5e89cbb01cf43aeb8f0c8bfe5dc30a1f"
+    },
+    {
+      "private_relative_path": "board-A-radio-restoration-1/result.json",
+      "size_bytes": 849,
+      "sha256": "526b70d93939a1dc747acd5b88a9ab767e0349df26de374f93de05f3936d6c61"
+    },
+    {
+      "private_relative_path": "board-A-radio-restoration-1/write-readback.txt",
+      "size_bytes": 1876,
+      "sha256": "39becb736f2fbd37097755edc8655ceeaadd5ba141316a3fb70a03db902a6c7b"
+    },
+    {
+      "private_relative_path": "board-A-radio-restored-boot.json",
+      "size_bytes": 369,
+      "sha256": "ca422bf310158f9a903b4140c5d90d30945ffb5ec2b71290ac55a36f867799fe"
+    },
+    {
+      "private_relative_path": "board-A-radio-restored-cold-boot.json",
+      "size_bytes": 688,
+      "sha256": "6dd57fde1ae1e6b80cf458967d02dc7b04a3581745ca5eb2ea3985644ac5fe01"
+    },
+    {
+      "private_relative_path": "board-A-radio-rf-software-boot-1/inventory.json",
+      "size_bytes": 14569,
+      "sha256": "6be54147e2c49f11268efa7d6b7a86dcf72b28cf4215fc15018ddb95138a770c"
+    },
+    {
+      "private_relative_path": "board-A-radio-rf-software-boot-1/result.json",
+      "size_bytes": 1668,
+      "sha256": "d6fe0cd86a1f4fa404b21a9e7819f8ad319ca061721ec0aaa4d993231552603a"
+    },
+    {
+      "private_relative_path": "board-A-radio-rf-write-1/inventory.json",
+      "size_bytes": 14569,
+      "sha256": "d8958704dd959ac2a8da4f8e17a4b5424244e476866d304fc73d315656a6ed60"
+    },
+    {
+      "private_relative_path": "board-A-radio-rf-write-1/result.json",
+      "size_bytes": 805,
+      "sha256": "019da2e52046c4e212b6c42e55124a980eb5711e3452ff238b3b7b31e6ed9e2a"
+    },
+    {
+      "private_relative_path": "board-A-radio-rf-write-1/write-readback.txt",
+      "size_bytes": 1150,
+      "sha256": "5bef7e4f919d0e45423f283559fb963417a9eb3544e2b4db17aea2ecd13f5669"
+    },
+    {
+      "private_relative_path": "board-A-restoration-bridge-load.txt",
+      "size_bytes": 1161,
+      "sha256": "db58c6809adb48e05970eef6366bb7eec75ced9b5bd34ba9607028975851862f"
+    },
+    {
+      "private_relative_path": "board-A-restored-boot-inventory.json",
+      "size_bytes": 14595,
+      "sha256": "ff1a8503d24436b4ae1638c1483d01208deb435bacf18a8ea49420181369a1c0"
+    },
+    {
+      "private_relative_path": "board-A-restored-cold-bridge-load.txt",
+      "size_bytes": 1143,
+      "sha256": "aeeaccb39e7a1a2da8a4f5e861154c7574b1d98ef793f2393d360e11352bc3ae"
+    },
+    {
+      "private_relative_path": "board-A-restored-cold-inventory.json",
+      "size_bytes": 14595,
+      "sha256": "ed5868c86eb321f1b9dfb732f3b69055ddce50b82aac45855bc31ec05a502c1f"
+    },
+    {
+      "private_relative_path": "board-A-resumed-bridge-load.txt",
+      "size_bytes": 1161,
+      "sha256": "db58c6809adb48e05970eef6366bb7eec75ced9b5bd34ba9607028975851862f"
+    },
+    {
+      "private_relative_path": "board-A-rf-port-info-all.txt",
+      "size_bytes": 61,
+      "sha256": "89c450f0b610aa6160c3e3f97423de55f129ef7ae213cdb4f0bd86b1d35c5145"
+    },
+    {
+      "private_relative_path": "board-A-rf-port-inventory-2.json",
+      "size_bytes": 15825,
+      "sha256": "bf29ef133d329b531528e304cdf55c35d9e319ff49fd46fc1a38e6aa7501ffec"
+    },
+    {
+      "private_relative_path": "board-A-rf-port-inventory.json",
+      "size_bytes": 11188,
+      "sha256": "7b612b21647341607ab0c37b18eceaa1d175bc2aebe0de5ae8e0d97e1bf8ed7f"
+    },
+    {
+      "private_relative_path": "board-A-rf-port-uid-2.txt",
+      "size_bytes": 172,
+      "sha256": "4dc1f7269012dea9dabab98869dc7bcf0614b6058ff0c267ab15abe3933c7ca8"
+    },
+    {
+      "private_relative_path": "board-A-rf-port-uid.txt",
+      "size_bytes": 103,
+      "sha256": "966ca814d5aa51b99eae1095876a7e4576488f422985e262e47fa60cdc638d55"
+    },
+    {
+      "private_relative_path": "board-A-rp-bridge-write-1/boot-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "10183c58dc4e21a07eba188b263a13d4a17038b8e3093a4b193cc51a8abb0533"
+    },
+    {
+      "private_relative_path": "board-A-rp-bridge-write-1/boot.txt",
+      "size_bytes": 48,
+      "sha256": "9cf1d523eddbe7ae57e9b4bae5a3f32800104d25008b6d2a6627be5105a236cf"
+    },
+    {
+      "private_relative_path": "board-A-rp-bridge-write-1/readback-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "f8a12c843b5ed48898cd57dbae65c8657c8c938860d7b6c8c7bc4df2f4317744"
+    },
+    {
+      "private_relative_path": "board-A-rp-bridge-write-1/readback.txt",
+      "size_bytes": 727,
+      "sha256": "007d9e165e80c52a875ed5f1c8f62a4acc14c426f862794d63f00d51875f7dcb"
+    },
+    {
+      "private_relative_path": "board-A-rp-bridge-write-1/result.json",
+      "size_bytes": 1579,
+      "sha256": "a1f212e46919ad43605a7e07cc5e76921462d9a7084bd7ec0d5f75caf276791d"
+    },
+    {
+      "private_relative_path": "board-A-rp-bridge-write-1/write-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "e824cdb69c69f41957310626c5cd4a4659d52f89478fb668b4fbe3e22d8712ff"
+    },
+    {
+      "private_relative_path": "board-A-rp-bridge-write-1/write.txt",
+      "size_bytes": 1230,
+      "sha256": "50d047688da3e94bc3ee81e3fc909341d39dc4212e02e3cba65a2f5dc3d510bb"
+    },
+    {
+      "private_relative_path": "board-A-rp-geometry.json",
+      "size_bytes": 447,
+      "sha256": "c10de401af651063e42dbeb8680cd215edf6990d9748eafd2fb0d293f696ccd3"
+    },
+    {
+      "private_relative_path": "board-A-rp-hid-write-1/boot-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "13579c5d63f9e4eedfa12e27f195d225279bc7c3760293dba98b458095217554"
+    },
+    {
+      "private_relative_path": "board-A-rp-hid-write-1/boot.txt",
+      "size_bytes": 48,
+      "sha256": "9cf1d523eddbe7ae57e9b4bae5a3f32800104d25008b6d2a6627be5105a236cf"
+    },
+    {
+      "private_relative_path": "board-A-rp-hid-write-1/readback-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "5889f24f2249bde12ecdfd78742c57a8bc08459c3e93ad83aacec8f619dde81b"
+    },
+    {
+      "private_relative_path": "board-A-rp-hid-write-1/readback.txt",
+      "size_bytes": 480,
+      "sha256": "506d5447e982ba8901523c983ef4fd5990eaadaa9268e453d3e4ecc3194579ce"
+    },
+    {
+      "private_relative_path": "board-A-rp-hid-write-1/result.json",
+      "size_bytes": 1573,
+      "sha256": "27bd53fba3a3ff3da83591ff10ce8f8e7a271ffa47c27c205c7f7925098e49fe"
+    },
+    {
+      "private_relative_path": "board-A-rp-hid-write-1/write-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "a2dc1b1ff74418d8d2fdc0d5d6389453aefe5d79b6fbe6f28a470c92730f70dc"
+    },
+    {
+      "private_relative_path": "board-A-rp-hid-write-1/write.txt",
+      "size_bytes": 742,
+      "sha256": "6d0bc7720922ae173f78e382c53d5aa948033e798004394ba54b68988a93c346"
+    },
+    {
+      "private_relative_path": "board-A-rp-remapped-original/backup.json",
+      "size_bytes": 1762,
+      "sha256": "45c2eb8c33d5368314c1bb6560c835c136c4ceca81fa8f048d8d113f926d9b56"
+    },
+    {
+      "private_relative_path": "board-A-rp-remapped-original/info-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "857cf948f074272c36bb767b1d5ace46c8e9a10aa04b4fe1a3676cf1f388a04a"
+    },
+    {
+      "private_relative_path": "board-A-rp-remapped-original/info.txt",
+      "size_bytes": 172,
+      "sha256": "4dc1f7269012dea9dabab98869dc7bcf0614b6058ff0c267ab15abe3933c7ca8"
+    },
+    {
+      "private_relative_path": "board-A-rp-remapped-original/inventory.json",
+      "size_bytes": 15825,
+      "sha256": "f5b70157bc93268e5a87f3d416294eb691f10ec1210e354a33e595cac2b05e82"
+    },
+    {
+      "private_relative_path": "board-A-rp-remapped-original/read-1-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "c46aeb055084bbdbdd2e1e7800f1635ac8cec1e4a108a728f06227f14966e6da"
+    },
+    {
+      "private_relative_path": "board-A-rp-remapped-original/read-1.txt",
+      "size_bytes": 10730,
+      "sha256": "8cec318f7b77e135130e28947b8ca5805eca015bcd21d23de889341757ed6915"
+    },
+    {
+      "private_relative_path": "board-A-rp-remapped-original/read-2-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "fea6a83f70be0f6ecd63912366b3c3d5d07cdc1a9cc13da79812193550005185"
+    },
+    {
+      "private_relative_path": "board-A-rp-remapped-original/read-2.txt",
+      "size_bytes": 10730,
+      "sha256": "395bdd645e13406be3eddb1bd02e196d0f92f6f3714cfda4f4363b30d43c8516"
+    },
+    {
+      "private_relative_path": "board-A-rp-restoration-1/boot-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "d5b45409709bb90e869888e9a9b8428b2848003a8b46232ecdbc367c406ea9da"
+    },
+    {
+      "private_relative_path": "board-A-rp-restoration-1/boot.txt",
+      "size_bytes": 48,
+      "sha256": "9cf1d523eddbe7ae57e9b4bae5a3f32800104d25008b6d2a6627be5105a236cf"
+    },
+    {
+      "private_relative_path": "board-A-rp-restoration-1/readback-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "a68db55b32305febcd7fda57c679d49d0c4b96168a883057c6e9888285ec9c11"
+    },
+    {
+      "private_relative_path": "board-A-rp-restoration-1/readback.txt",
+      "size_bytes": 5417,
+      "sha256": "d3542dbdd00013d9124c68660a253637b98865beea75680c35338ceabb4455cf"
+    },
+    {
+      "private_relative_path": "board-A-rp-restoration-1/result.json",
+      "size_bytes": 1642,
+      "sha256": "e86791dfb6796fbc03b1b1d6c0e121f8beaf09b2d4c283ff507d577255607ec7"
+    },
+    {
+      "private_relative_path": "board-A-rp-restoration-1/write-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "2c15f564f6c90c0182e2b14bafe9d7c5c91c4422f8ead2dac167dec9cac2075c"
+    },
+    {
+      "private_relative_path": "board-A-rp-restoration-1/write.txt",
+      "size_bytes": 10608,
+      "sha256": "77e5420a402d7c7eee526bbefb0d17aac49f6e10cb22ab8ae8991da49f76ab28"
+    },
+    {
+      "private_relative_path": "board-A-rp-restored-rom.json",
+      "size_bytes": 15825,
+      "sha256": "3964b7e7f3fb48dbf82a7bd0875610a270d9981d344999a63974ea5e7272bdbd"
+    },
+    {
+      "private_relative_path": "board-A-rp-restored-rom.txt",
+      "size_bytes": 172,
+      "sha256": "4dc1f7269012dea9dabab98869dc7bcf0614b6058ff0c267ab15abe3933c7ca8"
+    },
+    {
+      "private_relative_path": "board-A-rp2040-original/backup.json",
+      "size_bytes": 1752,
+      "sha256": "5934d24a5612e194948706ad13b3f68b3add4c0a6878a7b1999bac0e9322f518"
+    },
+    {
+      "private_relative_path": "board-A-rp2040-original/info-inventory.json",
+      "size_bytes": 15823,
+      "sha256": "25edafb630ae1ad918b6d6cb417eddaac98708346875e218cc99a9c67cfd55fc"
+    },
+    {
+      "private_relative_path": "board-A-rp2040-original/info.txt",
+      "size_bytes": 172,
+      "sha256": "4dc1f7269012dea9dabab98869dc7bcf0614b6058ff0c267ab15abe3933c7ca8"
+    },
+    {
+      "private_relative_path": "board-A-rp2040-original/inventory.json",
+      "size_bytes": 15823,
+      "sha256": "c66d2b51160e017fbce8233cb6e111d3399c9540b001a05e7f52112f567eb863"
+    },
+    {
+      "private_relative_path": "board-A-rp2040-original/read-1-inventory.json",
+      "size_bytes": 15823,
+      "sha256": "a7cdbebd9dc24272d9c4dbd58939dc389e2988508d65139fbc021d47860b2ef1"
+    },
+    {
+      "private_relative_path": "board-A-rp2040-original/read-1.txt",
+      "size_bytes": 10725,
+      "sha256": "0a69ca81d747e928ef651a018ce1a78858b616229f56b0f24f89e45a53eebabb"
+    },
+    {
+      "private_relative_path": "board-A-rp2040-original/read-2-inventory.json",
+      "size_bytes": 15823,
+      "sha256": "1e1fd58e5ad86da4c0a0692bfce8e728abf263273b8d0da23354419a8fcddd5e"
+    },
+    {
+      "private_relative_path": "board-A-rp2040-original/read-2.txt",
+      "size_bytes": 10725,
+      "sha256": "956155d6a03632abeb363bf4e8f696b92c50ee90ce7a70ac8aca240264fe50d8"
+    },
+    {
+      "private_relative_path": "board-A-rp2040-preread/read-1.txt",
+      "size_bytes": 12437,
+      "sha256": "1838b49bd0240d464025a477272dd30ace36a2f53c2dcebedda9c4753dddad14"
+    },
+    {
+      "private_relative_path": "board-A-soak-bridge-load.txt",
+      "size_bytes": 1143,
+      "sha256": "aeeaccb39e7a1a2da8a4f5e861154c7574b1d98ef793f2393d360e11352bc3ae"
+    },
+    {
+      "private_relative_path": "board-A-soak-checker-load.txt",
+      "size_bytes": 1263,
+      "sha256": "c97d407d2f1ef0f8f1f9878f79999d64565291150affe11496c4aa419b977a9e"
+    },
+    {
+      "private_relative_path": "board-A-topology-rebind-1.json",
+      "size_bytes": 770,
+      "sha256": "ec6c6c34824be81d5814638fcf44a74c384fa048cb860b464806c85e8f80c9e5"
+    },
+    {
+      "private_relative_path": "board-A-uart-faults-1/after-rp-reset-inventory.json",
+      "size_bytes": 14596,
+      "sha256": "1cdc35e22e5c10708b5349771e5475f6f1bf3bfadab988e5638262ed64ebfb21"
+    },
+    {
+      "private_relative_path": "board-A-uart-faults-1/capture.jsonl",
+      "size_bytes": 40930,
+      "sha256": "d32f0c0d59109a7098d1ad9b7ed1d5a4a7aad9ab3bea9df96bb148c87ff10426"
+    },
+    {
+      "private_relative_path": "board-A-uart-faults-1/initial-inventory.json",
+      "size_bytes": 14596,
+      "sha256": "41a6528f9147ef35b3022c011ce6b3c791e2466a3e0c46f30cfc9edd2eb43e96"
+    },
+    {
+      "private_relative_path": "board-A-uart-faults-1/result.json",
+      "size_bytes": 2189,
+      "sha256": "99da94c8d90adaa6009de4debe701933cf8e422a85981e9b880822eccef85ca0"
+    },
+    {
+      "private_relative_path": "board-A-uart-faults-1/rp-reload/inventory.json",
+      "size_bytes": 15826,
+      "sha256": "804a1880b2bb084f9a06c02e40d9a0d828a47462aca777f5560230e4de2ae725"
+    },
+    {
+      "private_relative_path": "board-A-uart-faults-1/rp-reload/load.txt",
+      "size_bytes": 1161,
+      "sha256": "db58c6809adb48e05970eef6366bb7eec75ced9b5bd34ba9607028975851862f"
+    },
+    {
+      "private_relative_path": "board-A-uart-faults-1/rp-reload/result.json",
+      "size_bytes": 543,
+      "sha256": "fa502fc738452d78d954e7f3283bd5d9d429d25075e411fbafea4af4dfa69d69"
+    },
+    {
+      "private_relative_path": "board-B-before-hid-ram-inventory.json",
+      "size_bytes": 14594,
+      "sha256": "26178a999d0ad4a685b27fd1ed03619fef9bd4376a55390d10b1ab4ebb3f7e86"
+    },
+    {
+      "private_relative_path": "board-B-bootsel.json",
+      "size_bytes": 3967,
+      "sha256": "0c6295478a344a70f537e074843010f835ecfe88993b961787da610230dc2887"
+    },
+    {
+      "private_relative_path": "board-B-bridge-descriptors-1/inventory.json",
+      "size_bytes": 14566,
+      "sha256": "66307bd8a44d9ab4d6c9d08dbd7434a01a93b8f9763b0f9553dacc05dda52649"
+    },
+    {
+      "private_relative_path": "board-B-bridge-descriptors-1/result.json",
+      "size_bytes": 1502,
+      "sha256": "57ae03a626ebc58d83b4a5a2ddc773033088ea03be80e12cf0b9d871d29da2a1"
+    },
+    {
+      "private_relative_path": "board-B-checker-before-faults-inventory.json",
+      "size_bytes": 14596,
+      "sha256": "93457f5b5749b2851cd651a506c0ee424f28ed10fe5bb4db2ff9872adb005529"
+    },
+    {
+      "private_relative_path": "board-B-factory-image-structure.txt",
+      "size_bytes": 328,
+      "sha256": "036f12e2f4d1a30602459e775a2695d77b0a1b1a917821e83f23502b7d016ae6"
+    },
+    {
+      "private_relative_path": "board-B-far-button-inventory.json",
+      "size_bytes": 11187,
+      "sha256": "5bd1b20c9d7d533d967b1b207891c05e1fec7c9dcbab94841b698cca2b45f006"
+    },
+    {
+      "private_relative_path": "board-B-faults-bridge-load/inventory.json",
+      "size_bytes": 15826,
+      "sha256": "ac8085cbec814020a1ad4dd3d4a153b7365158639b9ed805d0fcd4ec3616e486"
+    },
+    {
+      "private_relative_path": "board-B-faults-bridge-load/load.txt",
+      "size_bytes": 1161,
+      "sha256": "db58c6809adb48e05970eef6366bb7eec75ced9b5bd34ba9607028975851862f"
+    },
+    {
+      "private_relative_path": "board-B-faults-bridge-load/result.json",
+      "size_bytes": 588,
+      "sha256": "cd389fed5ff5cbfd0c823fd6450b55afd03820382a3c9c28456b648e4feedf61"
+    },
+    {
+      "private_relative_path": "board-B-flash-bridge-cdc.json",
+      "size_bytes": 14567,
+      "sha256": "69c58fc2613c7fd192a4c81059d820209a76dc114a2d1722fd405a753c822392"
+    },
+    {
+      "private_relative_path": "board-B-hid-cold-probe-1/inventory.json",
+      "size_bytes": 12252,
+      "sha256": "ecfa1238f767941dfdccfd6cd89bb6f513f7b769d453e43ec4d47e550c6dcb71"
+    },
+    {
+      "private_relative_path": "board-B-hid-cold-probe-1/result.json",
+      "size_bytes": 955,
+      "sha256": "8f83be85aee72752f5ba85f37baf41e0c9c680b847e350584b0a01e49e4a45d6"
+    },
+    {
+      "private_relative_path": "board-B-hid-descriptors-1/inventory.json",
+      "size_bytes": 12251,
+      "sha256": "c32a9278b76511c17ed930639eb1f6159647296d9b5a7be95975cf803ba0fdf8"
+    },
+    {
+      "private_relative_path": "board-B-hid-descriptors-1/result.json",
+      "size_bytes": 901,
+      "sha256": "d65a98c187cf8e2cf65d39d9c0c9d0feb026fcc086ded3aa14cb5a211fecc8f4"
+    },
+    {
+      "private_relative_path": "board-B-hid-idle-1/inventory.json",
+      "size_bytes": 12251,
+      "sha256": "a80e75cfd80200e7b5e0133cc089beca64fbfd2db216f611070a7443f5a8dc2b"
+    },
+    {
+      "private_relative_path": "board-B-hid-idle-1/path-comparison.json",
+      "size_bytes": 215,
+      "sha256": "34fb2717ced88650aa936916d3d84054bf6228fbe2c8d4455b6e707b96e291ae"
+    },
+    {
+      "private_relative_path": "board-B-hid-idle-1/result.json",
+      "size_bytes": 389,
+      "sha256": "6164f0b1eddf871ec3d28cb80a76132ba06d9ba6d78aa45d25b1c6c60481bd85"
+    },
+    {
+      "private_relative_path": "board-B-hid-idle-2/inventory.json",
+      "size_bytes": 12251,
+      "sha256": "7104c312a12f799ee0ae38cd4da73fbc3667efbdab9a0b0a223aae9020ca51bf"
+    },
+    {
+      "private_relative_path": "board-B-hid-idle-2/result.json",
+      "size_bytes": 571,
+      "sha256": "fbaa3c249a6d9ad9857ed7be9d3e37014365a65996019e865d960defcf1cc7ca"
+    },
+    {
+      "private_relative_path": "board-B-hid-probe-1/inventory.json",
+      "size_bytes": 12252,
+      "sha256": "508039f1d20bdeafb5280ffc10fb21efefcdacb78e1c90dd053f42c73e24188d"
+    },
+    {
+      "private_relative_path": "board-B-hid-probe-1/result.json",
+      "size_bytes": 955,
+      "sha256": "1f11b7a8ce45a6146a2f16d258073afc9f6d3595016597401de70113471e52d9"
+    },
+    {
+      "private_relative_path": "board-B-hid-ram-load/inventory.json",
+      "size_bytes": 15825,
+      "sha256": "37820c503e00fa4ede2131cff286351cde280112167572bd041109454eb5e137"
+    },
+    {
+      "private_relative_path": "board-B-hid-ram-load/load.txt",
+      "size_bytes": 795,
+      "sha256": "43e1c4821efc72158abb27316ac12bbba30db94d94403018e4eb4331c5d4f46b"
+    },
+    {
+      "private_relative_path": "board-B-hid-ram-load/result.json",
+      "size_bytes": 579,
+      "sha256": "11bbd62427a1716515f8d2b09be82fbadd7a571f7188bfc824295de5cb590853"
+    },
+    {
+      "private_relative_path": "board-B-hid-ram-probe-1/inventory.json",
+      "size_bytes": 12251,
+      "sha256": "9bce7f01f17a6bc41c0e9ae53adfc6fe33def49d1486ef24ca5c0bf5ffe172e6"
+    },
+    {
+      "private_relative_path": "board-B-hid-ram-probe-1/result.json",
+      "size_bytes": 955,
+      "sha256": "42bf2e77bab7273ceb3bb459bc925a318ae9fd7410af4ba5e3aa45bfdb63b9b3"
+    },
+    {
+      "private_relative_path": "board-B-info-unfiltered.txt",
+      "size_bytes": 490,
+      "sha256": "0cb62253f835e1d62733aa62e2b595aaabe70587281625dc744c745862dd573c"
+    },
+    {
+      "private_relative_path": "board-B-link-checker-load/inventory.json",
+      "size_bytes": 15826,
+      "sha256": "f900067e649071e399f52b2c62022085178a1153c8328cef9a4585837cbe4c08"
+    },
+    {
+      "private_relative_path": "board-B-link-checker-load/load.txt",
+      "size_bytes": 1283,
+      "sha256": "94db6b1a594567c9c28cf11db8c3adecb404954b1241e22e24360f6f23ce574c"
+    },
+    {
+      "private_relative_path": "board-B-link-checker-load/result.json",
+      "size_bytes": 572,
+      "sha256": "012fd23ceb1d2c08f47506d9c986511c81ebeae3bf8cca246cca4fdd7548969a"
+    },
+    {
+      "private_relative_path": "board-B-link-smoke-1/capture.jsonl",
+      "size_bytes": 971,
+      "sha256": "be7685c3a3bd1e32e272adf2542410ebbec66b9e841cc37739be1e00f9f446fd"
+    },
+    {
+      "private_relative_path": "board-B-link-smoke-1/inventory.json",
+      "size_bytes": 14596,
+      "sha256": "9968699b474d1309f2b1a34171dd10a68f1f51b25d1233f91c9dc29134261a8c"
+    },
+    {
+      "private_relative_path": "board-B-link-smoke-1/result.json",
+      "size_bytes": 1211,
+      "sha256": "1a582f7803ab07b9ebe4686ebef43cffb2e34ca96f5fc8084c6fb766b08fcba5"
+    },
+    {
+      "private_relative_path": "board-B-link-soak-1/capture.jsonl",
+      "size_bytes": 10509,
+      "sha256": "5574a301a82cb6da481b0efcf7276acd2892e6f0dda325a03d8090d0a436129b"
+    },
+    {
+      "private_relative_path": "board-B-link-soak-1/inventory.json",
+      "size_bytes": 14596,
+      "sha256": "19a8b908d0c902f9fae34a00ab69f571209ba9294730a4933bd322a51a274967"
+    },
+    {
+      "private_relative_path": "board-B-link-soak-1/result.json",
+      "size_bytes": 1235,
+      "sha256": "df48a76e05ceabaaf4592bed756fb5940951d3f4c909a004d2edf3a1cca427cb"
+    },
+    {
+      "private_relative_path": "board-B-observer-cdc.json",
+      "size_bytes": 14595,
+      "sha256": "722638955666c312d4b25493e6ad0f1e2d30c8b0f3f7c2079f653f4f470dba86"
+    },
+    {
+      "private_relative_path": "board-B-observer-edges.txt",
+      "size_bytes": 170,
+      "sha256": "2f23a4bbb33efaeb2612f6169cc7e7c719c9a81b946071016132932abdf4225f"
+    },
+    {
+      "private_relative_path": "board-B-observer-inventory.json",
+      "size_bytes": 15824,
+      "sha256": "0b3594ca34b0d3d7d709d02092942c8fb7cb5878e7cee4e30cdef233089490e7"
+    },
+    {
+      "private_relative_path": "board-B-observer-load-2/inventory.json",
+      "size_bytes": 15824,
+      "sha256": "845fe9d974db4b9bd3445ce1ab132090da01551e8ba62500936fb59cbf86a600"
+    },
+    {
+      "private_relative_path": "board-B-observer-load-2/load.txt",
+      "size_bytes": 2865,
+      "sha256": "97e1eb3a95ac6c51a970ed01f536d53f2f602d92087654faf0fd8c87cd217184"
+    },
+    {
+      "private_relative_path": "board-B-observer-load-2/result.json",
+      "size_bytes": 527,
+      "sha256": "402a88c5984c461b0561da5f7d63d9fdb1f272a0bb95306b15fd30e70d6c908a"
+    },
+    {
+      "private_relative_path": "board-B-observer-load/inventory.json",
+      "size_bytes": 15824,
+      "sha256": "ce845518d36f4e1f71645264834772442e5c514bef5bdd2d4deeae08d926af84"
+    },
+    {
+      "private_relative_path": "board-B-picotool-after-driver.txt",
+      "size_bytes": 99,
+      "sha256": "37d10a5d9ce7e08360bc56cfef973c54c160be7fc4ce2c73f1df147425455d1d"
+    },
+    {
+      "private_relative_path": "board-B-picotool-info.txt",
+      "size_bytes": 79,
+      "sha256": "e29b10f1236e1bf45fd06508b6036fd5f4b14fe77df1f86e0cdb126112363c76"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-cold-boot-1/inventory.json",
+      "size_bytes": 14567,
+      "sha256": "63143f94bd2a81025dd369c0140fb3c21fcfabd51e223c1055440e5e0eff75e1"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-cold-boot-1/result.json",
+      "size_bytes": 660,
+      "sha256": "60b970c320fabe2f56e25b64c458558eca90400a27ea2f1bd2125f62aacd993b"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-software-boot-1/inventory.json",
+      "size_bytes": 14567,
+      "sha256": "c46487a4a5069a6652e62c4d3e13cd49fefa9f25bd793cbd4d0ef421ac491d6e"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-software-boot-1/result.json",
+      "size_bytes": 649,
+      "sha256": "ff9e1dcb054929c01e7db8fa455b88348aa50231cfd751adef626dfc80173723"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-write-1/inventory.json",
+      "size_bytes": 14567,
+      "sha256": "0b4d4f8287c2cc761161999628bb25b92e61e421f99536f34455fb17fd2712c0"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-write-1/result.json",
+      "size_bytes": 809,
+      "sha256": "490c4d4f0138d80001c96a2b9692774486755b0b49952fb536935abbe2093273"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-write-1/write-readback.txt",
+      "size_bytes": 1150,
+      "sha256": "5bf6cd5601b9f829455ca0eb8392e462f7ccd2795cdd307e36d7ae087f639140"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-write-2/inventory.json",
+      "size_bytes": 14566,
+      "sha256": "10ce310f69f429cba79c3a70944b530f0b41140220d16dd20c7074a0f3c10a19"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-write-2/result.json",
+      "size_bytes": 809,
+      "sha256": "ee5a7db971f41de0b5b8506033ccd9e85ee824bb9f1dd1417236080e2fa39a07"
+    },
+    {
+      "private_relative_path": "board-B-radio-diagnostic-write-2/write-readback.txt",
+      "size_bytes": 1150,
+      "sha256": "5bf6cd5601b9f829455ca0eb8392e462f7ccd2795cdd307e36d7ae087f639140"
+    },
+    {
+      "private_relative_path": "board-B-radio-factory-prewrite-boot.json",
+      "size_bytes": 1141,
+      "sha256": "a0cdda080638a565d2514dcfae04eb0efeaf295560a7b57530166d2b9c1359ce"
+    },
+    {
+      "private_relative_path": "board-B-radio-factory-software-boot.txt",
+      "size_bytes": 197,
+      "sha256": "7635af12fe1f99526cdc2fbf24e4a20270353f37f9fda3a05f9f16334fa2f9ec"
+    },
+    {
+      "private_relative_path": "board-B-radio-identification.json",
+      "size_bytes": 632,
+      "sha256": "511254913ad66313dc3946a58cac8ccf4c809bba85d5ca358339b8f29c07ecfc"
+    },
+    {
+      "private_relative_path": "board-B-radio-identification.txt",
+      "size_bytes": 148,
+      "sha256": "7156d0d0f7f0fc1a02384f47ce96d65048873b0ecc4542011ac7982786bea1e4"
+    },
+    {
+      "private_relative_path": "board-B-radio-original/backup.json",
+      "size_bytes": 922,
+      "sha256": "92388906bffb96a1b7a811e007b056bb035ac6f1a6aab233135ebd7c1e695b15"
+    },
+    {
+      "private_relative_path": "board-B-radio-original/inventory-1.json",
+      "size_bytes": 14595,
+      "sha256": "1899143956c6f2480e55f57d0cca48a3d155af9187acfa43c445fa9014ff293a"
+    },
+    {
+      "private_relative_path": "board-B-radio-original/inventory-2.json",
+      "size_bytes": 14595,
+      "sha256": "9b97f1ffaedcac215a10efbfedcd5e28d5f45b1b1f40ecc6d387074a009905c1"
+    },
+    {
+      "private_relative_path": "board-B-radio-original/read-1.txt",
+      "size_bytes": 343,
+      "sha256": "8dca06f7bb1705088978fe9c8639846bf3d90fa6f97729a037b8bf4e04ba89f6"
+    },
+    {
+      "private_relative_path": "board-B-radio-original/read-2.txt",
+      "size_bytes": 343,
+      "sha256": "7fe380488286fbefce64f382286cccbc7784570542964e1c9b97bf01121bfed7"
+    },
+    {
+      "private_relative_path": "board-B-radio-restoration-1/inventory.json",
+      "size_bytes": 14567,
+      "sha256": "5a8c9ed315f45fc4bff55d2e9928e7fedb0370605b587869297bea0900edda5a"
+    },
+    {
+      "private_relative_path": "board-B-radio-restoration-1/result.json",
+      "size_bytes": 845,
+      "sha256": "d584b5d7ed290284d7de9944fa17159e4f68d42d3e72da14b9edbb753dc7dda8"
+    },
+    {
+      "private_relative_path": "board-B-radio-restoration-1/write-readback.txt",
+      "size_bytes": 1876,
+      "sha256": "165957ec04efaa649e66228cce2170019bf61477028531066f84b4cdd3bfa5da"
+    },
+    {
+      "private_relative_path": "board-B-radio-restored-cold-boot.json",
+      "size_bytes": 866,
+      "sha256": "31cc3ca906daa330ae0e4715b2b17349f1e4f1aa6e2936c8cd55de165e032114"
+    },
+    {
+      "private_relative_path": "board-B-radio-restored-cold-inventory.json",
+      "size_bytes": 14566,
+      "sha256": "9944ea12c2ea84ffb48839cebc2d61addbd483956581918b1ea511b237d8f19c"
+    },
+    {
+      "private_relative_path": "board-B-radio-rf-software-boot-1/inventory.json",
+      "size_bytes": 14565,
+      "sha256": "7cbcdd99f0ec4a6402a7f668c2fe7c8a88821183027c4bf91f48ae5b08314dba"
+    },
+    {
+      "private_relative_path": "board-B-radio-rf-software-boot-1/result.json",
+      "size_bytes": 1667,
+      "sha256": "7a93351fcfb4652579124cb1a8f5566a520976c31aaf1239f523f019a103b550"
+    },
+    {
+      "private_relative_path": "board-B-radio-rf-write-1/inventory.json",
+      "size_bytes": 14566,
+      "sha256": "b19a8a71329abdc02c5a9ec6d1f75a1a801e9ccc051a266c59c233557dabf32a"
+    },
+    {
+      "private_relative_path": "board-B-radio-rf-write-1/result.json",
+      "size_bytes": 805,
+      "sha256": "df8e998c5d5d2442c388dbbe7fe7146b9688391608900324781edf34446d7efc"
+    },
+    {
+      "private_relative_path": "board-B-radio-rf-write-1/write-readback.txt",
+      "size_bytes": 1150,
+      "sha256": "4d97c278ed06e9a8dc996ad94383a450df306c9886cd943e7ea7fb0155bb0f59"
+    },
+    {
+      "private_relative_path": "board-B-radio-rom-bridge-load/inventory.json",
+      "size_bytes": 15825,
+      "sha256": "ba13e839340a681f4d9bfe736b4b2a685fddb91a92179d3c20bfeff2a46a6bc2"
+    },
+    {
+      "private_relative_path": "board-B-radio-rom-bridge-load/load.txt",
+      "size_bytes": 1161,
+      "sha256": "db58c6809adb48e05970eef6366bb7eec75ced9b5bd34ba9607028975851862f"
+    },
+    {
+      "private_relative_path": "board-B-radio-rom-bridge-load/result.json",
+      "size_bytes": 543,
+      "sha256": "98714c9f62bef5d9f0c9f2173df4d76742d84ff055da0b84bd547b89bcc9e4cc"
+    },
+    {
+      "private_relative_path": "board-B-radio-rom-cdc.json",
+      "size_bytes": 14595,
+      "sha256": "f61ddb6a0acd3e43810816ba289f8e9575da15cac80341316c607957400a70aa"
+    },
+    {
+      "private_relative_path": "board-B-radio-stub-identification.txt",
+      "size_bytes": 237,
+      "sha256": "9577c932fd47ba8a9e73d6a10600318cb61508e1bbf39f894b5b15d092d3578f"
+    },
+    {
+      "private_relative_path": "board-B-rf-unplugged-inventory.json",
+      "size_bytes": 11188,
+      "sha256": "ee41def716308dd24329d14e4a6ce5f5a5606fecdb8338bafbc6864c693ae7dc"
+    },
+    {
+      "private_relative_path": "board-B-rp-bridge-write-1/boot-inventory.json",
+      "size_bytes": 15826,
+      "sha256": "a5730d26afc233985f50fa38b6c9dee5af34597e391377cbeb03be0967a8f829"
+    },
+    {
+      "private_relative_path": "board-B-rp-bridge-write-1/boot.txt",
+      "size_bytes": 48,
+      "sha256": "9cf1d523eddbe7ae57e9b4bae5a3f32800104d25008b6d2a6627be5105a236cf"
+    },
+    {
+      "private_relative_path": "board-B-rp-bridge-write-1/readback-inventory.json",
+      "size_bytes": 15826,
+      "sha256": "550c129e107c4c789324a9f8879800e8bb7f5a7a54d6f9dcd56ecb3d4af871ac"
+    },
+    {
+      "private_relative_path": "board-B-rp-bridge-write-1/readback.txt",
+      "size_bytes": 727,
+      "sha256": "bf882cf4598a1daf58e88b749cf46e69657ddcda316b4a1ddd8891b4e55095b5"
+    },
+    {
+      "private_relative_path": "board-B-rp-bridge-write-1/result.json",
+      "size_bytes": 1579,
+      "sha256": "ed5c00f182059725213be6bf51ccc68c647fcf3a593213c67dad7ea7581a4250"
+    },
+    {
+      "private_relative_path": "board-B-rp-bridge-write-1/write-inventory.json",
+      "size_bytes": 15826,
+      "sha256": "076bbe8856dc3e5f4030321d3e269cbc1e8482278e60fa0eb9d5cd7aa4d92585"
+    },
+    {
+      "private_relative_path": "board-B-rp-bridge-write-1/write.txt",
+      "size_bytes": 1230,
+      "sha256": "50d047688da3e94bc3ee81e3fc909341d39dc4212e02e3cba65a2f5dc3d510bb"
+    },
+    {
+      "private_relative_path": "board-B-rp-geometry.json",
+      "size_bytes": 447,
+      "sha256": "5eacebda050dfad0a8c056da12d8985352ad6eb111fcd2eb1aadd342e32e90a0"
+    },
+    {
+      "private_relative_path": "board-B-rp-hid-write-1/boot-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "5f2613c1717dc74b9eee246d55c7f79077e4ba4a1285f08873ff641248938ca9"
+    },
+    {
+      "private_relative_path": "board-B-rp-hid-write-1/boot.txt",
+      "size_bytes": 48,
+      "sha256": "9cf1d523eddbe7ae57e9b4bae5a3f32800104d25008b6d2a6627be5105a236cf"
+    },
+    {
+      "private_relative_path": "board-B-rp-hid-write-1/readback-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "0a03cc04b4842c22de1f2558052df1bb8a558ce5843a32625927182a36ae9af5"
+    },
+    {
+      "private_relative_path": "board-B-rp-hid-write-1/readback.txt",
+      "size_bytes": 480,
+      "sha256": "53b6d00a1e0ada3897f00479a4bb3b129210691bda1334f72613762c2943c5ba"
+    },
+    {
+      "private_relative_path": "board-B-rp-hid-write-1/result.json",
+      "size_bytes": 1573,
+      "sha256": "47b7e68f74665190c791c1df5f3cd8752779dd173c039df029cf564e06f745b2"
+    },
+    {
+      "private_relative_path": "board-B-rp-hid-write-1/write-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "ec83f4c45294fd2578bd2b122bc2fcbd742fd0a034a4c7fbb48408b67f29ae5f"
+    },
+    {
+      "private_relative_path": "board-B-rp-hid-write-1/write.txt",
+      "size_bytes": 742,
+      "sha256": "6d0bc7720922ae173f78e382c53d5aa948033e798004394ba54b68988a93c346"
+    },
+    {
+      "private_relative_path": "board-B-rp-restoration-1/boot-inventory.json",
+      "size_bytes": 15826,
+      "sha256": "75b257ba88fa99daf1cb8f348e6d1576bdaf8c213aa98f0cb10428dead5ac4c5"
+    },
+    {
+      "private_relative_path": "board-B-rp-restoration-1/boot.txt",
+      "size_bytes": 48,
+      "sha256": "9cf1d523eddbe7ae57e9b4bae5a3f32800104d25008b6d2a6627be5105a236cf"
+    },
+    {
+      "private_relative_path": "board-B-rp-restoration-1/readback-inventory.json",
+      "size_bytes": 15826,
+      "sha256": "c83790a4020c4254f08c061e69a5d73bb727bd204fd1086bc4c1b6607d515aa9"
+    },
+    {
+      "private_relative_path": "board-B-rp-restoration-1/readback.txt",
+      "size_bytes": 5417,
+      "sha256": "42eaa51c4e87aa990ae3e7f6042e85eab334da6e7fd258bae22803bedf56d5e4"
+    },
+    {
+      "private_relative_path": "board-B-rp-restoration-1/result.json",
+      "size_bytes": 1651,
+      "sha256": "6f637654b73fa3a56f1b229b17275d9a5bcbb118841dda9f3b1582b7691e0695"
+    },
+    {
+      "private_relative_path": "board-B-rp-restoration-1/write-inventory.json",
+      "size_bytes": 15826,
+      "sha256": "b37375322c1a470bc03d8280a328ddee0724c308ea742840dd66398000c37ff5"
+    },
+    {
+      "private_relative_path": "board-B-rp-restoration-1/write.txt",
+      "size_bytes": 10608,
+      "sha256": "77e5420a402d7c7eee526bbefb0d17aac49f6e10cb22ab8ae8991da49f76ab28"
+    },
+    {
+      "private_relative_path": "board-B-rp-restored-inventory.json",
+      "size_bytes": 11188,
+      "sha256": "5c41736b4b5f135b13987cc4935c1e00ebec43df14d50c30183e7b8560810790"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-original/backup.json",
+      "size_bytes": 1633,
+      "sha256": "f79172453967e70ea4283bff427cef5c0de830aa5096f14c99635b6cd0c84254"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-original/info-inventory.json",
+      "size_bytes": 15824,
+      "sha256": "b945ea922abda9f5471fa33401bc1198fd4896662a02340633ba00bc9cf2ec1e"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-original/info.txt",
+      "size_bytes": 490,
+      "sha256": "0cb62253f835e1d62733aa62e2b595aaabe70587281625dc744c745862dd573c"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-original/inventory.json",
+      "size_bytes": 15824,
+      "sha256": "29c002a3e3a944be001caa07d91389640f3fb834793b1fd77cc59a880a579955"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-original/read-1-inventory.json",
+      "size_bytes": 15824,
+      "sha256": "8a29fb676802b88191e32292635e406c9dbf32cbd8eb2f728fd25ffaf0cf6330"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-original/read-1.txt",
+      "size_bytes": 10725,
+      "sha256": "8f3a109f68010d6dcb12d471fd300d4d4b7a7ff43d325cf95d95286069e9a8c9"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-original/read-2-inventory.json",
+      "size_bytes": 15824,
+      "sha256": "f77c6411190217800645aaefddb43e3be976e0d4cf802e2d03c12235b3b5894f"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-original/read-2.txt",
+      "size_bytes": 10725,
+      "sha256": "8899085edb70c809f27adb3274aa55054f7ddbd56aee74506915673e85f5b61e"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-remapped-original/backup.json",
+      "size_bytes": 1679,
+      "sha256": "ec65f9cc90bb76f35c08fc1e23365a53da8503347da3b2e2d46494b2f6f84f92"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-remapped-original/info-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "b50b9a0fcd86c92f9f9c3e2892637045f73fc172379c78963e9406bf1245b3c0"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-remapped-original/info.txt",
+      "size_bytes": 490,
+      "sha256": "0cb62253f835e1d62733aa62e2b595aaabe70587281625dc744c745862dd573c"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-remapped-original/inventory.json",
+      "size_bytes": 15825,
+      "sha256": "c2b7354979c85617b3aa6b70318a7f2220a78756b56537248195dcbd48812cf6"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-remapped-original/read-1-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "fca8565ccd70b9f6b9d874cb43e53efc63d70271b96f97c6d7e85f40e7e49d6e"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-remapped-original/read-1.txt",
+      "size_bytes": 10734,
+      "sha256": "a94b7cf5819653b926a49b46c110af53e319c4c207b80aad67b9dd2c35b571c0"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-remapped-original/read-2-inventory.json",
+      "size_bytes": 15825,
+      "sha256": "f66885ceff04dd9e266669091216da598bef66a6e1c031f33a75579e1940a27b"
+    },
+    {
+      "private_relative_path": "board-B-rp2040-remapped-original/read-2.txt",
+      "size_bytes": 10734,
+      "sha256": "fe5a21a4f8672c412d3a37e3c1c39b00cd2d4c0027a91a202ee5137663a5f2ef"
+    },
+    {
+      "private_relative_path": "board-B-topology-rebind-1.json",
+      "size_bytes": 896,
+      "sha256": "fbccbae09def6c4b9cb7b9ad55488e2d4c1a8f770feecbbaa6c966ffebf9be50"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/after-rp-reset-inventory.json",
+      "size_bytes": 14595,
+      "sha256": "161949b51773cb7d24e8579aa646812a85d7d6f73ad20485837e098f4f6aaba3"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/capture.jsonl",
+      "size_bytes": 41282,
+      "sha256": "641b128c5aaeb4288f48325780b2072b47f22164a9607036666d6842c19a65c5"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/initial-inventory.json",
+      "size_bytes": 14596,
+      "sha256": "53908238deab8a4dcffdfcf4b0fa6805b3f3acafc578d01d40dfd9330c4be1e9"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/result.json",
+      "size_bytes": 2189,
+      "sha256": "245d69901f33ec378e5047747cd1e5d813266bf65377f287dd577c45f92c50d6"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/rp-reload/inventory.json",
+      "size_bytes": 15826,
+      "sha256": "f8ba2323df0f15a2a363400c8063cfc1a8c1ea8c0f9a20357770e95b766e0d34"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/rp-reload/load.txt",
+      "size_bytes": 1161,
+      "sha256": "db58c6809adb48e05970eef6366bb7eec75ced9b5bd34ba9607028975851862f"
+    },
+    {
+      "private_relative_path": "board-B-uart-faults-1/rp-reload/result.json",
+      "size_bytes": 588,
+      "sha256": "3f3c7007a8a6cd80cca68795a126fb4ca7cabd388beb4a824757601952a2bc76"
+    },
+    {
+      "private_relative_path": "board-identities.json",
+      "size_bytes": 377,
+      "sha256": "86c012249951f104c2625bd7ef2c45ef53a50d66fa944e3ea3a5c8ff5f3ff3c5"
+    },
+    {
+      "private_relative_path": "board-pair-rf-1/capture.jsonl",
+      "size_bytes": 65198,
+      "sha256": "1e37872c7dcce3a0280129147cdfd4369e020b12a2b3f9b2db6dbfdeaeb3a9f0"
+    },
+    {
+      "private_relative_path": "board-pair-rf-1/cases.json",
+      "size_bytes": 31683,
+      "sha256": "a66b7677de8f16c16356ff9bbd40d608b85e55090cec3550580c03cbd17dce51"
+    },
+    {
+      "private_relative_path": "board-pair-rf-1/inventory.json",
+      "size_bytes": 17944,
+      "sha256": "8463a00c031650f16f3acb6fe1773b758b9a44df5a54e6ab8de1a53d6ccc55d5"
+    },
+    {
+      "private_relative_path": "board-pair-rf-1/result.json",
+      "size_bytes": 2318,
+      "sha256": "2e4fbad856ecba7c6076a7326089eb7557b08fa010c5627500d8ccaf4ccd8437"
+    },
+    {
+      "private_relative_path": "board-pair-rf-completion-1/capture.jsonl",
+      "size_bytes": 10160,
+      "sha256": "a369bdd427364cf7b1adb10637e5f339713951af7ccbc2ceaee10ea28c49537c"
+    },
+    {
+      "private_relative_path": "board-pair-rf-completion-1/cases.json",
+      "size_bytes": 3530,
+      "sha256": "7e80d470e44934308f03c593dac12f3f88c5edfecfa6bf930fe2c8916e5197b1"
+    },
+    {
+      "private_relative_path": "board-pair-rf-completion-1/inventory.json",
+      "size_bytes": 17943,
+      "sha256": "f213d1388443b9eba058683fad905cf70d2d98e0d00cfaf58ced04c0ad69a41c"
+    },
+    {
+      "private_relative_path": "board-pair-rf-completion-1/result.json",
+      "size_bytes": 2447,
+      "sha256": "d677ebf7996929ebaee9986435414e2f4c24195674f4475f6266f547036fc7d8"
+    },
+    {
+      "private_relative_path": "board-pair-rf-focused-1/capture.jsonl",
+      "size_bytes": 160884,
+      "sha256": "143f1e3880790d8b3292cdb083fba69ee0b4c6e7175d83ebd5b174d6c655b187"
+    },
+    {
+      "private_relative_path": "board-pair-rf-focused-1/inventory.json",
+      "size_bytes": 17943,
+      "sha256": "35d1aa01b2ad2fba4b65462b84ab1d851c3a9a8af405d3ae1d9758b5ac1b4244"
+    },
+    {
+      "private_relative_path": "board-pair-rf-focused-1/result.json",
+      "size_bytes": 39912,
+      "sha256": "b19182f0a14f3fd483df6b1e1b35c33a6491ffab1828bdd989a4f0c271953484"
+    },
+    {
+      "private_relative_path": "bridge-build-DTR-fix-retry.txt",
+      "size_bytes": 12871,
+      "sha256": "a538bc709c869093ada5d519a68ed1af0a4ebe879142b1241f02af20456a45c0"
+    },
+    {
+      "private_relative_path": "bridge-build-DTR-fix.txt",
+      "size_bytes": 868,
+      "sha256": "bc0aefbb781bb57fb0f51616271c247a93dc238c7013bdc584da47cc785ef41f"
+    },
+    {
+      "private_relative_path": "esp-link-build.txt",
+      "size_bytes": 662,
+      "sha256": "7fb349853ded7dc5af8c5c3721794f87ff07fdf56969f266e9cdb522fc141707"
+    },
+    {
+      "private_relative_path": "esp8285-build-options.json",
+      "size_bytes": 70852,
+      "sha256": "aa62dff28c035538b54e531a18a62db78bf52986ea5a55f8f4a7b34906abfcab"
+    },
+    {
+      "private_relative_path": "foreground-failed-read-drain.json",
+      "size_bytes": 2941,
+      "sha256": "e197bab1a608d1a597de25c718a20a4a0ebb281b4e8b80eeec12e4beec7c711b"
+    },
+    {
+      "private_relative_path": "initial-host-usb.json",
+      "size_bytes": 10190069,
+      "sha256": "5237a9d6c920d31b6c81784e2e3f7d9464d0d1e7df7452d6d9160bde4ef834df"
+    },
+    {
+      "private_relative_path": "picotool-initial-info.txt",
+      "size_bytes": 283,
+      "sha256": "ffdd0c5e603f19e98c9cc6260d058e5e7c6ecd2cbfbd7f9f2c24a5c7850d296d"
+    },
+    {
+      "private_relative_path": "python-packages.txt",
+      "size_bytes": 241,
+      "sha256": "c6ecfb32da5558ebe93a253b2473e103f8ed1c7574485eabc1eeaa2e2e935717"
+    },
+    {
+      "private_relative_path": "rp-link-build-retry.txt",
+      "size_bytes": 10795,
+      "sha256": "995740c8f7d822b058e26a6c60cecb63249b30ee6fe32702699be25514ad2fc2"
+    },
+    {
+      "private_relative_path": "rp-link-build.txt",
+      "size_bytes": 8887,
+      "sha256": "9ad113e1da613b365f050e15c6ee7e8bb38d815392a1bdeb1de43a40447c33ac"
+    },
+    {
+      "private_relative_path": "rp-link-configure.txt",
+      "size_bytes": 11524,
+      "sha256": "2947465e365816abfb822164abd5871fbbcaf004f072bf7515bb17dbbfb09c0b"
+    }
+  ]
+}

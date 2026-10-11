@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "physical_rf_exchange_result": "See rf-integrity.json when present; deployment alone is not RF exchange",
+  "A": {
+    "deployment": {
+      "board": "A",
+      "mode": "diagnostic",
+      "captured_at_utc": "2026-10-11T12:15:18.527435+00:00",
+      "source_commit": "c6fd6a660eec2b0dfb711542cc1ef3de28f0a01a",
+      "image_sha256": "83e67685b82f4f2a5b90cb6356ff26377ab4ca67656893c4853ce976b2f1c3c3",
+      "size_bytes": 284816,
+      "exact_readback": true,
+      "header_changes": false,
+      "raw_manifest": "board-A-radio-rf-write-1/result.json"
+    },
+    "application_identity": {
+      "board": "A",
+      "captured_at_utc": "2026-10-11T12:15:32.902671+00:00",
+      "source_commit_at_start": "c6fd6a660eec2b0dfb711542cc1ef3de28f0a01a",
+      "source_dirty_at_start": false,
+      "image_sha256": "83e67685b82f4f2a5b90cb6356ff26377ab4ca67656893c4853ce976b2f1c3c3",
+      "boot_kind": "software",
+      "command": "INFO via UART0 115200 8N1; no RF configuration",
+      "result": "PASS",
+      "raw_manifest": "board-A-radio-rf-software-boot-1/result.json"
+    },
+    "live_radio_identity_matched_private_original_backup": true
+  },
+  "B": {
+    "deployment": {
+      "board": "B",
+      "mode": "diagnostic",
+      "captured_at_utc": "2026-10-11T12:04:49.414596+00:00",
+      "source_commit": "c4dc50802bea3b66e63692c573d8d9c688b5cfa7",
+      "image_sha256": "83e67685b82f4f2a5b90cb6356ff26377ab4ca67656893c4853ce976b2f1c3c3",
+      "size_bytes": 284816,
+      "exact_readback": true,
+      "header_changes": false,
+      "raw_manifest": "board-B-radio-rf-write-1/result.json"
+    },
+    "application_identity": {
+      "board": "B",
+      "captured_at_utc": "2026-10-11T12:06:03.402602+00:00",
+      "source_commit_at_start": "c4dc50802bea3b66e63692c573d8d9c688b5cfa7",
+      "source_dirty_at_start": true,
+      "image_sha256": "83e67685b82f4f2a5b90cb6356ff26377ab4ca67656893c4853ce976b2f1c3c3",
+      "boot_kind": "software",
+      "command": "INFO via UART0 115200 8N1; no RF configuration",
+      "result": "PASS",
+      "raw_manifest": "board-B-radio-rf-software-boot-1/result.json"
+    },
+    "live_radio_identity_matched_private_original_backup": true
+  }
+}

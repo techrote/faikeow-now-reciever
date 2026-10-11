@@ -1,0 +1,1945 @@
+{
+  "captured_at_utc": "2026-10-11T12:25:05.111102+00:00",
+  "source_commit_at_start": "060246d3e241512381b28935cda955d5ad6c2cf7",
+  "source_dirty_at_start": true,
+  "configuration": "Focused reverse source-rejection then 1000 wrong-channel packets; live channel sampling; no firmware writes",
+  "channel_samples": [
+    {
+      "board": "A",
+      "elapsed": 3.1560000000026776,
+      "channel": 1,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 3.2030000000013388,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 0
+    },
+    {
+      "board": "A",
+      "elapsed": 3.2660000000032596,
+      "channel": 1,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 3.297000000005937,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 4
+    },
+    {
+      "board": "A",
+      "elapsed": 3.375,
+      "channel": 1,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 3.4060000000026776,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 8
+    },
+    {
+      "board": "A",
+      "elapsed": 3.4690000000045984,
+      "channel": 1,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 3.5160000000032596,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 12
+    },
+    {
+      "board": "A",
+      "elapsed": 3.5780000000013388,
+      "channel": 1,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 3.625,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 16
+    },
+    {
+      "board": "A",
+      "elapsed": 3.687000000005355,
+      "channel": 1,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 3.7340000000040163,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 20
+    },
+    {
+      "board": "A",
+      "elapsed": 3.797000000005937,
+      "channel": 1,
+      "received": 1,
+      "accepted": 1,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 3.8440000000045984,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 24
+    },
+    {
+      "board": "A",
+      "elapsed": 3.9060000000026776,
+      "channel": 1,
+      "received": 1,
+      "accepted": 1,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 3.9530000000013388,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 28
+    },
+    {
+      "board": "A",
+      "elapsed": 4.01600000000326,
+      "channel": 1,
+      "received": 1,
+      "accepted": 1,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 4.062000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 32
+    },
+    {
+      "board": "A",
+      "elapsed": 4.125,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 4.1560000000026776,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 36
+    },
+    {
+      "board": "A",
+      "elapsed": 4.219000000004598,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 4.26600000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 40
+    },
+    {
+      "board": "A",
+      "elapsed": 4.328000000001339,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 4.375,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 44
+    },
+    {
+      "board": "A",
+      "elapsed": 4.437000000005355,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 4.484000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 48
+    },
+    {
+      "board": "A",
+      "elapsed": 4.547000000005937,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 4.594000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 52
+    },
+    {
+      "board": "A",
+      "elapsed": 4.6560000000026776,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 4.703000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 56
+    },
+    {
+      "board": "A",
+      "elapsed": 4.76600000000326,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 4.812000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 60
+    },
+    {
+      "board": "A",
+      "elapsed": 4.875,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 4.9060000000026776,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 64
+    },
+    {
+      "board": "A",
+      "elapsed": 4.984000000004016,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 5.01600000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 68
+    },
+    {
+      "board": "A",
+      "elapsed": 5.078000000001339,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 5.125,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 72
+    },
+    {
+      "board": "A",
+      "elapsed": 5.187000000005355,
+      "channel": 1,
+      "received": 2,
+      "accepted": 2,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 5.234000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 76
+    },
+    {
+      "board": "A",
+      "elapsed": 5.297000000005937,
+      "channel": 1,
+      "received": 3,
+      "accepted": 3,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 5.344000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 80
+    },
+    {
+      "board": "A",
+      "elapsed": 5.4060000000026776,
+      "channel": 1,
+      "received": 3,
+      "accepted": 3,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 5.453000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 84
+    },
+    {
+      "board": "A",
+      "elapsed": 5.51600000000326,
+      "channel": 1,
+      "received": 3,
+      "accepted": 3,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 5.562000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 88
+    },
+    {
+      "board": "A",
+      "elapsed": 5.625,
+      "channel": 1,
+      "received": 3,
+      "accepted": 3,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 5.6560000000026776,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 92
+    },
+    {
+      "board": "A",
+      "elapsed": 5.734000000004016,
+      "channel": 1,
+      "received": 3,
+      "accepted": 3,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 5.76600000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 96
+    },
+    {
+      "board": "A",
+      "elapsed": 5.828000000001339,
+      "channel": 1,
+      "received": 3,
+      "accepted": 3,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 5.875,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 100
+    },
+    {
+      "board": "A",
+      "elapsed": 5.937000000005355,
+      "channel": 1,
+      "received": 3,
+      "accepted": 3,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 5.984000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 104
+    },
+    {
+      "board": "A",
+      "elapsed": 6.047000000005937,
+      "channel": 1,
+      "received": 4,
+      "accepted": 4,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 6.094000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 108
+    },
+    {
+      "board": "A",
+      "elapsed": 6.1560000000026776,
+      "channel": 1,
+      "received": 4,
+      "accepted": 4,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 6.203000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 112
+    },
+    {
+      "board": "A",
+      "elapsed": 6.26600000000326,
+      "channel": 1,
+      "received": 4,
+      "accepted": 4,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 6.312000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 116
+    },
+    {
+      "board": "A",
+      "elapsed": 6.375,
+      "channel": 1,
+      "received": 4,
+      "accepted": 4,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 6.422000000005937,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 120
+    },
+    {
+      "board": "A",
+      "elapsed": 6.484000000004016,
+      "channel": 1,
+      "received": 4,
+      "accepted": 4,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 6.51600000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 124
+    },
+    {
+      "board": "A",
+      "elapsed": 6.578000000001339,
+      "channel": 1,
+      "received": 4,
+      "accepted": 4,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 6.625,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 128
+    },
+    {
+      "board": "A",
+      "elapsed": 6.687000000005355,
+      "channel": 1,
+      "received": 4,
+      "accepted": 4,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 6.734000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 132
+    },
+    {
+      "board": "A",
+      "elapsed": 6.797000000005937,
+      "channel": 1,
+      "received": 6,
+      "accepted": 6,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 6.844000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 136
+    },
+    {
+      "board": "A",
+      "elapsed": 6.9060000000026776,
+      "channel": 1,
+      "received": 7,
+      "accepted": 7,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 6.953000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 140
+    },
+    {
+      "board": "A",
+      "elapsed": 7.01600000000326,
+      "channel": 1,
+      "received": 7,
+      "accepted": 7,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 7.062000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 144
+    },
+    {
+      "board": "A",
+      "elapsed": 7.125,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 7.1560000000026776,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 148
+    },
+    {
+      "board": "A",
+      "elapsed": 7.219000000004598,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 7.26600000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 152
+    },
+    {
+      "board": "A",
+      "elapsed": 7.328000000001339,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 7.375,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 156
+    },
+    {
+      "board": "A",
+      "elapsed": 7.437000000005355,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 7.484000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 160
+    },
+    {
+      "board": "A",
+      "elapsed": 7.547000000005937,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 7.594000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 164
+    },
+    {
+      "board": "A",
+      "elapsed": 7.6560000000026776,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 7.703000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 168
+    },
+    {
+      "board": "A",
+      "elapsed": 7.76600000000326,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 7.812000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 172
+    },
+    {
+      "board": "A",
+      "elapsed": 7.875,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 7.9060000000026776,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 176
+    },
+    {
+      "board": "A",
+      "elapsed": 7.969000000004598,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 8.01600000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 180
+    },
+    {
+      "board": "A",
+      "elapsed": 8.078000000001339,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 8.125,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 184
+    },
+    {
+      "board": "A",
+      "elapsed": 8.187000000005355,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 8.234000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 188
+    },
+    {
+      "board": "A",
+      "elapsed": 8.297000000005937,
+      "channel": 1,
+      "received": 8,
+      "accepted": 8,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 8.344000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 192
+    },
+    {
+      "board": "A",
+      "elapsed": 8.406000000002678,
+      "channel": 1,
+      "received": 9,
+      "accepted": 9,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 8.453000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 196
+    },
+    {
+      "board": "A",
+      "elapsed": 8.51600000000326,
+      "channel": 1,
+      "received": 9,
+      "accepted": 9,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 8.547000000005937,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 200
+    },
+    {
+      "board": "A",
+      "elapsed": 8.625,
+      "channel": 1,
+      "received": 9,
+      "accepted": 9,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 8.656000000002678,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 204
+    },
+    {
+      "board": "A",
+      "elapsed": 8.719000000004598,
+      "channel": 1,
+      "received": 9,
+      "accepted": 9,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 8.76600000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 208
+    },
+    {
+      "board": "A",
+      "elapsed": 8.828000000001339,
+      "channel": 1,
+      "received": 12,
+      "accepted": 12,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 8.875,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 212
+    },
+    {
+      "board": "A",
+      "elapsed": 8.937000000005355,
+      "channel": 1,
+      "received": 12,
+      "accepted": 12,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 8.984000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 216
+    },
+    {
+      "board": "A",
+      "elapsed": 9.047000000005937,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 9.094000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 220
+    },
+    {
+      "board": "A",
+      "elapsed": 9.156000000002678,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 9.203000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 224
+    },
+    {
+      "board": "A",
+      "elapsed": 9.26600000000326,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 9.312000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 228
+    },
+    {
+      "board": "A",
+      "elapsed": 9.375,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 9.406000000002678,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 232
+    },
+    {
+      "board": "A",
+      "elapsed": 9.484000000004016,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 9.51600000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 236
+    },
+    {
+      "board": "A",
+      "elapsed": 9.578000000001339,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 9.625,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 240
+    },
+    {
+      "board": "A",
+      "elapsed": 9.687000000005355,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 9.734000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 244
+    },
+    {
+      "board": "A",
+      "elapsed": 9.797000000005937,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 9.844000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 248
+    },
+    {
+      "board": "A",
+      "elapsed": 9.906000000002678,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 9.953000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 252
+    },
+    {
+      "board": "A",
+      "elapsed": 10.01600000000326,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 10.062000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 256
+    },
+    {
+      "board": "A",
+      "elapsed": 10.125,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 10.172000000005937,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 260
+    },
+    {
+      "board": "A",
+      "elapsed": 10.234000000004016,
+      "channel": 1,
+      "received": 13,
+      "accepted": 13,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 10.281000000002678,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 264
+    },
+    {
+      "board": "A",
+      "elapsed": 10.328000000001339,
+      "channel": 1,
+      "received": 14,
+      "accepted": 14,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 10.375,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 268
+    },
+    {
+      "board": "A",
+      "elapsed": 10.437000000005355,
+      "channel": 1,
+      "received": 14,
+      "accepted": 14,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 10.484000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 272
+    },
+    {
+      "board": "A",
+      "elapsed": 10.547000000005937,
+      "channel": 1,
+      "received": 14,
+      "accepted": 14,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 10.594000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 276
+    },
+    {
+      "board": "A",
+      "elapsed": 10.656000000002678,
+      "channel": 1,
+      "received": 15,
+      "accepted": 15,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 10.703000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 280
+    },
+    {
+      "board": "A",
+      "elapsed": 10.76600000000326,
+      "channel": 1,
+      "received": 17,
+      "accepted": 17,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 10.812000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 284
+    },
+    {
+      "board": "A",
+      "elapsed": 10.875,
+      "channel": 1,
+      "received": 17,
+      "accepted": 17,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 10.922000000005937,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 288
+    },
+    {
+      "board": "A",
+      "elapsed": 10.984000000004016,
+      "channel": 1,
+      "received": 17,
+      "accepted": 17,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 11.031000000002678,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 292
+    },
+    {
+      "board": "A",
+      "elapsed": 11.094000000004598,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 11.14100000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 296
+    },
+    {
+      "board": "A",
+      "elapsed": 11.203000000001339,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 11.234000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 300
+    },
+    {
+      "board": "A",
+      "elapsed": 11.312000000005355,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 11.344000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 304
+    },
+    {
+      "board": "A",
+      "elapsed": 11.406000000002678,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 11.453000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 308
+    },
+    {
+      "board": "A",
+      "elapsed": 11.51600000000326,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 11.562000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 312
+    },
+    {
+      "board": "A",
+      "elapsed": 11.625,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 11.672000000005937,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 316
+    },
+    {
+      "board": "A",
+      "elapsed": 11.734000000004016,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 11.781000000002678,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 320
+    },
+    {
+      "board": "A",
+      "elapsed": 11.844000000004598,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 11.89100000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 324
+    },
+    {
+      "board": "A",
+      "elapsed": 11.937000000005355,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 12.0,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 328
+    },
+    {
+      "board": "A",
+      "elapsed": 12.062000000005355,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 12.094000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 332
+    },
+    {
+      "board": "A",
+      "elapsed": 12.172000000005937,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 12.203000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 336
+    },
+    {
+      "board": "A",
+      "elapsed": 12.26600000000326,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 12.312000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 340
+    },
+    {
+      "board": "A",
+      "elapsed": 12.375,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 12.422000000005937,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 344
+    },
+    {
+      "board": "A",
+      "elapsed": 12.484000000004016,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 12.531000000002678,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 348
+    },
+    {
+      "board": "A",
+      "elapsed": 12.594000000004598,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 12.64100000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 352
+    },
+    {
+      "board": "A",
+      "elapsed": 12.703000000001339,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 12.75,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 356
+    },
+    {
+      "board": "A",
+      "elapsed": 12.812000000005355,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 12.859000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 360
+    },
+    {
+      "board": "A",
+      "elapsed": 12.922000000005937,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 12.953000000001339,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 364
+    },
+    {
+      "board": "A",
+      "elapsed": 13.031000000002678,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 13.062000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 368
+    },
+    {
+      "board": "A",
+      "elapsed": 13.125,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 13.172000000005937,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 372
+    },
+    {
+      "board": "A",
+      "elapsed": 13.234000000004016,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 13.281000000002678,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 376
+    },
+    {
+      "board": "A",
+      "elapsed": 13.344000000004598,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 13.39100000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 380
+    },
+    {
+      "board": "A",
+      "elapsed": 13.453000000001339,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 13.5,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 384
+    },
+    {
+      "board": "A",
+      "elapsed": 13.562000000005355,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 13.609000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 388
+    },
+    {
+      "board": "A",
+      "elapsed": 13.672000000005937,
+      "channel": 1,
+      "received": 19,
+      "accepted": 19,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 13.719000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 392
+    },
+    {
+      "board": "A",
+      "elapsed": 13.781000000002678,
+      "channel": 1,
+      "received": 20,
+      "accepted": 20,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 13.812000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 396
+    },
+    {
+      "board": "A",
+      "elapsed": 13.89100000000326,
+      "channel": 1,
+      "received": 20,
+      "accepted": 20,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 13.922000000005937,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 400
+    },
+    {
+      "board": "A",
+      "elapsed": 13.984000000004016,
+      "channel": 1,
+      "received": 20,
+      "accepted": 20,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 14.031000000002678,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 404
+    },
+    {
+      "board": "A",
+      "elapsed": 14.094000000004598,
+      "channel": 1,
+      "received": 20,
+      "accepted": 20,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 14.14100000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 408
+    },
+    {
+      "board": "A",
+      "elapsed": 14.203000000001339,
+      "channel": 1,
+      "received": 21,
+      "accepted": 21,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 14.25,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 412
+    },
+    {
+      "board": "A",
+      "elapsed": 14.312000000005355,
+      "channel": 1,
+      "received": 21,
+      "accepted": 21,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 14.359000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 416
+    },
+    {
+      "board": "A",
+      "elapsed": 14.422000000005937,
+      "channel": 1,
+      "received": 22,
+      "accepted": 22,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 14.469000000004598,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 420
+    },
+    {
+      "board": "A",
+      "elapsed": 14.531000000002678,
+      "channel": 1,
+      "received": 22,
+      "accepted": 22,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 14.562000000005355,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 424
+    },
+    {
+      "board": "A",
+      "elapsed": 14.625,
+      "channel": 1,
+      "received": 22,
+      "accepted": 22,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 14.672000000005937,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 428
+    },
+    {
+      "board": "A",
+      "elapsed": 14.734000000004016,
+      "channel": 1,
+      "received": 23,
+      "accepted": 23,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 14.781000000002678,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 432
+    },
+    {
+      "board": "A",
+      "elapsed": 14.844000000004598,
+      "channel": 1,
+      "received": 24,
+      "accepted": 24,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 14.89100000000326,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 436
+    },
+    {
+      "board": "A",
+      "elapsed": 14.953000000001339,
+      "channel": 1,
+      "received": 24,
+      "accepted": 24,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 15.0,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 440
+    },
+    {
+      "board": "A",
+      "elapsed": 15.062000000005355,
+      "channel": 1,
+      "received": 24,
+      "accepted": 24,
+      "attempted": 0
+    },
+    {
+      "board": "B",
+      "elapsed": 15.109000000004016,
+      "channel": 6,
+      "received": 0,
+      "accepted": 0,
+      "attempted": 444
+    }
+  ],
+  "result": "FAIL",
+  "raw_manifest": "board-pair-rf-focused-1/result.json",
+  "cases": [
+    {
+      "sender": "B",
+      "receiver": "A",
+      "case": "reject_source",
+      "count": 100,
+      "tx": {
+        "event": "tx_end",
+        "identity": "FNR-002 RF diagnostic v1",
+        "mac_sha256": "73903bd432340326afd55d456b76561dc3b907e3f020b17387996f81786fd339",
+        "peer_sha256": "eff3b866a351996b138597576ccd72a50879eb3e031b17443d089c3bd903b6aa",
+        "last_source_sha256": "38fbdde984330e50c02382e647c576b71f41cc5c45b193d4f3177e6ee8f22a78",
+        "channel": 1,
+        "rx_active": 0,
+        "tx_active": 1,
+        "state": 0,
+        "payload_length": 250,
+        "attempted": 100,
+        "queued": 100,
+        "enqueue_fail": 0,
+        "tx_ok": 100,
+        "tx_callback_fail": 0,
+        "outstanding": 0,
+        "received": 0,
+        "accepted": 0,
+        "rejected_source": 0,
+        "invalid_length": 0,
+        "dropped": 0,
+        "consumed": 0,
+        "checked": 0,
+        "integrity_errors": 0,
+        "gaps": 0,
+        "duplicates": 0,
+        "uart_overrun": 0,
+        "uart_rx_error": 0
+      },
+      "rx": {
+        "event": "status",
+        "identity": "FNR-002 RF diagnostic v1",
+        "mac_sha256": "eff3b866a351996b138597576ccd72a50879eb3e031b17443d089c3bd903b6aa",
+        "peer_sha256": "c27c02f297b7a634b7b2c5c214e807c983bf64855e84e49620441b9f37d4df3d",
+        "last_source_sha256": "38fbdde984330e50c02382e647c576b71f41cc5c45b193d4f3177e6ee8f22a78",
+        "channel": 1,
+        "rx_active": 1,
+        "tx_active": 0,
+        "state": 2,
+        "payload_length": 250,
+        "attempted": 0,
+        "queued": 0,
+        "enqueue_fail": 0,
+        "tx_ok": 0,
+        "tx_callback_fail": 0,
+        "outstanding": 0,
+        "received": 100,
+        "accepted": 0,
+        "rejected_source": 100,
+        "invalid_length": 0,
+        "dropped": 0,
+        "consumed": 0,
+        "checked": 0,
+        "integrity_errors": 0,
+        "gaps": 0,
+        "duplicates": 0,
+        "uart_overrun": 0,
+        "uart_rx_error": 0
+      },
+      "failures": [],
+      "result": "PASS"
+    },
+    {
+      "sender": "B",
+      "receiver": "A",
+      "case": "wrong_channel",
+      "count": 1000,
+      "tx": {
+        "event": "tx_end",
+        "identity": "FNR-002 RF diagnostic v1",
+        "mac_sha256": "73903bd432340326afd55d456b76561dc3b907e3f020b17387996f81786fd339",
+        "peer_sha256": "eff3b866a351996b138597576ccd72a50879eb3e031b17443d089c3bd903b6aa",
+        "last_source_sha256": "38fbdde984330e50c02382e647c576b71f41cc5c45b193d4f3177e6ee8f22a78",
+        "channel": 6,
+        "rx_active": 0,
+        "tx_active": 1,
+        "state": 0,
+        "payload_length": 250,
+        "attempted": 1000,
+        "queued": 1000,
+        "enqueue_fail": 0,
+        "tx_ok": 0,
+        "tx_callback_fail": 1000,
+        "outstanding": 0,
+        "received": 0,
+        "accepted": 0,
+        "rejected_source": 0,
+        "invalid_length": 0,
+        "dropped": 0,
+        "consumed": 0,
+        "checked": 0,
+        "integrity_errors": 0,
+        "gaps": 0,
+        "duplicates": 0,
+        "uart_overrun": 0,
+        "uart_rx_error": 0
+      },
+      "rx": {
+        "event": "status",
+        "identity": "FNR-002 RF diagnostic v1",
+        "mac_sha256": "eff3b866a351996b138597576ccd72a50879eb3e031b17443d089c3bd903b6aa",
+        "peer_sha256": "73903bd432340326afd55d456b76561dc3b907e3f020b17387996f81786fd339",
+        "last_source_sha256": "73903bd432340326afd55d456b76561dc3b907e3f020b17387996f81786fd339",
+        "channel": 1,
+        "rx_active": 1,
+        "tx_active": 0,
+        "state": 2,
+        "payload_length": 250,
+        "attempted": 0,
+        "queued": 0,
+        "enqueue_fail": 0,
+        "tx_ok": 0,
+        "tx_callback_fail": 0,
+        "outstanding": 0,
+        "received": 78,
+        "accepted": 78,
+        "rejected_source": 0,
+        "invalid_length": 0,
+        "dropped": 0,
+        "consumed": 78,
+        "checked": 78,
+        "integrity_errors": 0,
+        "gaps": 922,
+        "duplicates": 0,
+        "uart_overrun": 0,
+        "uart_rx_error": 0
+      },
+      "failures": [
+        "unexpected wrong-channel reception"
+      ],
+      "result": "FAIL"
+    }
+  ],
+  "owner": "FNR-004 physical RF behavior",
+  "cause": "UNRESOLVED: wrong-channel receiver counts valid packets; sampled SDK channels remain 1/6; does not prove physical RF channel, infrastructure association, or a specific software defect",
+  "repeat_observation": "Original B-to-A test accepted 6/100; focused repeat accepted 78/1000, with all sender delivery callbacks failing. Normal same-channel integrity and source rejection are separate passing results."
+}

@@ -20,6 +20,8 @@ jobs:
         run: |
           git diff --check "${{ github.event.pull_request.base.sha || 'HEAD~1' }}" HEAD
           python3 -m compileall -q tools
+          python3 tools/hardware/test_guards.py
+          (cd evidence/FNR-002 && sha256sum -c SHA256SUMS)
           python3 -m json.tool dependencies.lock.json >/dev/null
           if git grep -nI -E -e '-----BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY-----' -- .; then
             echo "Unexpected private key material is tracked" >&2
@@ -37,6 +39,11 @@ jobs:
               assert len(entry["sha256"]) == 64
           print("PASS: pinned sources, artifact hashes, Python syntax")
           PY
+      - name: Pinned esptool stub integration regression (no hardware)
+        run: |
+          python3 -m venv build/hardware-tools-test
+          build/hardware-tools-test/bin/pip install esptool==4.8.1 pyserial==3.5
+          build/hardware-tools-test/bin/python tools/hardware/test_esptool_integration.py
 
   native:
     name: Native tests (UBSan)
@@ -64,6 +71,8 @@ jobs:
         run: python3 tools/acquire_deps.py --lane rp2040
       - name: Cross-compile
         run: bash tools/build_rp2040.sh
+      - name: Build SRAM-only hardware diagnostics
+        run: bash tools/build_observer.sh
       - name: Verify production USB path is linked
         shell: bash
         run: |
@@ -121,6 +130,14 @@ jobs:
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
         run: bash tools/build_esp.sh
+      - name: Compile isolated UART diagnostic (not physical evidence)
+        env:
+          FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: bash tools/build_esp_diag.sh
+      - name: Compile isolated RF diagnostic using accepted ingress
+        env:
+          FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: bash tools/build_esp_rf.sh
       - name: Record image hashes and manifest
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}

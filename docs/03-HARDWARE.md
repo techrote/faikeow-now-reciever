@@ -11,6 +11,13 @@ The intended board is a clone "Pico W" with:
 
 The user's boards have been identified as non-CYW43 clones. Exact radio package and board routing remain to be proven on the physical units.
 
+Partial FNR-002 measurements are recorded in [BOARD-CONTRACT.md](BOARD-CONTRACT.md).
+Board A's ROM identifies ESP8285N08 and proves UART0 GPIO0 TX / GPIO1 RX at
+115200. B independently confirms the same radio model, UART route and flash
+geometry. Both independently passed full original image restoration, approved
+diagnostic cold boot, 600-second UART integrity and software fault/recovery cases. Use the
+per-board evidence ledger before assigning any production resources.
+
 ## Relevant public prior art
 
 Two public projects describe this clone family:

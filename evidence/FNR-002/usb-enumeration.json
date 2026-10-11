@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "host": {
+    "os": "Windows 11 Pro",
+    "execution": "native PowerShell and native Windows Python USB/serial access",
+    "date_utc": "2026-10-11",
+    "private_inventory_sha256": "5237a9d6c920d31b6c81784e2e3f7d9464d0d1e7df7452d6d9160bde4ef834df"
+  },
+  "bootsel": {
+    "boards": [
+      "A",
+      "B"
+    ],
+    "vid_pid": "2e8a:0003",
+    "volume_label": "RPI-RP2",
+    "uf2_bootloader_version": "3.0",
+    "usb_serial_shared": true,
+    "selection": "physical topology plus RP flash unique ID; not USB serial or enumeration order",
+    "result": "PASS"
+  },
+  "driver": {
+    "interface": "RP2 Boot MI 01",
+    "driver": "WinUSB",
+    "installed_by": "user using Zadig 2.9",
+    "mass_storage_driver": "USBSTOR retained",
+    "composite_parent": "original driver retained"
+  },
+  "sram_diagnostic_cdc": {
+    "board": "A",
+    "vid_pid": "2e8a:000a",
+    "observed_port": "COM5",
+    "serial_unique": false,
+    "result": "PASS",
+    "image_sha256": "a1ab31c4627d8582e73dd428bbf9891e56daef36a143126f857e244c0bdbc0ed",
+    "source_commit": "5e08a71aee75a466c82ccc9d41849c4d89d27399"
+  },
+  "hid_observations": [
+    {
+      "vid": 51966,
+      "pid": 61443,
+      "caps": {
+        "usage": 2,
+        "usage_page": 1,
+        "input_bytes": 4,
+        "output_bytes": 0,
+        "feature_bytes": 0,
+        "link_nodes": 2,
+        "input_button_caps": 1,
+        "input_value_caps": 2,
+        "input_data_indices": 4,
+        "output_button_caps": 0,
+        "output_value_caps": 0,
+        "output_data_indices": 0,
+        "feature_button_caps": 0,
+        "feature_value_caps": 0,
+        "feature_data_indices": 0
+      },
+      "get_input_report_succeeded": false,
+      "get_input_report_error": 1,
+      "input_report_hex": null,
+      "board": "A",
+      "captured_at_utc": "2026-10-11T02:23:20.703909+00:00",
+      "source_commit": "d25ada29ea15c2a3d309539bdc5a6aec1b73dac7",
+      "image_sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "mouse_caps_match": true,
+      "neutral_get_report": false,
+      "source_dirty": true,
+      "probe_source_committed_at": "4ce4dc2f7a2538a3404b771a945d62851ed8b7c4",
+      "raw_manifest": "board-A-hid-probe-1/result.json",
+      "enumeration_result": "PASS",
+      "neutral_report_result": "BLOCKED: Windows HidD_GetInputReport returned error 1; no report observed"
+    },
+    {
+      "vid": 51966,
+      "pid": 61443,
+      "caps": {
+        "usage": 2,
+        "usage_page": 1,
+        "input_bytes": 4,
+        "output_bytes": 0,
+        "feature_bytes": 0,
+        "link_nodes": 2,
+        "input_button_caps": 1,
+        "input_value_caps": 2,
+        "input_data_indices": 4,
+        "output_button_caps": 0,
+        "output_value_caps": 0,
+        "output_data_indices": 0,
+        "feature_button_caps": 0,
+        "feature_value_caps": 0,
+        "feature_data_indices": 0
+      },
+      "get_input_report_succeeded": false,
+      "get_input_report_error": 1,
+      "input_report_hex": null,
+      "board": "A",
+      "captured_at_utc": "2026-10-11T10:46:43.752928+00:00",
+      "source_commit": "bb77606c948774d2966dd0892bd9a4a19da59a78",
+      "image_sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "mouse_caps_match": true,
+      "neutral_get_report": false,
+      "raw_manifest": "board-A-hid-cold-probe-1/result.json",
+      "enumeration_result": "PASS after user-confirmed unheld USB cold reconnect",
+      "neutral_report_result": "BLOCKED: Windows error 1; no neutral report observed"
+    },
+    {
+      "vid": 51966,
+      "pid": 61443,
+      "caps": {
+        "usage": 2,
+        "usage_page": 1,
+        "input_bytes": 4,
+        "output_bytes": 0,
+        "feature_bytes": 0,
+        "link_nodes": 2,
+        "input_button_caps": 1,
+        "input_value_caps": 2,
+        "input_data_indices": 4,
+        "output_button_caps": 0,
+        "output_value_caps": 0,
+        "output_data_indices": 0,
+        "feature_button_caps": 0,
+        "feature_value_caps": 0,
+        "feature_data_indices": 0
+      },
+      "get_input_report_succeeded": false,
+      "get_input_report_error": 1,
+      "input_report_hex": null,
+      "board": "B",
+      "captured_at_utc": "2026-10-11T11:23:50.090029+00:00",
+      "source_commit": "47246146a7e30a812c573e10136af01ae0ba802d",
+      "image_sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "mouse_caps_match": true,
+      "neutral_get_report": false,
+      "raw_manifest": "board-B-hid-probe-1/result.json",
+      "enumeration_result": "PASS",
+      "neutral_report_result": "BLOCKED: Windows error 1; no report observed"
+    },
+    {
+      "vid": 51966,
+      "pid": 61443,
+      "caps": {
+        "usage": 2,
+        "usage_page": 1,
+        "input_bytes": 4,
+        "output_bytes": 0,
+        "feature_bytes": 0,
+        "link_nodes": 2,
+        "input_button_caps": 1,
+        "input_value_caps": 2,
+        "input_data_indices": 4,
+        "output_button_caps": 0,
+        "output_value_caps": 0,
+        "output_data_indices": 0,
+        "feature_button_caps": 0,
+        "feature_value_caps": 0,
+        "feature_data_indices": 0
+      },
+      "get_input_report_succeeded": false,
+      "get_input_report_error": 1,
+      "input_report_hex": null,
+      "board": "B",
+      "captured_at_utc": "2026-10-11T11:24:33.046561+00:00",
+      "source_commit": "47246146a7e30a812c573e10136af01ae0ba802d",
+      "image_sha256": "13cabf0be0a38ea8e3b8c7353fb88b3fc63fdbc3fb8fc48cedf0fc8fc178e242",
+      "mouse_caps_match": true,
+      "neutral_get_report": false,
+      "raw_manifest": "board-B-hid-cold-probe-1/result.json",
+      "enumeration_result": "PASS after user-confirmed cold reconnect",
+      "neutral_report_result": "BLOCKED: Windows error 1; no report observed"
+    }
+  ],
+  "labeled_flash_bridge_B": {
+    "vid_pid": "2e8a:000a",
+    "fixture_serial": "FNR002B",
+    "observed_port": "COM6",
+    "result": "PASS: distinct fixture descriptor observed",
+    "raw_manifest": "board-B-flash-bridge-cdc.json"
+  },
+  "hid_sram_capabilities": {
+    "B": {
+      "board": "B",
+      "captured_at_utc": "2026-10-11T12:00:32.606914+00:00",
+      "source_commit": "cc00760905f97eb6d45421384458c4c3ec918af3",
+      "image_sha256": "4dc4bde79cba3e5a9f18953f04249769d214bd4a19a12748ad2b0eeddef08e80",
+      "vid": 51966,
+      "pid": 61443,
+      "caps": {
+        "usage": 2,
+        "usage_page": 1,
+        "input_bytes": 4,
+        "output_bytes": 0,
+        "feature_bytes": 0,
+        "link_nodes": 2,
+        "input_button_caps": 1,
+        "input_value_caps": 2,
+        "input_data_indices": 4,
+        "output_button_caps": 0,
+        "output_value_caps": 0,
+        "output_data_indices": 0,
+        "feature_button_caps": 0,
+        "feature_value_caps": 0,
+        "feature_data_indices": 0
+      },
+      "mouse_caps_match": true,
+      "get_input_report_succeeded": false,
+      "get_input_report_error": 1,
+      "neutral_get_report": false,
+      "raw_manifest": "board-B-hid-ram-probe-1/result.json"
+    }
+  },
+  "hid_raw_device_configuration": {
+    "B": {
+      "board": "B",
+      "captured_at_utc": "2026-10-11T12:00:32.631554+00:00",
+      "source_commit_at_start": "cc00760905f97eb6d45421384458c4c3ec918af3",
+      "source_dirty_at_start": true,
+      "vid": 51966,
+      "pid": 61443,
+      "device_descriptor_hex": "1201000200000040feca03f0000101020001",
+      "configuration_descriptor_hex": "09022200010100803209040000010301020009211101000122320007058103080001",
+      "configuration_parts": [
+        {
+          "type": 2,
+          "hex": "090222000101008032"
+        },
+        {
+          "type": 4,
+          "hex": "090400000103010200"
+        },
+        {
+          "type": 33,
+          "hex": "092111010001223200"
+        },
+        {
+          "type": 5,
+          "hex": "07058103080001"
+        }
+      ],
+      "hid_report_descriptor": "BLOCKED by this hub API: device recipient only; use parsed HID caps separately",
+      "result": "PASS",
+      "raw_manifest": "board-B-hid-descriptors-1/result.json",
+      "image_sha256": "4dc4bde79cba3e5a9f18953f04249769d214bd4a19a12748ad2b0eeddef08e80",
+      "deployment_raw_manifest": "board-B-hid-ram-load/result.json"
+    }
+  },
+  "hid_idle_motion": {
+    "B": {
+      "board": "B",
+      "captured_at_utc": "2026-10-11T12:02:09.356786+00:00",
+      "source_commit_at_start": "b69554f3bf3262247d2e7329210537f87f36d0ba",
+      "source_dirty_at_start": true,
+      "image_sha256": "4dc4bde79cba3e5a9f18953f04249769d214bd4a19a12748ad2b0eeddef08e80",
+      "requested_seconds": 20,
+      "elapsed_seconds": 20.0,
+      "events": [],
+      "motion_events": 0,
+      "device_removed": false,
+      "errors": [],
+      "scope": "No unsolicited target RAWMOUSE motion observed during this idle interval; neutral report and active controls unverified",
+      "result": "PASS",
+      "raw_manifest": "board-B-hid-idle-2/result.json"
+    }
+  }
+}

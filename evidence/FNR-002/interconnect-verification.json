@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "host": {
+    "os": "Windows 11 Pro",
+    "execution": "native PowerShell and native Windows Python USB/serial access",
+    "date_utc": "2026-10-11",
+    "private_inventory_sha256": "5237a9d6c920d31b6c81784e2e3f7d9464d0d1e7df7452d6d9160bde4ef834df"
+  },
+  "A": {
+    "rom_bidirectional_result": "PASS",
+    "peripheral": "UART0",
+    "rp_tx_gpio": 0,
+    "radio_rx": "UART RX",
+    "rp_rx_gpio": 1,
+    "radio_tx": "UART TX",
+    "baud": 115200,
+    "format": "8N1",
+    "hardware_flow_control_enabled": false,
+    "reset_gpio": null,
+    "download_gpio": null,
+    "header_conflicts": null,
+    "voltage_measurement": null,
+    "proof": [
+      "ROM SYNC",
+      "chip_id",
+      "flash_id",
+      "two matching complete flash reads",
+      "CRC-protected application identity and deterministic 10-second bidirectional smoke",
+      "600-second deterministic bidirectional integrity and software faults/recovery",
+      "CRC-protected diagnostic cold boot",
+      "600-second deterministic bidirectional integrity and six software fault/recovery cases"
+    ],
+    "bridge_source_commit": "823d45e104827bb6e6b268e421f0a9d3b3ff48ff",
+    "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
+    "far_button_action": "hold during USB power reconnect, then release",
+    "far_button_rom_access": "PASS",
+    "sustained_integrity_result": "PASS: independently 600 seconds and >=10000 requests/echoes/streams",
+    "smoke_integrity_result": "PASS"
+  },
+  "B": {
+    "rom_bidirectional_result": "PASS",
+    "peripheral": "UART0",
+    "rp_tx_gpio": 0,
+    "radio_rx": "UART RX",
+    "rp_rx_gpio": 1,
+    "radio_tx": "UART TX",
+    "baud": 115200,
+    "format": "8N1",
+    "hardware_flow_control_enabled": false,
+    "reset_gpio": null,
+    "download_gpio": null,
+    "header_conflicts": null,
+    "voltage_measurement": null,
+    "bridge_source_commit": "823d45e104827bb6e6b268e421f0a9d3b3ff48ff",
+    "bridge_sha256": "1e19bc4de2b110df8023e77009e87440c62444e2d67ade33a20fccae209d3346",
+    "far_button_rom_access": "PASS",
+    "proof": [
+      "ROM SYNC",
+      "independent silicon/MAC identity",
+      "official RAM stub flash ID",
+      "two matching full radio reads",
+      "CRC-protected diagnostic cold boot",
+      "600-second deterministic bidirectional integrity and six software fault/recovery cases"
+    ],
+    "far_button_action": "Both buttons held during USB reconnect; near button also keeps original RP application in ROM",
+    "sustained_integrity_result": "PASS: independently 600 seconds and >=10000 requests/echoes/streams",
+    "smoke_integrity_result": "PASS",
+    "raw_manifest": "board-B-radio-identification.json"
+  },
+  "optional_measurement_scope": "Reset/download RP GPIO wiring, header continuity and voltage remain unknown; physical button recovery and functional GP0/1 link are verified. No user-built wiring or meter measurement required to proceed."
+}

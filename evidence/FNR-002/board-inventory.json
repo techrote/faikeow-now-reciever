@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "host": {
+    "os": "Windows 11 Pro",
+    "execution": "native PowerShell and native Windows Python USB/serial access",
+    "date_utc": "2026-10-11",
+    "private_inventory_sha256": "5237a9d6c920d31b6c81784e2e3f7d9464d0d1e7df7452d6d9160bde4ef834df"
+  },
+  "boards": [
+    {
+      "board": "A",
+      "physical_usb_port_label": 3,
+      "rp2040": "RP2040 B2",
+      "flash_unique_id_sha256": "2fc3eeb7948385c4c3f65fd466eaf697d65b2892d9b134dc39c982ff1a03f922",
+      "flash_jedec": "684015",
+      "flash_capacity_evidence": "2 MiB consistent with JEDEC",
+      "original_image_state": "all ff",
+      "backup": {
+        "result": "PASS",
+        "captured_at_utc": "2026-10-11T01:30:23.306715+00:00",
+        "source_commit": "5e08a71aee75a466c82ccc9d41849c4d89d27399",
+        "size_bytes": 2097152,
+        "sha256": "4bda3a28f4ffe603c0ec1258c0034d65a1a0d35ab7bd523a834608adabf03cc5",
+        "matching_independent_reads": true,
+        "raw_manifest": "board-A-rp2040-original/backup.json",
+        "restoration_result": "PASS: full original readback and observed blank ROM return"
+      },
+      "radio": {
+        "model": "ESP8285N08",
+        "flash_size_bytes": 1048576,
+        "identity_result": "PASS"
+      },
+      "persistent_flash_writes_in_campaign": true,
+      "initial_physical_usb_port_label": 1,
+      "topology_rebinding": "A-only reconnect at port 3; read-only picotool selection by original flash UID confirmed A before updating private mapping; distinct from B port 1",
+      "topology_rebinding_raw_manifest": "board-A-topology-rebind-1.json"
+    },
+    {
+      "board": "B",
+      "physical_usb_port_label": 1,
+      "rp2040": "RP2040 B2",
+      "flash_unique_id_sha256": "3c364283acb3cdc4c2221ca0104771f699221e274970505b9a9bfeeb60d45e88",
+      "flash_jedec": "684015",
+      "flash_capacity_evidence": "Independent input-only observer JEDEC: 2 MiB",
+      "original_image_state": "picowutooth app metadata",
+      "backup": {
+        "result": "PASS",
+        "captured_at_utc": "2026-10-11T01:22:55.215936+00:00",
+        "source_commit": "ac9a371e9ad5c147b8a9abec2ab135f2df09ed11",
+        "size_bytes": 2097152,
+        "sha256": "1587014b304020593a1d5b816843e6008b34ad74bd2deca417a8a69ce670e52f",
+        "matching_independent_reads": true,
+        "raw_manifest": "board-B-rp2040-original/backup.json",
+        "restoration_result": "PASS: full original RP bytes; accepted HID also cold-booted"
+      },
+      "radio": {
+        "identity_result": "PASS",
+        "model": "ESP8285N08",
+        "flash_size_bytes": 1048576
+      },
+      "persistent_flash_writes_in_campaign": true,
+      "initial_physical_usb_port_label": 3,
+      "topology_rebinding": "User B-only reconnect at port 1; old topology refused; independently confirmed B flash UID via read-only picotool before updating private map"
+    }
+  ],
+  "acceptance": "FNR-002 physical scope PASS independently on both boards; programme acceptance follows issue #3 PR/main verification"
+}
