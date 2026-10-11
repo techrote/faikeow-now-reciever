@@ -110,15 +110,32 @@ TiltMouse maps its logical mouse reports into this generic profile.
 
 ## Hardware status
 
-Target boards have RP2040 plus non-CYW43 ESP8266-class radio hardware.
+Both characterized boards independently identify as RP2040 B2 with 2 MiB
+external flash plus ESP8285N08 with 1 MiB embedded flash. ESP8285 is an
+ESP8266-family Wi-Fi chip with no Bluetooth controller; these are not CYW43
+Pico W boards.
 
-Similar public boards use ESP8285 + UART + RP2040-assisted radio flashing. Those remain hypotheses until FNR-002 establishes the actual board contract.
+FNR-002 is accepted: UART0 GP0 TX -> radio RX, GP1 RX <- radio TX at 115200
+8N1, physical-button ROM recovery, complete original restoration/readback and
+600-second integrity/fault recovery passed independently on both boards.
+RP-controlled radio reset/download pins remain unknown. The additional reverse
+RF channel-isolation anomaly remains open under FNR-004; full receiver/profile
+acceptance is separate.
+
+The authoritative hardware reference is
+[techrote/picoWcloneESP8285N08](https://github.com/techrote/picoWcloneESP8285N08),
+covering chip capabilities, verified wiring, resource use, flashing and recovery.
+The qualified documentation baseline is
+`8d48cdde71ccba824436635858265cb31c4ed88f`; see `docs/03-HARDWARE.md` for current
+and pinned links. Local `docs/BOARD-CONTRACT.md` and `evidence/FNR-002/` preserve
+historical evidence. This repository remains authoritative for receiver code,
+locked dependencies, protocol/profile contracts and application acceptance.
 
 ## Internal link
 
-FNR-002 establishes the physical transport.
-
-If UART is confirmed, preferred v0.1 framing remains:
+FNR-002 established UART0 GP0/GP1 at 115200 8N1 on both measured boards.
+FNR-005 owns production framing, separate from diagnostic framing. Preferred
+v0.1 framing remains:
 
 - COBS;
 - explicit version/type/length/local sequence;

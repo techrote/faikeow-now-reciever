@@ -40,7 +40,20 @@ These boards were sold as Pico W-compatible hardware but replace the CYW43439 wi
 
 PIO-backed outputs are **not a v0.1 requirement**, but the architecture deliberately avoids making future profile backends impossible.
 
-Public work on similar clone boards shows that the radio can often be reflashed by temporarily turning the RP2040 into a USB-to-serial bridge. Exact chip identity, pins, boot/reset wiring and stable link rate on the target boards remain physical FNR-002 evidence rather than assumptions.
+FNR-002 independently identified both units as RP2040 B2 + ESP8285N08 and proved
+the onboard UART0 GP0/GP1 route at 115200 8N1, reversible flashing and recovery.
+ESP8285 has Wi-Fi and ESP-NOW, with no Bluetooth controller. RP-controlled
+radio reset/download wiring and complete header routing remain unknown.
+
+The authoritative hardware reference now lives in
+[techrote/picoWcloneESP8285N08](https://github.com/techrote/picoWcloneESP8285N08).
+Use its [programming reference](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-PROGRAMMING-REFERENCE.md),
+[operating runbook](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-OPERATING-RUNBOOK.md)
+and [board contract](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/BOARD-CONTRACT.md)
+for hardware facts and procedures. [Hardware integration](docs/03-HARDWARE.md)
+records the pinned reference baseline. This repository owns receiver firmware,
+protocol/profile contracts and application acceptance; its local FNR-002
+contract/evidence are retained as historical characterization records.
 
 ## Repository authority
 

@@ -19,6 +19,27 @@ Before editing:
 11. owning issue/comments
 12. live `main`, relevant branches/PRs and CI
 
+## Board programming context
+
+The authoritative hardware reference is
+[techrote/picoWcloneESP8285N08](https://github.com/techrote/picoWcloneESP8285N08).
+For board programming or hardware decisions, read its board contract,
+programming reference and relevant runbook sections, linked from
+`docs/03-HARDWARE.md`. The qualified documentation baseline is
+`8d48cdde71ccba824436635858265cb31c4ed88f` in that repository.
+
+This repository retains authority over receiver firmware, dependency locks,
+protocols, profiles and programme acceptance. Local `docs/BOARD-CONTRACT.md`
+and `evidence/FNR-002/` are historical characterization records; local
+`DEVBOARD-*` documents are navigation pointers, not parallel hardware authority.
+Future hardware facts/procedures belong in the dedicated devboard repository;
+receiver-specific consequences and acceptance evidence belong here.
+
+The characterized units contain ESP8285N08, an ESP8266-family Wi-Fi chip without
+Bluetooth. Reuse accepted identity/recovery/UART evidence; repeat physical
+qualification only when changes or an observed failure warrant it. Historical
+COM/topology snapshots never replace fresh target identification.
+
 ## Scope rules
 
 - One FNR issue owns one bounded scope.
@@ -29,7 +50,7 @@ Before editing:
 - HID semantics belong to profiles.
 - TiltMouse is a reference sender/profile user, not the repository's core product definition.
 - Do not add infrastructure networking, Bluetooth, AT-modem functionality or web UI unless explicitly owned by a later issue.
-- Do not assume public clone pinouts before FNR-002 evidence.
+- Use the dedicated devboard repository's verified wiring contract; do not assume unknown pins or generalize it to an unverified clone revision.
 - ESP-NOW application payload remains <=250 bytes for the accepted ESP8266 interoperability target.
 - Do not create unbounded packet/report queues.
 - Do not fabricate hardware/RF/USB evidence.

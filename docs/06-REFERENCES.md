@@ -34,6 +34,19 @@ TiltMouse is the first reference sender for the faikeow `relative_mouse` profile
 
 Keep the generic application envelope plus profile payload at or below the ESP-NOW v1 250-byte interoperability ceiling for the accepted ESP8266-class receiver.
 
+## Authoritative devboard hardware reference
+
+- [techrote/picoWcloneESP8285N08](https://github.com/techrote/picoWcloneESP8285N08)
+- [Board contract](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/BOARD-CONTRACT.md)
+- [Programming reference](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-PROGRAMMING-REFERENCE.md)
+- [Operating runbook](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-OPERATING-RUNBOOK.md)
+- [Qualified documentation baseline](https://github.com/techrote/picoWcloneESP8285N08/tree/8d48cdde71ccba824436635858265cb31c4ed88f)
+
+This dedicated repository owns general board facts and programming/recovery
+procedures. The receiver repository owns its firmware, dependency lock,
+protocols/profiles and application acceptance. Local FNR-002 evidence remains
+a historical measurement snapshot. See [03-HARDWARE.md](03-HARDWARE.md).
+
 ## Clone Pico-W / ESP8285 prior art
 
 - JiriBilek/RP2040_PicoW_ESP8285_Library:
@@ -65,4 +78,9 @@ FNR-002 records the exact version/commands proven on the target board.
 
 ## Evidence rule
 
-External references are engineering inputs, not substitutes for target-board evidence. Where prior art conflicts with physical observations, the measured board contract wins.
+Official silicon documentation and similar-board prior art are engineering
+inputs, not substitutes for target-board evidence. The dedicated devboard
+repository maintains the verified hardware contract for the measured units.
+Use a pinned reference version and matching board/evidence identity for
+reproducible application claims; record unresolved differences before relying
+on a changed hardware assumption.

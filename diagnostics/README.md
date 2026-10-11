@@ -1,8 +1,14 @@
 # FNR-002 temporary hardware diagnostics
 
 These programs are isolated characterization tools, not accepted production
-transport or HID firmware. Hardware acceptance remains open until the evidence
-matrix records completed physical tests for both boards.
+transport or HID firmware. Both boards passed the FNR-002 identity, recovery
+and UART hardware scope. Additional USB/RF subsets retain their separate
+acceptance limits in the evidence matrix. For reusable build/deployment
+procedures, use the authoritative
+[devboard operating runbook](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-OPERATING-RUNBOOK.md)
+and [programming reference](https://github.com/techrote/picoWcloneESP8285N08/blob/main/docs/DEVBOARD-PROGRAMMING-REFERENCE.md).
+[Hardware integration](../docs/03-HARDWARE.md) links the qualified reference
+baseline. Diagnostic sources and guarded host helpers remain in this repository.
 
 - `rp2040-observer`: SRAM-only input observer. Drives no GPIO.
 - `rp2040-candidate-bridge`: SRAM-only CDC/UART0 bridge, GP0 TX and GP1 RX.
@@ -36,8 +42,10 @@ zero unexplained integrity/errors/drops, and exact board/firmware provenance.
 restarts the radio application only while idle. It does not enter radio ROM.
 Physical far-button power cycling remains the observed radio-download method.
 
-Native Windows build prerequisites and their identities are recorded in
-`docs/BOARD-CONTRACT.md`. For the ESP diagnostic, use portable Arduino CLI 1.5.1
+Native Windows build prerequisites and hardware procedures are maintained in
+the dedicated devboard reference. Their original campaign identities remain
+recorded in the local historical `docs/BOARD-CONTRACT.md` and evidence ledger.
+For the ESP diagnostic, use portable Arduino CLI 1.5.1
 with core `esp8266:esp8266@3.1.2` and its GCC 10.3.0 Windows package:
 
 ```powershell
