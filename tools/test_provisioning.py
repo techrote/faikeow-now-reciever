@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import pathlib
+import re
 import subprocess
 import sys
 import tempfile
@@ -40,9 +41,10 @@ with tempfile.TemporaryDirectory() as tmp:
     redacted = json.loads(redacted_text)
 
     key_bytes = bytes.fromhex(DUMMY_KEY)
-    key_tokens = [f"0x{b:02x}" for b in key_bytes]
-    assert not all(token in rp for token in key_tokens), "RP source contains radio key bytes"
-    assert all(token in esp for token in key_tokens), "ESP source omitted radio key"
+    def literals(text: str) -> bytes:
+        return bytes(int(value, 16) for value in re.findall(r"0x([0-9a-fA-F]{2})", text))
+    assert key_bytes not in literals(rp), "RP source contains contiguous radio key bytes"
+    assert key_bytes in literals(esp), "ESP source omitted contiguous radio key bytes"
     assert DUMMY_KEY not in redacted_text
     assert "radio_key_hex" not in redacted
     assert redacted["radio_key_present"] is True
