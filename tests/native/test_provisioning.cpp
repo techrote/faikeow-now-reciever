@@ -86,6 +86,10 @@ static void test_corruption_and_fail_closed() {
     CHECK(!fnr_provisioning_config_valid(&invalid));
     invalid = config; invalid.peer_mac[0] |= 1U;
     CHECK(!fnr_provisioning_config_valid(&invalid));
+    invalid = config; invalid.profile_id = 0U;
+    CHECK(!fnr_provisioning_config_valid(&invalid));
+    invalid = config; invalid.profile_schema_version = 0U;
+    CHECK(!fnr_provisioning_config_valid(&invalid));
     invalid = config; invalid.config_id = 0U;
     CHECK(!fnr_provisioning_config_valid(&invalid));
     invalid = config; invalid.generation = 0U;
@@ -110,6 +114,8 @@ static void test_20000_deterministic_codec_cases() {
         config.peer_mac[0] = static_cast<uint8_t>((rng32() & 0xfcU) | 0x02U);
         for (std::size_t i = 1U; i < FNR_MAC_SIZE; ++i)
             config.peer_mac[i] = static_cast<uint8_t>(rng32());
+        config.profile_id = static_cast<uint8_t>(1U + rng32() % 255U);
+        config.profile_schema_version = static_cast<uint8_t>(1U + rng32() % 255U);
         config.freshness_timeout_ms = 1U + rng32() % UINT32_C(1000000);
         config.config_id = (static_cast<uint64_t>(rng32()) << 32U) | rng32();
         if (config.config_id == 0U) config.config_id = 1U;
@@ -121,6 +127,8 @@ static void test_20000_deterministic_codec_cases() {
         CHECK(fnr_provisioning_decode(bytes.data(), bytes.size(), &decoded) ==
               FNR_PROVISIONING_OK);
         CHECK(decoded.channel == config.channel);
+        CHECK(decoded.profile_id == config.profile_id);
+        CHECK(decoded.profile_schema_version == config.profile_schema_version);
         CHECK(decoded.config_id == config.config_id);
         CHECK(decoded.generation == config.generation);
         CHECK(std::memcmp(decoded.peer_mac, config.peer_mac, FNR_MAC_SIZE) == 0);
