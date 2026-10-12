@@ -1,4 +1,6 @@
 #include "fnr/provisioning.h"
+#include "fnr/profile.h"
+#include "fnr/profile_relative_mouse.h"
 
 #include <array>
 #include <cstddef>
