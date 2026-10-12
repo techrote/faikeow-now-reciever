@@ -96,11 +96,16 @@ and the actual RP FNR-005 status-to-admission gate. UBSan, ASan/UBSan, GCC
 `-fanalyzer`, locked RP2040/ESP8285 cross-builds and linked-symbol checks remain
 required.
 
-These do not prove physical provisioning. Before FNR-007 acceptance, one
-representative characterized board must establish MAC discovery, correct
-peer/channel/profile provisioning, intentional wrong peer/channel/profile safe
-inactivity, correct-config restoration, power-cycle persistence, and no-solder
-reconfiguration/recovery.
+The [separate physical campaign](../evidence/FNR-007/README.md) establishes these
+provisioning/recovery claims on representative Board A with a bounded synthetic
+sender. Wrong-channel behavior is measured, not assumed to be isolation; the
+pinned SDK cannot attest per-packet channel or encryption. Mandatory wrapper
+authentication repairs the retained plaintext admission failure. Wrong peer
+traffic is rejected upstream by ESP, so RP sees no packet and its unauthorized
+counter does not increment in that physical case. Wrong profile reaches RP and
+increments its profile rejection counter. Native tests independently establish
+RP exact-MAC rejection. Evidence separates those gates from HID output and
+preserves the schema/recovery failures, regression-first tests and repairs.
 
 ## Physical FNR-008 evidence
 

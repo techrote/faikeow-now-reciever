@@ -99,7 +99,7 @@ v0.1 implements one production profile:
 
 `techrote/ESP32-QMI8658C-TiltMouse` is the first reference sender and physical interoperability target, not the product definition of this repository.
 
-## Developer builds (through FNR-007 software)
+## Developer builds (through FNR-007)
 
 The RP2040 build contains the FNR-003 generic TinyUSB HID framework, FNR-005
 bounded UART transport and the FNR-006 generic receiver core. FNR-006 freezes an
@@ -114,7 +114,9 @@ The ESP8266 build remains profile-neutral: FNR-004 receives opaque ESP-NOW
 application datagrams and FNR-005 transports them unchanged. It does not decode
 FNR-006 profile contents.
 
-These are software-qualified targets, not complete physical dongle acceptance.
+FNR-007 has [representative-board provisioning/recovery evidence](evidence/FNR-007/README.md),
+including a mandatory authenticated radio wrapper, factory reset and reconfiguration.
+Full physical dongle/reference-sender acceptance remains FNR-008.
 FNR-002 hardware and FNR-005 representative-board transport evidence remain
 accepted inputs. FNR-008 owns physical USB/RF/reference-profile acceptance.
 

@@ -124,8 +124,11 @@ host provisioning service.
 
 See [FNR-007-PROVISIONING.md](FNR-007-PROVISIONING.md). Software qualification
 covers corruption, secret separation, radio setup and RP acknowledgement.
-Representative-board provisioning/power-cycle/recovery smoke remains required
-before issue acceptance.
+The [representative Board A campaign](../evidence/FNR-007/README.md) establishes
+paired provisioning, mandatory authenticated radio ingress, firmware-image
+persistence, neutral admission recovery with replay ordering retained, factory
+reset and reconfiguration. Original failures and repairs are retained. PR #22
+and issue #8 record final review, CI and merge/post-merge acceptance.
 
 ## FNR-008 — Platform physical acceptance + TiltMouse reference profile
 

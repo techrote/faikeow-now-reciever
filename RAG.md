@@ -180,7 +180,7 @@ FNR-001 pins exact versions:
 - FNR-004 — generic ESP-NOW datagram ingress.
 - FNR-005 — framed inter-MCU datagram transport.
 - FNR-006 — generic receiver core, frozen platform v1, profile dispatch and relative-mouse v1 semantics (implemented in this branch).
-- FNR-007 — paired peer/channel/key/profile provisioning and no-solder recovery (software implemented on the active branch; representative-board smoke remains).
+- FNR-007 — paired peer/channel/key/profile provisioning and no-solder recovery (representative Board A physical campaign complete; PR #22 / #8 record merge and post-merge acceptance).
 - FNR-008 — platform physical acceptance using TiltMouse as the reference sender/profile.
 - FNR-009 — generic v0.1 release consolidation.
 

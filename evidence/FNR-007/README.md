@@ -1,8 +1,11 @@
 # FNR-007 physical provisioning qualification
 
-Qualification is in progress. **The reviewed implementation is not accepted.**
-PR [#22](https://github.com/techrote/faikeow-now-reciever/pull/22) remains draft;
-issue [#8](https://github.com/techrote/faikeow-now-reciever/issues/8) remains open.
+Representative-board physical qualification is complete on the repaired firmware
+source `9d813d7143124a8dcadc3b2a339db00ac792392b`. The initially reviewed
+implementation failed three physical checks, retained below with their repairs.
+Final exact-head CI, squash merge and post-merge verification are separate
+programme gates recorded in PR [#22](https://github.com/techrote/faikeow-now-reciever/pull/22)
+and issue [#8](https://github.com/techrote/faikeow-now-reciever/issues/8).
 
 ## Starting state and representative fixture
 
@@ -139,7 +142,7 @@ is not exposed by the production HID-only interface. The separate observer
 phase remains necessary for boot staging, matching READY, downstream rejection,
 revocation, neutral barriers and recovery-order preservation.
 
-## Remaining acceptance
+## Observer, recovery and factory qualification
 
 The [initial observer results](observer-initial.json), from the same repaired
 source, retain two further physical failures before repair:
@@ -204,9 +207,53 @@ succeeded without soldering after the factory deployment.
 
 [Artifact provenance](artifacts.json) records exact firmware source/tree/lock,
 public provisioning identities, target build hashes and compiler identities.
-The second configuration is built but not yet physically qualified. Both raw
-configurations/keys and generated secret sources remain private or ignored.
+Both raw configurations/keys and generated secret sources remain private or
+ignored. The final source differs from the qualified firmware source only in
+evidence/documentation; firmware, shared code, diagnostics, build tooling and
+dependency locks are unchanged.
 
-Second-configuration qualification and final production restoration remain outstanding.
-FNR-008 is not dependency ready; TiltMouse interoperability/performance is not
-claimed.
+## Reconfiguration and final production — 2026-10-13 local date
+
+[Reconfiguration evidence](reconfiguration.json) records config ID
+`0x9133bd03ee60b75f`, generation 2, a fresh distinct private key, the same
+sender/channel/platform/profile/schema/freshness, and public record SHA-256
+`44d1d60265677a844a9115e50e46cb96b4ebb597db94d7bbd998e2b05516e8c8`.
+The configuration-2 ESP diagnostic reported the expected receiver/peer, record
+valid, key present, encryption enabled, authentication enabled and READY. Its
+initial host predicate compared uppercase diagnostic MAC text to lowercase
+expected text; the original FAIL is retained with a separate case-normalized
+PASS reconciliation. No firmware or hardware change was needed.
+
+Both new receiver images passed exact readback through the documented recovery
+paths. Before updating the sender, its old encrypted configuration produced
+zero radio/RP admission or HID output. Twenty old authenticated wrappers sent
+without link encryption physically reached ESP but none were admitted. Neither
+case mutated the empty RP session/order state. After updating B to the new
+paired sender, 20/20 packets reached ESP and RP admission, produced 20 moving
+TinyUSB reports and full +20/-20 host totals, without button events or peer/profile
+rejections. The observer shows boot staged with acknowledgement and both gates
+disabled, then matching READY enabling admission. No soldering was required.
+
+A was restored to the normal production RP image, exact-readback verified and
+completely power-cycled by the operator. Correct encrypted/authenticated traffic
+and later restoration each produced full +20/-20 totals. Bare packets, valid
+wrong-profile packets and replayed old sequence ranges each produced zero HID
+movement or button events. The sender was stopped after every bounded case.
+A remains on this configuration-2 production pair; B is a sender fixture only.
+Final artifact hashes:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| RP2040 production UF2 | `b9b6f1d6152227e681734f3eb2e777dea29015eade1c85915a1386fd9f5d770a` |
+| ESP production image | `e1071cfcb04167b5b52287eaadf1305089b9bd4aeee30d7e04a2f32c1983b187` |
+| ESP provisioning diagnostic | `32603d32f5c1a597d9ce5d096f9c62c37cc5c7b2f83b95bc2f091ae2b3c9cd2c` |
+
+This completes the bounded FNR-007 physical campaign. FNR-008 may consume it
+after the final merge/post-merge programme gates pass. TiltMouse interoperability,
+button UX, range, sustained performance and the full FNR-008 fault campaign are
+not claimed. The sender must implement authenticated wrapper v1 in addition to
+the unchanged enclosed platform/profile packet contract.
+
+[Final security/evidence review](final-review.md) records the reviewed boundaries
+and limitations. The [secret audit](secret-audit.json) found no deployment or
+derived key in tracked candidate/history content or RP artifacts.

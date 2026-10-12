@@ -258,19 +258,23 @@ Software qualification covers:
 - UBSan/ASan and GCC `-fanalyzer`;
 - both locked target cross-builds and linked-symbol checks.
 
-## Remaining physical acceptance
+## Physical qualification
 
-FNR-007 is not physically accepted merely because these software checks pass.
+The [representative Board A campaign](../evidence/FNR-007/README.md) establishes
+receiver MAC discovery, paired provisioning, correct peer/profile operation,
+wrong peer/profile/key and unauthenticated input rejection, measured channel
+behavior, firmware-image power-cycle persistence, neutral admission revocation
+and recovery with ordering preserved, factory-safe reset and a second paired
+configuration through no-solder recovery. Board B was only the bounded synthetic
+sender. Original physical failures and regression-first tests are retained.
 
-The issue-owned representative-board smoke still needs to establish:
+The exact provisioned production pair was restored and cold-booted at the end.
+Artifact/source/toolchain identities and counter/HID observations are recorded
+separately. Native Windows physical artifacts are supplemental pinned-source
+builds; canonical Linux build scripts and generated provisioned fixtures are
+validated in CI. Build success alone does not establish physical acceptance.
 
-- receiver ESP MAC discovery;
-- one provisioned peer/channel/profile;
-- intentional wrong peer/profile safe inactivity;
-- intentional wrong sender channel behavior measured and reconciled with the
-  retained FNR-004 mismatch-reception limitation;
-- correct-config restore;
-- power-cycle persistence;
-- no-solder reconfiguration/recovery.
-
-Full TiltMouse/reference-sender interoperability remains FNR-008.
+The SDK encryption/channel limitations in the authenticated wrapper contract
+remain explicit. No TiltMouse artifact is relied upon here. Full reference-sender
+interoperability and performance remain FNR-008; final programme acceptance is
+recorded in PR #22 / issue #8 after merge and post-merge verification.
