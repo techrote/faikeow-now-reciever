@@ -6,6 +6,7 @@
 #include "pattern.h"
 #include <ESP8266WiFi.h> /* Explicit dependency for makeEspArduino's source scanner. */
 #include "radio_adapter.cpp"
+#include "radio_auth_crypto.cpp"
 #include "transport_adapter.cpp"
 #ifndef FNR_SOURCE_ID
 #error "Qualification image requires exact source identity"

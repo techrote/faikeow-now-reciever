@@ -17,8 +17,11 @@ All multibyte fields are little endian. The 18-byte header is:
 | 12 | 4 | platform sequence u32 |
 | 16 | 2 | exact profile-payload length |
 
-At most 232 payload bytes follow, keeping the complete application packet <=250
-bytes. Sender session is not authentication. Sequence comparison is modulo u32:
+At most 232 payload bytes follow in the codec, keeping the platform packet
+<=250 bytes. Provisioned FNR-007 RF traffic additionally requires the
+[authenticated radio wrapper v1](FNR-007-RADIO-AUTH.md), leaving 228 enclosed
+platform bytes / 210 profile bytes within the same radio ceiling. Sender session
+is not authentication. Sequence comparison is modulo u32:
 duplicate delta 0; newer delta 1..2^31-1; half-range exactly 2^31 rejected as
 ambiguous; larger deltas stale. Default application freshness is 250 ms and only
 an authorized, valid, ordering-accepted profile message refreshes it.
@@ -130,13 +133,19 @@ Drop/coalescing policy may depend on message type/profile. The radio layer may u
 
 ## 7. Provisioning/configuration
 
-FNR-007 owns:
+FNR-007 freezes public provisioning-record v1 as a 40-byte little-endian,
+CRC-32/IEEE-protected record carrying channel, allowed peer, platform/profile
+versions, freshness timeout, public config ID and generation. Provisioned v0.1
+requires encryption.
 
-- allowed sender peer(s);
-- RF channel;
-- keys/encryption when used;
-- enabled/selected profile;
-- compatible platform/profile versions.
+The per-device 16-byte ESP-NOW key is **not** part of the public record and is
+linked only into the generated ESP8285 image. The RP2040 image contains no radio
+key. Factory images contain neither provisioning record nor key.
+
+RP peer/profile admission is enabled only after a matching READY radio status is
+received on the expected channel; radio/link loss revokes that acknowledgement.
+No FNR-005 frame type or generic platform-envelope field is added for
+provisioning. See [FNR-007-PROVISIONING.md](FNR-007-PROVISIONING.md).
 
 No real universal production secret is committed.
 

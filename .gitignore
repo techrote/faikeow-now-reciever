@@ -2,3 +2,5 @@
 /.deps/
 __pycache__/
 *.pyc
+/provisioning.local.json
+/*.provisioning-secret.json

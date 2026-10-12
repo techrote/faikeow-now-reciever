@@ -31,7 +31,11 @@ integers are little endian.
 | 16 | 2 | profile payload length | exact trailing byte count |
 | 18 | N | profile payload | 0..232 bytes generically |
 
-The generic header is 18 bytes, so the maximum profile payload is 232 bytes.
+The generic header is 18 bytes, so the codec maximum profile payload is 232
+bytes. Provisioned FNR-007 radio operation requires an additional
+[22-byte authentication wrapper](FNR-007-RADIO-AUTH.md): deployed RF capacity
+is 228 enclosed platform bytes and 210 profile bytes. The platform packet's
+field layout and FNR-005 internal framing remain unchanged.
 A profile may impose a much smaller exact payload.
 
 ### Sender session

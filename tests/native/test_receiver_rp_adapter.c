@@ -33,7 +33,7 @@ static void service_hid(void) {
            FNR_HID_STATUS_OK);
 }
 
-static void start(void) {
+static void start_base(bool direct_config) {
     fnr_fake_ms = 0U;
     fnr_fake_irq_mask = 0U;
     fnr_fake_restore_hook = NULL;
@@ -54,21 +54,30 @@ static void start(void) {
     fnr_relative_mouse_state wrong_mouse;
     fnr_relative_mouse_init(&wrong_mouse);
     assert(!fnr_receiver_adapter_init(&hid, &wrong_mouse));
+    assert(!fnr_receiver_adapter_profile_supported(1U, 1U));
     assert(fnr_receiver_adapter_init(&hid, &mouse));
+    assert(fnr_receiver_adapter_profile_supported(1U, 1U));
+    assert(!fnr_receiver_adapter_profile_supported(1U, 2U));
+    assert(!fnr_receiver_adapter_profile_supported(2U, 1U));
 
-    fnr_receiver_config config;
-    fnr_receiver_config_default(&config);
-    config.peer_enabled = true;
-    config.profile_enabled = true;
-    const uint8_t peer[FNR_MAC_SIZE] = {0x10, 0x20, 0x30, 0x40, 0x50, 0x60};
-    memcpy(config.peer_mac, peer, sizeof(peer));
-    assert(fnr_receiver_adapter_configure(&config));
+    if (direct_config) {
+        fnr_receiver_config config;
+        fnr_receiver_config_default(&config);
+        config.peer_enabled = true;
+        config.profile_enabled = true;
+        const uint8_t peer[FNR_MAC_SIZE] = {0x10, 0x20, 0x30, 0x40, 0x50, 0x60};
+        memcpy(config.peer_mac, peer, sizeof(peer));
+        assert(fnr_receiver_adapter_configure(&config));
+    }
 
     /* Consume FNR-005's startup RESET barrier and its neutral HID barrier. */
     fnr_rp_transport_task();
     assert(hid.pending && hid.pending_is_neutral);
     service_hid();
 }
+
+static void start(void) { start_base(true); }
+static void start_unconfigured(void) { start_base(false); }
 
 static void queue_wire(const uint8_t *bytes, size_t length) {
     for (size_t i = 0U; i < length; ++i)
@@ -117,6 +126,22 @@ static void queue_platform_datagram(uint32_t transport_sequence,
     queue_wire(wire, wire_size);
 }
 
+static void queue_radio_status(uint32_t transport_sequence,
+                               fnr_radio_state state, uint8_t channel) {
+    fnr_transport_radio_status status;
+    memset(&status, 0, sizeof(status));
+    status.state = state;
+    status.channel = channel;
+    fnr_transport_frame frame;
+    assert(fnr_transport_make_status(&frame, &status, transport_sequence,
+                                     UINT64_C(42)) == FNR_TRANSPORT_OK);
+    uint8_t wire[FNR_TRANSPORT_WIRE_CAPACITY];
+    size_t wire_size = 0U;
+    assert(fnr_transport_encode(&frame, wire, sizeof(wire), &wire_size) ==
+           FNR_TRANSPORT_OK);
+    queue_wire(wire, wire_size);
+}
+
 static void test_production_hook_chain(void) {
     start();
     queue_boundary();
@@ -150,8 +175,123 @@ static void test_production_hook_chain(void) {
     assert(snapshot.counters.transport_invalidations >= 2U);
 }
 
+static void test_unsupported_profile_stage_is_atomic(void) {
+    start_unconfigured();
+
+    fnr_receiver_config config;
+    fnr_receiver_config_default(&config);
+    config.peer_enabled = true;
+    config.profile_enabled = true;
+    config.profile_id = 2U;
+    const uint8_t peer[FNR_MAC_SIZE] = {0x10,0x20,0x30,0x40,0x50,0x60};
+    memcpy(config.peer_mac, peer, sizeof(peer));
+
+    assert(!fnr_receiver_adapter_stage_provisioning(&config, 6U));
+    fnr_receiver_provisioning_status ps;
+    fnr_receiver_adapter_provisioning_snapshot(&ps);
+    assert(!ps.staged && !ps.radio_acknowledged && ps.expected_channel == 0U);
+
+    fnr_receiver_core snapshot;
+    fnr_receiver_adapter_snapshot(&snapshot);
+    assert(!snapshot.config.peer_enabled && !snapshot.config.profile_enabled);
+}
+
+static void test_provisioning_radio_ack_gate(void) {
+    start_unconfigured();
+
+    fnr_receiver_config config;
+    fnr_receiver_config_default(&config);
+    config.peer_enabled = true;
+    config.profile_enabled = true;
+    const uint8_t peer[FNR_MAC_SIZE] = {0x10,0x20,0x30,0x40,0x50,0x60};
+    memcpy(config.peer_mac, peer, sizeof(peer));
+    assert(fnr_receiver_adapter_stage_provisioning(&config, 6U));
+
+    fnr_receiver_provisioning_status ps;
+    fnr_receiver_adapter_provisioning_snapshot(&ps);
+    assert(ps.staged && !ps.radio_acknowledged && ps.expected_channel == 6U);
+    /* Staging itself is a safety transition and therefore queues a neutral
+     * HID barrier. Clear it before testing admission of later packets. */
+    assert(hid.pending && hid.pending_is_neutral);
+    service_hid();
+
+    /* Before radio acknowledgement the same otherwise-valid packet is denied. */
+    queue_boundary();
+    queue_platform_datagram(0U, 0U, 5, 6, 1U);
+    fnr_rp_transport_task();
+    assert(!hid.pending);
+    fnr_receiver_core snapshot;
+    fnr_receiver_adapter_snapshot(&snapshot);
+    assert(snapshot.counters.unauthorized_peer == 1U);
+
+    /* READY on the wrong channel is not an acknowledgement. */
+    queue_radio_status(1U, FNR_RADIO_READY, 7U);
+    fnr_rp_transport_task();
+    fnr_receiver_adapter_provisioning_snapshot(&ps);
+    assert(!ps.radio_acknowledged);
+
+    /* Matching READY enables the desired peer/profile configuration. */
+    queue_radio_status(2U, FNR_RADIO_READY, 6U);
+    fnr_rp_transport_task();
+    fnr_receiver_adapter_provisioning_snapshot(&ps);
+    assert(ps.radio_acknowledged);
+    /* Enabling the desired peer/profile is another reconfiguration barrier:
+     * no movement may overtake the all-buttons-up report. */
+    assert(hid.pending && hid.pending_is_neutral);
+    service_hid();
+
+    queue_platform_datagram(3U, 0U, -9, 12, 3U);
+    fnr_rp_transport_task();
+    assert(hid.pending && !hid.pending_is_neutral);
+    service_hid();
+    assert(sent[0] == 3U && sent[1] == (uint8_t)-9 && sent[2] == 12U);
+
+    /* A non-ready status revokes admission and queues neutral output. */
+    queue_radio_status(4U, FNR_RADIO_ERROR, 6U);
+    fnr_rp_transport_task();
+    fnr_receiver_adapter_provisioning_snapshot(&ps);
+    assert(!ps.radio_acknowledged);
+    assert(hid.pending && hid.pending_is_neutral);
+    service_hid();
+
+    const unsigned before = sends;
+    queue_platform_datagram(5U, 1U, 40, 40, 3U);
+    fnr_rp_transport_task();
+    assert(!hid.pending);
+    service_hid();
+    assert(sends == before);
+
+    /* Fresh matching READY restores admission; old dropped movement is not replayed. */
+    queue_radio_status(6U, FNR_RADIO_READY, 6U);
+    fnr_rp_transport_task();
+    fnr_receiver_adapter_provisioning_snapshot(&ps);
+    assert(ps.radio_acknowledged);
+    assert(hid.pending && hid.pending_is_neutral);
+    service_hid();
+    /* A radio admission transition is not sender reconfiguration. Replaying
+     * a sequence already applied before the fault must remain a duplicate. */
+    const unsigned before_replay = sends;
+    queue_platform_datagram(7U, 0U, 99, 99, 3U);
+    fnr_rp_transport_task();
+    assert(!hid.pending);
+    service_hid();
+    assert(sends == before_replay);
+    fnr_receiver_adapter_snapshot(&snapshot);
+    assert(snapshot.counters.duplicates == 1U);
+    assert(snapshot.have_session && snapshot.have_sequence);
+    assert(snapshot.last_sequence == 0U);
+
+    queue_platform_datagram(8U, 2U, 1, 2, 2U);
+    fnr_rp_transport_task();
+    assert(hid.pending && !hid.pending_is_neutral);
+    service_hid();
+    assert(sent[0] == 2U && sent[1] == 1U && sent[2] == 2U);
+}
+
 int main(void) {
     test_production_hook_chain();
-    puts("PASS: production FNR-005 hook -> FNR-006 core -> HID");
+    test_unsupported_profile_stage_is_atomic();
+    test_provisioning_radio_ack_gate();
+    puts("PASS: production FNR-005 hook -> FNR-006/FNR-007 gate -> HID");
     return 0;
 }

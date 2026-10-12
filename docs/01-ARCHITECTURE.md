@@ -79,7 +79,9 @@ FNR-006 freezes an explicit 18-byte little-endian platform-v1 header above the
 FNR-005 datagram payload: version, profile ID, message type, flags, nonzero u64
 sender session, u32 platform sequence and u16 exact payload length. v1 defines
 only PROFILE_DATA type 1 and zero flags. At most 232 profile bytes follow so the
-complete ESP-NOW application packet remains <=250 bytes.
+platform codec packet remains <=250 bytes. Provisioned FNR-007 production radio
+traffic requires the [22-byte authenticated wrapper](FNR-007-RADIO-AUTH.md),
+reducing deployed RF capacity to 228 platform bytes / 210 profile bytes.
 
 The envelope is independent of ESP-NOW source MAC; the core's configuration
 seam separately authorizes an allowed source peer and explicitly enables the
@@ -130,6 +132,18 @@ A future keyboard profile may use complete key-state snapshots and timeout -> re
 A future gamepad profile may treat each message as the newest complete controller state.
 
 These examples justify keeping loss semantics inside profiles.
+
+## Provisioning boundary
+
+FNR-007 keeps provisioning outside the generic application envelope and FNR-005
+framing. A CRC-protected public record identifies peer/channel/platform/profile
+and freshness policy. The ESP image alone contains the per-device ESP-NOW key.
+
+RP peer/profile admission is staged disabled and becomes active only after a
+matching READY radio status crosses FNR-005. Link/radio failure revokes that
+acknowledgement. Factory firmware has no configured peer/key and remains inert.
+Reconfiguration uses paired image rebuild/reflash through the accepted no-solder
+recovery paths.
 
 ## USB HID framework
 

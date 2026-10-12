@@ -22,5 +22,7 @@ struct FnrFakeESP {
 extern FnrFakeSerial Serial;
 extern FnrFakeESP ESP;
 uint32_t millis();
+void noInterrupts();
+void interrupts();
 
 #endif

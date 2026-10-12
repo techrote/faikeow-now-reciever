@@ -87,6 +87,26 @@ native target compiles the real RP2040 FNR-005 consumer hook together with the
 FNR-006 adapter. Both locked target builds remain required. These are software
 evidence, not RF or USB-host physical acceptance.
 
+## FNR-007 software acceptance boundary
+
+FNR-007 software checks cover the exact public-record/CRC vector, full-byte
+corruption rejection, 20,000 deterministic codec cases, generated-source secret
+separation, RP/ESP provisioning loaders, the actual encrypted ESP radio adapter,
+and the actual RP FNR-005 status-to-admission gate. UBSan, ASan/UBSan, GCC
+`-fanalyzer`, locked RP2040/ESP8285 cross-builds and linked-symbol checks remain
+required.
+
+The [separate physical campaign](../evidence/FNR-007/README.md) establishes these
+provisioning/recovery claims on representative Board A with a bounded synthetic
+sender. Wrong-channel behavior is measured, not assumed to be isolation; the
+pinned SDK cannot attest per-packet channel or encryption. Mandatory wrapper
+authentication repairs the retained plaintext admission failure. Wrong peer
+traffic is rejected upstream by ESP, so RP sees no packet and its unauthorized
+counter does not increment in that physical case. Wrong profile reaches RP and
+increments its profile rejection counter. Native tests independently establish
+RP exact-MAC rejection. Evidence separates those gates from HID output and
+preserves the schema/recovery failures, regression-first tests and repairs.
+
 ## Physical FNR-008 evidence
 
 Separate claims.

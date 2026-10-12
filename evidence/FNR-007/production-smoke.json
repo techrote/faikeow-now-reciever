@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "artifact_source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+  "source_tree": "9cdd3581397f617c2aa474ccd35cce948a3ef237",
+  "dependency_lock_sha256": "8f72ecec0c03aea93d8eecabf9b584e218726a5c89c87915714173f677471e5c",
+  "public_provisioning": {
+    "channel": 1,
+    "config_id": "0x6529df3c591471ca",
+    "encryption_required": true,
+    "freshness_timeout_ms": 250,
+    "generation": 1,
+    "peer_mac": "ec:94:cb:b3:c4:91",
+    "platform_version": 1,
+    "profile_id": 1,
+    "profile_schema_version": 1,
+    "public_record_sha256": "6020de6b184ade32f047ecf2eeabfb3dc50f0687fe1fa91ce79d16e32e65ae22",
+    "radio_key_present": true,
+    "schema_version": 1
+  },
+  "artifacts": [
+    {
+      "name": "fnr_rp2040_hid.uf2",
+      "sha256": "532012e9e9e566666630660aca859c2be5bbc501253f9e1ed9d08ad07a839f44",
+      "bytes": 60416,
+      "rp_key_absent": true
+    },
+    {
+      "name": "fnr_rp2040_hid.elf",
+      "sha256": "c18fd7b253a556fcea9ba8d0aab05c6a2ad6e6dd363aa625314cabdf593f0608",
+      "bytes": 66832,
+      "rp_key_absent": true
+    },
+    {
+      "name": "fnr_rp2040_hid.bin",
+      "sha256": "9bbd4401664703f80e618108925b75f38e704b42a5f443e0ebb7ea84f7670f85",
+      "bytes": 30100,
+      "rp_key_absent": true
+    },
+    {
+      "name": "fnr007_auth_provisioned_esp.ino.bin",
+      "sha256": "67f242d7a8909f93b58a696598d5b0e344c28b9c67b83cfc0f8a66244ddaa80a",
+      "bytes": 282752,
+      "rp_key_absent": null
+    },
+    {
+      "name": "fnr007_auth_diag_esp.ino.bin",
+      "sha256": "7f44fb804b9707a646ca60c2f4b6ef4e8d8519da6f850bf7c70d4055390b9ce5",
+      "bytes": 281424,
+      "rp_key_absent": null
+    },
+    {
+      "name": "fnr007_auth_factory_esp.ino.bin",
+      "sha256": "a240c7f3ae67217f4b6170c7f299c23d06089aac5c90cb75dbe41af8d0162675",
+      "bytes": 282672,
+      "rp_key_absent": null
+    },
+    {
+      "name": "fnr_provisioning_observer.uf2",
+      "sha256": "62796baa17b958928833789a6633569319fea46ce8edf194d6ae180e2529589d",
+      "bytes": 198144,
+      "rp_key_absent": true
+    },
+    {
+      "name": "sender-v2.ino.bin",
+      "sha256": "c0dfe3e5eee55de1bdb35920f936a514cddf71da1c8bded9d33dfa2d06d6e633",
+      "bytes": 286592,
+      "rp_key_absent": null
+    }
+  ],
+  "receiver_board": "A",
+  "receiver_mac": "ec:94:cb:b3:c4:65",
+  "sender_board": "B, synthetic fixture only",
+  "sender_mac": "ec:94:cb:b3:c4:91",
+  "cases": [
+    {
+      "case": "idle_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:38:58.134295+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": null
+    },
+    {
+      "case": "correct_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:39:08.651581+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 20,
+      "sum_x": 20,
+      "sum_y": -20,
+      "command": "TX 1 0 0 1 0 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 0,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "wrong_peer_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:39:19.121052+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 1 1 0 1 100 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 1,
+        "key_mode": 0,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "wrong_profile_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:39:29.542234+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 1 0 0 99 200 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 0,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "wrong_key_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:39:40.250726+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 1 0 1 1 500 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 1,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "plaintext_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:39:50.740554+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 1 0 2 1 600 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 2,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "encrypted_bare_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:40:01.084065+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 1 0 3 1 700 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 3,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "wrong_auth_plaintext",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:40:11.561356+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 1 0 4 1 800 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 4,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "tamper_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:40:21.972289+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 1 0 5 1 900 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 5,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "wrong_generation_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:40:32.477769+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 1 0 6 1 1000 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 6,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "wrong_channel_authorized_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:40:43.017763+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 6 0 0 1 300 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 6,
+        "identity_mode": 0,
+        "key_mode": 0,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 0,
+        "tx_fail": 20
+      }
+    },
+    {
+      "case": "wrong_channel_wrong_peer_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:40:53.436549+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 6 1 0 1 400 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 6,
+        "identity_mode": 1,
+        "key_mode": 0,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 0,
+        "tx_fail": 20
+      }
+    },
+    {
+      "case": "valid_plaintext_measure",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:41:04.258325+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "MEASURED: valid authentication over deliberately plaintext sender link",
+      "motion_events": 20,
+      "sum_x": 20,
+      "sum_y": -20,
+      "command": "TX 1 0 7 1 1100 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 7,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "replay_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:41:14.784230+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 0,
+      "sum_x": 0,
+      "sum_y": 0,
+      "command": "TX 1 0 0 1 0 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 0,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    },
+    {
+      "case": "restore_auth",
+      "source_commit": "7b08dd1dcbec5f2484af846bcaee3acd4f11422b",
+      "captured_at_utc": "2026-10-12T21:41:25.307459+00:00",
+      "distance_cm_operator_reported": 180,
+      "assessment": "PASS",
+      "motion_events": 20,
+      "sum_x": 20,
+      "sum_y": -20,
+      "command": "TX 1 0 0 1 1200 20 50 0 1 -1",
+      "host_capture_elapsed_seconds": 5.0,
+      "button_events": 0,
+      "sender_completion": {
+        "channel": 1,
+        "identity_mode": 0,
+        "key_mode": 0,
+        "attempted": 20,
+        "queued": 20,
+        "enqueue_fail": 0,
+        "tx_ok": 20,
+        "tx_fail": 0
+      }
+    }
+  ],
+  "scope": "Exact production RF-to-USB tests, target-filtered Windows Raw Input. RP counters/admission transitions not exposed by production USB. Channel reception requires separate observer measurement."
+}

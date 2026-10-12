@@ -15,13 +15,18 @@ lanes = {
          "fnr_receiver_adapter_init", "fnr_transport_foreground_consume",
          "fnr_receiver_core_accept_datagram", "fnr_receiver_core_transport_events",
          "fnr_envelope_decode", "fnr_relative_mouse_profile_make_ops",
+         "fnr_rp_provisioning_init", "fnr_receiver_adapter_stage_provisioning",
+         "fnr_provisioning_decode", "fnr_provisioning_image_public",
          "fnr_usb_adapter_task", "fnr_hid_device_service"]),
     "esp": (
         "xtensa/bin/xtensa-lx106-elf-nm", "build/esp8266/fnr_esp8266_ingress.elf",
         ["fnr_esp_transport_init", "fnr_esp_transport_task", "fnr_radio_take_foreground",
          "fnr_radio_generation_foreground", "esp_now_register_recv_cb",
          "fnr_transport_tx_offer_datagram", "fnr_transport_tx_restart",
-         "fnr_transport_tx_peek", "fnr_transport_tx_advance", "fnr_transport_encode"]),
+         "fnr_transport_tx_peek", "fnr_transport_tx_advance", "fnr_transport_encode",
+         "fnr_esp_provisioning_init", "fnr_radio_apply_provisioning",
+         "fnr_provisioning_decode", "fnr_provisioning_image_public",
+         "fnr_provisioning_image_radio_key", "esp_now_add_peer"]),
 }
 if len(sys.argv) != 2 or sys.argv[1] not in lanes:
     raise SystemExit("usage: check_transport_symbols.py rp2040|esp")

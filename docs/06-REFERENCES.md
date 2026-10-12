@@ -32,7 +32,10 @@ TiltMouse is the first reference sender for the faikeow `relative_mouse` profile
 - ESP8266 Arduino SDK ESP-NOW API header:
   https://github.com/esp8266/Arduino/blob/master/tools/sdk/include/espnow.h
 
-Keep the generic application envelope plus profile payload at or below the ESP-NOW v1 250-byte interoperability ceiling for the accepted ESP8266-class receiver.
+Keep the complete radio payload, including FNR-007's 22-byte authenticated
+wrapper, at or below the ESP-NOW v1 250-byte interoperability ceiling for the
+accepted ESP8266-class receiver. Provisioned operation leaves 228 enclosed
+platform bytes / 210 profile bytes; see [the wrapper contract](FNR-007-RADIO-AUTH.md).
 
 ## Authoritative devboard hardware reference
 
@@ -102,3 +105,12 @@ on a changed hardware assumption.
 - TiltMouse compatibility baseline consulted by FNR-006:
   `techrote/ESP32-QMI8658C-TiltMouse@bd610235367de52d41631b0242e6a8a7e6f8dd9a`,
   including TM-005A logical reports and TM-005B / #16.
+
+## FNR-007 provisioning references
+
+- [FNR-007 paired provisioning/recovery contract](FNR-007-PROVISIONING.md).
+- ESP8266 Arduino/NONOS ESP-NOW API is pinned through `dependencies.lock.json`;
+  provisioned production receive uses encrypted peer registration and does not
+  rely on channel selection as a security boundary.
+- General board flashing/recovery remains owned by the pinned
+  `techrote/picoWcloneESP8285N08` hardware authority.
