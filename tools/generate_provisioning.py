@@ -17,8 +17,6 @@ import zlib
 MAGIC = b"FNR7"
 VERSION = 1
 RECORD_SIZE = 40
-PROFILE_ID_RELATIVE_MOUSE = 1
-PROFILE_SCHEMA_RELATIVE_MOUSE = 1
 PLATFORM_VERSION = 1
 FLAGS = 0x03
 KEY_SIZE = 16
@@ -76,11 +74,6 @@ def make_record(doc: dict) -> tuple[bytes, bytes, dict]:
 
     if platform != PLATFORM_VERSION:
         fail("platform_version must match frozen FNR platform v1")
-    if profile != PROFILE_ID_RELATIVE_MOUSE:
-        fail("profile_id must be relative_mouse (1) for v0.1")
-    if profile_schema != PROFILE_SCHEMA_RELATIVE_MOUSE:
-        fail("profile_schema_version must be 1 for relative_mouse/v1")
-
     key_text = doc["radio_key_hex"]
     if not isinstance(key_text, str):
         fail("radio_key_hex must be a 32-hex-character string")
