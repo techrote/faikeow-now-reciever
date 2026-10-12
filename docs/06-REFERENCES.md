@@ -102,3 +102,12 @@ on a changed hardware assumption.
 - TiltMouse compatibility baseline consulted by FNR-006:
   `techrote/ESP32-QMI8658C-TiltMouse@bd610235367de52d41631b0242e6a8a7e6f8dd9a`,
   including TM-005A logical reports and TM-005B / #16.
+
+## FNR-007 provisioning references
+
+- [FNR-007 paired provisioning/recovery contract](FNR-007-PROVISIONING.md).
+- ESP8266 Arduino/NONOS ESP-NOW API is pinned through `dependencies.lock.json`;
+  provisioned production receive uses encrypted peer registration and does not
+  rely on channel selection as a security boundary.
+- General board flashing/recovery remains owned by the pinned
+  `techrote/picoWcloneESP8285N08` hardware authority.
