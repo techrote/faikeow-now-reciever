@@ -12,7 +12,11 @@ static bool initialized;
 
 bool fnr_receiver_adapter_init(fnr_hid_device *hid,
                                fnr_relative_mouse_state *mouse) {
+    initialized = false;
+    active_hid = NULL;
     if (hid == NULL || mouse == NULL) return false;
+    const fnr_hid_profile *selected = fnr_hid_device_selected_profile(hid);
+    if (selected == NULL || selected->context != mouse) return false;
     fnr_relative_mouse_profile_init(&relative_profile, mouse, hid);
     fnr_relative_mouse_profile_make_ops(&relative_profile, &relative_ops);
     fnr_receiver_config config;
