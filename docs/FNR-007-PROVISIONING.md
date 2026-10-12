@@ -172,6 +172,20 @@ The generator's redacted manifest provides the offline artifact-side view. The
 adapter snapshot APIs provide firmware-side state for bounded diagnostics and
 the FNR-007/FNR-008 physical campaigns.
 
+For the representative-board smoke, build the isolated redacted ESP diagnostic
+with the same local configuration:
+
+```sh
+FNR_SOURCE_ID="$(git rev-parse HEAD)" \
+FNR_PROVISIONING_CONFIG=/absolute/path/outside/repo/provisioning.json \
+  bash tools/build_esp_provisioning_diag.sh
+```
+
+It reports receiver station MAC, public peer/channel/version/profile/config
+metadata, record result, key-present/encryption-enabled booleans and radio state.
+It never prints the key. This is diagnostic firmware, not the normal USB-HID
+production image.
+
 ## Failure behavior
 
 - factory/missing config -> radio off, RP peer/profile disabled;
