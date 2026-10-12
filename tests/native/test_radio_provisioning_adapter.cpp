@@ -114,10 +114,13 @@ extern "C" int esp_now_get_peer_channel(uint8_t *) { return fake.peer_channel; }
 bool fnr_auth_crypto_selftest(void) { return true; }
 bool fnr_auth_crypto_hmac(void *key, const uint8_t *message, size_t size,
                           uint8_t digest[32]) {
-    std::memcpy(digest, key, 16);
-    std::memcpy(digest + 16, key, 16);
+    uint32_t hash = UINT32_C(2166136261);
+    const auto *bytes = static_cast<const uint8_t *>(key);
+    for (size_t i = 0; i < 16; ++i) hash = (hash ^ bytes[i]) * UINT32_C(16777619);
     for (size_t i = 0; i < size; ++i)
-        digest[i % 32] = static_cast<uint8_t>(digest[i % 32] * 33U ^ message[i]);
+        hash = (hash ^ message[i]) * UINT32_C(16777619);
+    for (size_t i = 0; i < 32; ++i)
+        digest[i] = static_cast<uint8_t>(hash >> (8U * (i % 4)));
     return true;
 }
 #include "../../firmware/esp8266/radio_adapter.cpp"
