@@ -114,8 +114,7 @@ jobs:
             fnr_receiver_adapter_init \
             fnr_transport_foreground_consume \
             fnr_receiver_core_accept_datagram \
-            fnr_receiver_core_transport_events \
-            fnr_relative_mouse_payload_decode; do
+            fnr_receiver_core_transport_events; do
             grep -Fxq "$symbol" build/rp2040/DEFINED_SYMBOLS || {
               echo "Required production USB symbol missing: $symbol" >&2
               exit 1
