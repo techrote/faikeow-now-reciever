@@ -13,6 +13,11 @@ bool fnr_rp_provisioning_init(void) {
     const uint8_t *bytes = fnr_provisioning_image_public(&size);
     status.record_result = fnr_provisioning_decode(bytes, size, &status.config);
 
+    if (status.record_result == FNR_PROVISIONING_OK &&
+        !fnr_receiver_adapter_profile_supported(status.config.profile_id,
+                                                 status.config.profile_schema_version)) {
+        status.record_result = FNR_PROVISIONING_INVALID_FIELDS;
+    }
     if (status.record_result != FNR_PROVISIONING_OK) {
         status.staged = false;
         return fnr_receiver_adapter_revoke_provisioning();

@@ -15,6 +15,10 @@ typedef struct fnr_receiver_provisioning_status {
 
 bool fnr_receiver_adapter_init(fnr_hid_device *hid,
                                fnr_relative_mouse_state *mouse);
+/* Target registration, including its supported payload schema. Public record
+ * decoding remains profile-generic. */
+bool fnr_receiver_adapter_profile_supported(uint8_t profile_id,
+                                             uint8_t schema_version);
 
 /* Direct configuration remains a test/integration seam. Production FNR-007
  * uses stage_provisioning so peer/profile admission remains disabled until a

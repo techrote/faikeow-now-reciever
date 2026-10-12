@@ -23,7 +23,7 @@ static bool snapshot(const char *event){
  char uid[17];pico_get_unique_board_id_string(uid,sizeof(uid));
  int n=snprintf(output,sizeof(output),
  "{\"event\":\"%s\",\"identity\":\"FNR-007 RP observer v1\",\"source\":\"%s\",\"uid\":\"%s\",\"time_ms\":%lu,"
- "\"record_result\":%u,\"config_id\":\"0x%08lx%08lx\",\"generation\":%lu,\"channel\":%u,\"profile_id\":%u,"
+ "\"record_result\":%u,\"config_id\":\"0x%08lx%08lx\",\"generation\":%lu,\"channel\":%u,\"profile_id\":%u,\"profile_schema_version\":%u,\"platform_version\":%u,\"freshness_timeout_ms\":%lu,"
  "\"boot_staged\":%u,\"boot_ack\":%u,\"boot_peer\":%u,\"boot_profile\":%u,\"staged\":%u,\"ack\":%u,\"peer_enabled\":%u,\"profile_enabled\":%u,"
  "\"acks\":%lu,\"revokes\":%lu,\"usb_state\":%u,\"fresh\":%u,\"have_session\":%u,\"session\":\"%08lx%08lx\",\"last_sequence\":%lu,"
  "\"seen\":%lu,\"accepted\":%lu,\"unauthorized_peer\":%lu,\"wrong_profile\":%lu,\"duplicates\":%lu,\"stale\":%lu,\"timeouts\":%lu,\"transport_invalidations\":%lu,"
@@ -32,7 +32,7 @@ static bool snapshot(const char *event){
  "\"have_radio_status\":%u,\"radio_state\":%u,\"radio_channel\":%u,\"radio_received\":%lu,\"radio_accepted\":%lu,\"radio_rejected_source\":%lu,\"radio_dropped\":%lu,"
  "\"transport_frames\":%lu,\"status_frames\":%lu,\"datagram_frames\":%lu,\"link_timeouts\":%lu,\"bad_crc\":%lu,\"bad_cobs\":%lu,\"uart_overruns\":%lu}\n",
  event,FNR_SOURCE_ID,uid,(unsigned long)to_ms_since_boot(get_absolute_time()),
- (unsigned)p.record_result,(unsigned long)(p.config.config_id>>32),(unsigned long)p.config.config_id,(unsigned long)p.config.generation,p.config.channel,p.config.profile_id,
+ (unsigned)p.record_result,(unsigned long)(p.config.config_id>>32),(unsigned long)p.config.config_id,(unsigned long)p.config.generation,p.config.channel,p.config.profile_id,p.config.profile_schema_version,p.config.platform_version,(unsigned long)p.config.freshness_timeout_ms,
  boot_staged,boot_ack,boot_peer,boot_profile,p.staged,p.radio_acknowledged,c.config.peer_enabled,c.config.profile_enabled,
  (unsigned long)acks,(unsigned long)revokes,c.usb_state,c.fresh,c.have_session,(unsigned long)(c.session>>32),(unsigned long)c.session,(unsigned long)c.last_sequence,
  (unsigned long)c.counters.datagrams_seen,(unsigned long)c.counters.accepted,(unsigned long)c.counters.unauthorized_peer,(unsigned long)c.counters.wrong_profile,(unsigned long)c.counters.duplicates,(unsigned long)c.counters.stale,(unsigned long)c.counters.freshness_timeouts,(unsigned long)c.counters.transport_invalidations,

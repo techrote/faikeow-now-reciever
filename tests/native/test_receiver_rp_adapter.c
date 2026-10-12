@@ -54,7 +54,11 @@ static void start_base(bool direct_config) {
     fnr_relative_mouse_state wrong_mouse;
     fnr_relative_mouse_init(&wrong_mouse);
     assert(!fnr_receiver_adapter_init(&hid, &wrong_mouse));
+    assert(!fnr_receiver_adapter_profile_supported(1U, 1U));
     assert(fnr_receiver_adapter_init(&hid, &mouse));
+    assert(fnr_receiver_adapter_profile_supported(1U, 1U));
+    assert(!fnr_receiver_adapter_profile_supported(1U, 2U));
+    assert(!fnr_receiver_adapter_profile_supported(2U, 1U));
 
     if (direct_config) {
         fnr_receiver_config config;

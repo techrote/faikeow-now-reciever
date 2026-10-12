@@ -20,6 +20,12 @@ const uint8_t *fnr_provisioning_image_public(size_t *size) {
     return image_size == 0U ? NULL : image;
 }
 
+bool fnr_receiver_adapter_profile_supported(uint8_t profile_id,
+                                             uint8_t schema_version) {
+    return profile_id == FNR_PROFILE_ID_RELATIVE_MOUSE &&
+           schema_version == FNR_RELATIVE_MOUSE_SCHEMA_VERSION;
+}
+
 bool fnr_receiver_adapter_stage_provisioning(const fnr_receiver_config *config,
                                              uint8_t channel) {
     ++stage_calls;

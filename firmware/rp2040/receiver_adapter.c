@@ -30,9 +30,21 @@ static bool set_radio_acknowledged(bool acknowledged) {
     if (!provisioning_staged) return !acknowledged;
     if (acknowledged == radio_acknowledged) return true;
     const fnr_receiver_config *next = acknowledged ? &desired_config : &safe_config;
-    if (!fnr_receiver_core_reconfigure(&receiver_core, next)) return false;
+    /* Temporary radio admission is not a new sender configuration. Preserve
+     * session, last sequence and retired sessions across both transitions.
+     * The existing transport invalidation supplies a neutral HID barrier and
+     * revokes freshness, including when the trigger is a status-only change. */
+    fnr_receiver_core_transport_events(&receiver_core,
+                                       FNR_TRANSPORT_EVENT_RADIO_UNAVAILABLE);
+    receiver_core.config = *next;
     radio_acknowledged = acknowledged;
     return true;
+}
+
+bool fnr_receiver_adapter_profile_supported(uint8_t profile_id,
+                                             uint8_t schema_version) {
+    return initialized && profile_id == relative_ops.profile_id &&
+           schema_version == FNR_RELATIVE_MOUSE_SCHEMA_VERSION;
 }
 
 bool fnr_receiver_adapter_init(fnr_hid_device *hid,

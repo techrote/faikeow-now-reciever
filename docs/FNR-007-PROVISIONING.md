@@ -152,7 +152,10 @@ gates disabled. It enables them only after an FNR-005 `RADIO_STATUS` reports
 Link/radio reset, timeout, unavailable/error status or wrong channel revokes
 that acknowledgement and returns the FNR-006 core to peer/profile-disabled
 state. A later matching `READY` may re-enable the staged config. Stale movement
-is never replayed.
+is never replayed: these temporary admission transitions preserve the FNR-006
+sender session, last sequence and retired sessions, while revoking freshness
+and queuing a neutral HID barrier. Only actual staging/reconfiguration resets
+sender ordering state.
 
 This is the FNR-007 radio-configuration acknowledgement and does not change the
 FNR-005 wire format.
