@@ -22,6 +22,7 @@ void fnr_receiver_config_default(fnr_receiver_config *config) {
     memset(config, 0, sizeof(*config));
     config->peer_enabled = false;
     config->platform_version = FNR_PLATFORM_VERSION;
+    config->profile_enabled = false;
     config->profile_id = FNR_PROFILE_ID_RELATIVE_MOUSE;
     config->freshness_timeout_ms = FNR_RECEIVER_DEFAULT_FRESHNESS_TIMEOUT_MS;
 }
@@ -135,6 +136,10 @@ fnr_receiver_result fnr_receiver_core_accept_datagram(fnr_receiver_core *core,
         envelope.version != core->config.platform_version) {
         bump(&core->counters.malformed_envelopes);
         return FNR_RECEIVER_MALFORMED_ENVELOPE;
+    }
+    if (!core->config.profile_enabled) {
+        bump(&core->counters.profile_disabled);
+        return FNR_RECEIVER_PROFILE_DISABLED;
     }
     if (envelope.profile_id != core->config.profile_id ||
         envelope.profile_id != core->profile->profile_id) {
