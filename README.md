@@ -99,15 +99,16 @@ v0.1 implements one production profile:
 
 `techrote/ESP32-QMI8658C-TiltMouse` is the first reference sender and physical interoperability target, not the product definition of this repository.
 
-## Developer builds (through FNR-006 software)
+## Developer builds (through FNR-007 software)
 
 The RP2040 build contains the FNR-003 generic TinyUSB HID framework, FNR-005
 bounded UART transport and the FNR-006 generic receiver core. FNR-006 freezes an
 18-byte platform-v1 envelope plus relative_mouse/v1 and routes authorized fresh
-profile messages into the existing three-byte USB mouse backend. The production
-default remains deliberately unprovisioned/fail-closed: FNR-007 must configure an
-allowed peer and explicitly enable the selected profile before RF data can drive
-HID output.
+profile messages into the existing three-byte USB mouse backend. The production default remains deliberately unprovisioned/fail-closed. FNR-007
+adds paired build-time provisioning: both MCU images share one CRC-protected
+public configuration; only the ESP8285 image contains the per-device ESP-NOW
+key. The RP2040 does not enable peer/profile admission until a matching READY
+radio status is observed.
 
 The ESP8266 build remains profile-neutral: FNR-004 receives opaque ESP-NOW
 application datagrams and FNR-005 transports them unchanged. It does not decode
@@ -139,7 +140,8 @@ Current firmware outputs are `build/rp2040/fnr_rp2040_hid.uf2`/`.elf` and
 [FNR-004 radio ingress](docs/FNR-004-RADIO-INGRESS.md),
 [FNR-005 protocol and ownership](docs/FNR-005-TRANSPORT.md),
 [FNR-005 software prepass](docs/FNR-005-SOFTWARE-PREPASS.md),
-[FNR-006 receiver/profile contract](docs/FNR-006-RECEIVER.md), and
+[FNR-006 receiver/profile contract](docs/FNR-006-RECEIVER.md),
+[FNR-007 provisioning/recovery](docs/FNR-007-PROVISIONING.md), and
 [the production physical campaign and checklist](docs/FNR-005-HARDWARE-HANDOFF.md).
 CI runs all native tests plus both locked target cross-builds and publishes
 checksummed manifests with `physical_acceptance: false`.
