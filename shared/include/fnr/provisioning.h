@@ -1,7 +1,8 @@
 #ifndef FNR_PROVISIONING_H
 #define FNR_PROVISIONING_H
 
-#include "fnr/receiver.h"
+#include "fnr/envelope.h"
+#include "fnr/profile_relative_mouse.h"
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -51,9 +52,6 @@ fnr_provisioning_result fnr_provisioning_encode(
     uint8_t out[FNR_PROVISIONING_RECORD_SIZE]);
 fnr_provisioning_result fnr_provisioning_decode(
     const uint8_t *bytes, size_t length, fnr_provisioning_config *out);
-bool fnr_provisioning_to_receiver_config(
-    const fnr_provisioning_config *provisioning,
-    fnr_receiver_config *receiver);
 
 #ifdef __cplusplus
 }
