@@ -220,8 +220,8 @@ void fnr_receiver_core_tick(fnr_receiver_core *core, uint32_t now_ms) {
 
 void fnr_receiver_core_usb_state(fnr_receiver_core *core,
                                  fnr_hid_usb_state state) {
-    if (core == NULL || state > FNR_HID_USB_STATE_SUSPENDED ||
-        state == core->usb_state) return;
+    if (core == NULL || state < FNR_HID_USB_STATE_DETACHED ||
+        state > FNR_HID_USB_STATE_SUSPENDED || state == core->usb_state) return;
     core->usb_state = state;
     core->fresh = false;
     if (core->profile != NULL && core->profile->usb_state != NULL)
