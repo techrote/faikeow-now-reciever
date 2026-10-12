@@ -19,11 +19,16 @@ if(NOT PICO_SDK_VERSION_STRING VERSION_EQUAL "2.2.0")
 endif()
 find_package(picotool 2.2.0 REQUIRED CONFIG)
 get_filename_component(FNR_ROOT "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
+if(NOT FNR_PROVISIONING_SOURCE)
+  set(FNR_PROVISIONING_SOURCE "${CMAKE_CURRENT_LIST_DIR}/provisioning_image.c")
+endif()
 add_executable(fnr_rp2040_hid
   main.c
   usb_adapter.c
   transport_adapter.c
   receiver_adapter.c
+  provisioning_adapter.c
+  ${FNR_PROVISIONING_SOURCE}
   ${FNR_ROOT}/shared/src/datagram.c
   ${FNR_ROOT}/shared/src/transport.c
   ${FNR_ROOT}/shared/src/uart_buffer.c
@@ -31,7 +36,8 @@ add_executable(fnr_rp2040_hid
   ${FNR_ROOT}/shared/src/hid_relative_mouse.c
   ${FNR_ROOT}/shared/src/envelope.c
   ${FNR_ROOT}/shared/src/receiver.c
-  ${FNR_ROOT}/shared/src/profile_relative_mouse.c)
+  ${FNR_ROOT}/shared/src/profile_relative_mouse.c
+  ${FNR_ROOT}/shared/src/provisioning.c)
 target_include_directories(fnr_rp2040_hid PRIVATE . ${FNR_ROOT}/shared/include)
 target_link_libraries(fnr_rp2040_hid PRIVATE pico_stdlib tinyusb_device hardware_uart hardware_irq)
 pico_enable_stdio_usb(fnr_rp2040_hid 0)
