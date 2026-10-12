@@ -87,7 +87,7 @@ struct Fixture {
         CHECK(r.size == 3U && r.data[0] == 0U && r.data[1] == 0U && r.data[2] == 0U);
     }
 
-    fnr_datagram make_datagram(uint32_t session, uint32_t sequence,
+    fnr_datagram make_datagram(uint64_t session, uint32_t sequence,
                                int16_t x, int16_t y, uint8_t buttons,
                                uint8_t profile_id = FNR_PROFILE_ID_RELATIVE_MOUSE,
                                const std::array<uint8_t, FNR_MAC_SIZE> &mac = kPeer) {
@@ -111,7 +111,7 @@ struct Fixture {
         return datagram;
     }
 
-    fnr_receiver_result send(uint32_t session, uint32_t sequence,
+    fnr_receiver_result send(uint64_t session, uint32_t sequence,
                              int16_t x, int16_t y, uint8_t buttons,
                              uint32_t now_ms) {
         const fnr_datagram d = make_datagram(session, sequence, x, y, buttons);
@@ -126,16 +126,17 @@ static void test_envelope_golden_and_bounds() {
     envelope.profile_id = 1U;
     envelope.message_type = 1U;
     envelope.flags = 0U;
-    envelope.session = UINT32_C(0x12345678);
+    envelope.session = UINT64_C(0x0123456789abcdef);
     envelope.sequence = UINT32_C(0x89abcdef);
     envelope.payload_length = sizeof(profile);
     std::memcpy(envelope.payload, profile, sizeof(profile));
     std::array<uint8_t, FNR_DATAGRAM_CAPACITY> bytes{};
     size_t written = 999U;
     CHECK(fnr_envelope_encode(&envelope, bytes.data(), bytes.size(), &written) == FNR_ENVELOPE_OK);
-    const std::array<uint8_t, 18> golden{{
-        0x01, 0x01, 0x01, 0x00, 0x78, 0x56, 0x34, 0x12,
-        0xef, 0xcd, 0xab, 0x89, 0x04, 0x00, 0x01, 0x03, 0xfb, 0x07
+    const std::array<uint8_t, 22> golden{{
+        0x01, 0x01, 0x01, 0x00, 0xef, 0xcd, 0xab, 0x89,
+        0x67, 0x45, 0x23, 0x01, 0xef, 0xcd, 0xab, 0x89,
+        0x04, 0x00, 0x01, 0x03, 0xfb, 0x07
     }};
     CHECK(written == golden.size());
     CHECK(std::memcmp(bytes.data(), golden.data(), golden.size()) == 0);
@@ -165,9 +166,9 @@ static void test_envelope_golden_and_bounds() {
     CHECK(fnr_envelope_decode(bad.data(), bad.size(), &decoded) == FNR_ENVELOPE_UNKNOWN_MESSAGE);
     bad = golden; bad[3] = 1U;
     CHECK(fnr_envelope_decode(bad.data(), bad.size(), &decoded) == FNR_ENVELOPE_INVALID_FLAGS);
-    bad = golden; std::fill(bad.begin() + 4, bad.begin() + 8, 0U);
+    bad = golden; std::fill(bad.begin() + 4, bad.begin() + 12, 0U);
     CHECK(fnr_envelope_decode(bad.data(), bad.size(), &decoded) == FNR_ENVELOPE_INVALID_SESSION);
-    bad = golden; bad[12] = 3U;
+    bad = golden; bad[16] = 3U;
     CHECK(fnr_envelope_decode(bad.data(), bad.size(), &decoded) == FNR_ENVELOPE_INVALID_LENGTH);
     CHECK(fnr_envelope_decode(golden.data(), FNR_PLATFORM_ENVELOPE_HEADER_SIZE - 1U, &decoded) == FNR_ENVELOPE_INVALID_LENGTH);
     CHECK(fnr_envelope_encode(nullptr, bytes.data(), bytes.size(), &written) == FNR_ENVELOPE_INVALID_ARGUMENT);
