@@ -145,7 +145,7 @@ The [representative-DUT campaign](evidence/FNR-005/README.md) now establishes
 production framing, sustained integrity, bounded overload, corruption recovery
 and independent reset/watchdog behavior on Board A. Identical Board B was not
 requalified. PR #20 and #6 record final CI/merge/post-merge programme closure.
-FNR-006 now owns and implements sender-session/order/freshness plus profile dispatch. The shipping core remains fail-closed until FNR-007 enables both an allowed peer and the selected profile.
+FNR-006 owns sender-session/order/freshness plus profile dispatch. FNR-007 now implements paired, fail-closed provisioning: factory images contain no peer/key; provisioned RP2040 images carry only a CRC-protected public record; provisioned ESP8285 images additionally carry a per-device 16-byte ESP-NOW key. RP peer/profile admission remains disabled until a matching READY radio status arrives on the configured channel. See [FNR-007 provisioning](docs/FNR-007-PROVISIONING.md).
 
 ## USB policy
 
@@ -177,7 +177,7 @@ FNR-001 pins exact versions:
 - FNR-004 — generic ESP-NOW datagram ingress.
 - FNR-005 — framed inter-MCU datagram transport.
 - FNR-006 — generic receiver core, frozen platform v1, profile dispatch and relative-mouse v1 semantics (implemented in this branch).
-- FNR-007 — generic peer/channel/key/profile provisioning and recovery.
+- FNR-007 — paired peer/channel/key/profile provisioning and no-solder recovery (software implemented on the active branch; representative-board smoke remains).
 - FNR-008 — platform physical acceptance using TiltMouse as the reference sender/profile.
 - FNR-009 — generic v0.1 release consolidation.
 
