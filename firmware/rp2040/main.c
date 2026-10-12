@@ -4,6 +4,7 @@
 #include "fnr/hid_relative_mouse.h"
 #include "usb_adapter.h"
 #include "transport_adapter.h"
+#include "receiver_adapter.h"
 
 static fnr_hid_device fnr_usb_device;
 static fnr_relative_mouse_state fnr_mouse_state;
@@ -27,14 +28,16 @@ static bool fnr_usb_profile_init(void) {
 
 int main(void) {
     fnr_rp_transport_init();
-    if (!fnr_usb_profile_init()) {
+    if (!fnr_usb_profile_init() ||
+        !fnr_receiver_adapter_init(&fnr_usb_device, &fnr_mouse_state)) {
         for (;;) {
             tight_loop_contents();
         }
     }
 
-    /* UART reception continues in its bounded IRQ while USB is serviced.
-     * FNR-006 will consume framed input and feed authorized logical output. */
+    /* The FNR-005 foreground hook processes transport events before owned
+     * datagrams, then FNR-006 validates/order-checks and dispatches the selected
+     * profile. Shipping configuration remains fail-closed until FNR-007. */
     for (;;) {
         fnr_rp_transport_task();
         fnr_usb_adapter_task();
