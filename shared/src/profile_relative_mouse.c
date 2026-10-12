@@ -4,6 +4,9 @@
 #include <limits.h>
 #include <string.h>
 
+_Static_assert(FNR_RELATIVE_MOUSE_PAYLOAD_SIZE == 4,
+               "relative_mouse/v1 payload size must remain frozen");
+
 static void bump(uint32_t *value) {
     if (*value != UINT32_MAX) ++*value;
 }
