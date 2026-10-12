@@ -51,7 +51,10 @@ Rules:
 - `generation` is a nonzero public configuration revision;
 - `peer_mac` is the allowed sender station MAC and must be unicast/nonzero;
 - channel is 1..14;
-- platform/profile versions must match the frozen FNR-006 v1 contract;
+- platform version must match the frozen FNR platform v1 contract;
+- profile ID/schema are generic nonzero provisioning fields; the current v0.1
+  RP target accepts only profiles actually registered in that firmware
+  (`relative_mouse` ID/schema 1 today) and otherwise fails closed;
 - the ESP-NOW key is exactly 16 nonzero bytes;
 - v0.1 provisioned production operation requires encryption;
 - there is no production plaintext fallback.
@@ -62,6 +65,8 @@ repository-wide production key is defined.
 ## Public record v1
 
 The public record is exactly 40 bytes. Multibyte fields are little endian.
+The record format is profile-generic: it stores numeric profile ID/schema and
+does not encode mouse semantics.
 
 | Offset | Width | Field |
 | ---: | ---: | --- |
