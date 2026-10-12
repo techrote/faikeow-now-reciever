@@ -59,6 +59,7 @@ static void start(void) {
     fnr_receiver_config config;
     fnr_receiver_config_default(&config);
     config.peer_enabled = true;
+    config.profile_enabled = true;
     const uint8_t peer[FNR_MAC_SIZE] = {0x10, 0x20, 0x30, 0x40, 0x50, 0x60};
     memcpy(config.peer_mac, peer, sizeof(peer));
     assert(fnr_receiver_adapter_configure(&config));
