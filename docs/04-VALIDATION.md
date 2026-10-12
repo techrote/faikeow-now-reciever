@@ -4,7 +4,7 @@
 
 FNR-001 establishes:
 
-1. **Native tests**
+1. **Native tests (UBSan and ASan)**
 2. **RP2040 firmware build**
 3. **ESP radio firmware build**
 4. **Text and style sanity**
@@ -51,6 +51,28 @@ Unchanged:
 - internal link/pins;
 - flashing/recovery;
 - proven link rate.
+
+## FNR-005 software and production-link boundary
+
+The [internal v1 tests](FNR-005-TRANSPORT.md) cover independent codec vectors,
+deterministic hostile streams, bounded TX/RX ownership, and the actual ESP/RP
+production adapter sources against minimal SDK substitutes. Adapter regressions
+include the pinned ESP FIFO boundary and queued input across the RP link timeout.
+The target builds also check linked production symbols and preserve manifests.
+These are software checks, with no attached-device use or physical acceptance.
+
+The [precise FNR-005 physical campaign](FNR-005-HARDWARE-HANDOFF.md) requires
+production COBS/CRC16 observations on one representative characterized board.
+The two available units are identical hardware designs; a second full campaign
+is required only if evidence warrants comparison for a plausible unit-specific
+fault. The earlier
+SLIP/CRC32 diagnostic runs are accepted FNR-002 inputs, not this evidence.
+
+[FNR-005 representative-DUT evidence](../evidence/FNR-005/README.md) records the
+completed production framing, sustained, overload, corruption and interruption
+cases, including independent MCU restart/recovery. All 44 physical phases pass;
+final review, exact-head CI and merge/post-merge verification remain separate
+programme gates recorded in PR #20 and issue #6.
 
 ## Physical FNR-008 evidence
 

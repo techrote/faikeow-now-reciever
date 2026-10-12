@@ -99,17 +99,22 @@ v0.1 implements one production profile:
 
 `techrote/ESP32-QMI8658C-TiltMouse` is the first reference sender and physical interoperability target, not the product definition of this repository.
 
-## Developer builds (FNR-003 + FNR-004 software state)
+## Developer builds (FNR-003, FNR-004 and FNR-005 software)
 
 The RP2040 build contains the FNR-003 generic TinyUSB HID framework and the
 `relative_mouse` backend. The ESP8266 build contains the FNR-004 profile-neutral
-ESP-NOW ingress and **defaults unprovisioned**. Neither lane assumes the missing
-physical inter-MCU link, and the RP2040 firmware generates no synthetic mouse
-activity.
+ESP-NOW ingress and **defaults unprovisioned**. FNR-005 now connects the radio's
+foreground handoff to a bounded COBS/CRC16 UART serializer and an RP2040
+interrupt-fed parser. The link uses the already accepted FNR-002 pins and
+115200 8N1 configuration. Transport consumers see owned generic frames and
+failure/restart events; no transport data feeds HID output yet.
 
 These are software-qualified targets, not a complete or physically accepted
-dongle. FNR-002 still owns clone-board pinout/recovery evidence, FNR-005 owns the
-framed internal link, FNR-006 owns receiver/envelope/profile dispatch, and
+dongle. FNR-002's clone-board pinout/recovery/UART evidence is accepted;
+FNR-005's [production transport campaign](evidence/FNR-005/README.md) passes on
+one representative board; this does not establish the integrated dongle.
+FNR-006 owns
+receiver/envelope/profile dispatch, and
 FNR-008 owns physical USB/RF/reference-profile acceptance.
 
 A canonical Linux x86_64 environment (including WSL2) can run:
@@ -130,8 +135,11 @@ Current firmware outputs are `build/rp2040/fnr_rp2040_hid.uf2`/`.elf` and
 `build/esp8266/fnr_esp8266_ingress.bin`/`.elf`. See
 [exact commands and limitations](docs/05-BUILDING.md),
 [HID profile architecture](docs/08-HID-PROFILES.md),
-[FNR-003 software evidence](docs/FNR-003-IMPLEMENTATION.md), and
-[FNR-004 radio ingress](docs/FNR-004-RADIO-INGRESS.md).
+[FNR-003 software evidence](docs/FNR-003-IMPLEMENTATION.md),
+[FNR-004 radio ingress](docs/FNR-004-RADIO-INGRESS.md),
+[FNR-005 protocol and ownership](docs/FNR-005-TRANSPORT.md),
+[FNR-005 software prepass](docs/FNR-005-SOFTWARE-PREPASS.md), and
+[the production physical campaign and checklist](docs/FNR-005-HARDWARE-HANDOFF.md).
 CI runs all native tests plus both locked target cross-builds and publishes
 checksummed manifests with `physical_acceptance: false`.
 

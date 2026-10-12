@@ -30,11 +30,11 @@ There is no RSSI field in this NONOS callback ABI.
 `fnr_radio_take_foreground(fnr_datagram *out)` returns false for no pending
 record, invalid receiver state or null output; success copies the entire owned
 record into caller storage (250-byte bounded payload, exact six-byte source,
-size). The optional weak C hook `fnr_radio_foreground_consume(const fnr_datagram *)`
-is called with a foreground-owned record (valid for that call only); absent a
-consumer, the newest record remains pending for explicit retrieval.
-At most one record is extracted per foreground iteration, with no assumed
-UART/SPI wiring. The record remains owned by the caller independently of further receive
+size). FNR-005's production foreground task now owns this explicit take seam;
+the former optional weak consumer in ESP `main.cpp` has been removed so there
+are no competing consumers. At most one record is extracted per foreground
+iteration, then serialized through the accepted UART configuration. The record
+remains owned by the caller independently of further receive
 callbacks. One pending record is held: **newest wins**, replacing an older
 unconsumed record and saturating the dropped counter. No event merging or
 hidden retransmission is performed. Order is the order of accepted callback
@@ -46,6 +46,13 @@ Reset invalidates the pending record and counts its discard. The status includes
 (channel + allowed MAC), state and accepted/rejected/loss counters, but no keys.
 The current implementation provisions one exact source MAC. Extending to a
 bounded peer list belongs to FNR-007.
+
+`fnr_radio_generation_foreground()` is an additional foreground lifecycle token.
+It advances modulo 2^32 on every start attempt, including unconfigured/error
+attempts, independently of saturating counters. FNR-005 observes it between
+lifecycle operations, retires old transport-owned records, advances its separate
+wire generation and emits a RESET status. It is not an RF sender session or a
+physical restart proof. See [the FNR-005 contract](FNR-005-TRANSPORT.md).
 
 ## Concurrency and callback behavior
 
@@ -110,6 +117,7 @@ compatibility, ELF/BIN provenance and RP2040 regression status. **Neither a
 cross-build nor native simulation proves physical ESP-NOW reception.**
 FNR-002 established actual chip identity, flashing/recovery, the onboard UART0
 GP0/GP1 interconnect and independent UART integrity. Reuse those unchanged
-results through the authoritative devboard reference. FNR-005 must attach its
-own production framed generic consumer; diagnostic UART/RF exchanges do not
-establish that production transport or integrated HID/profile acceptance.
+results through the authoritative devboard reference. FNR-005's software
+consumer is attached, while its [production physical framing campaign](FNR-005-HARDWARE-HANDOFF.md)
+remains separate. Diagnostic UART/RF exchanges do not establish that production
+transport or integrated HID/profile acceptance.

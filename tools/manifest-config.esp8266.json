@@ -1,18 +1,26 @@
 {
-  "board": "ESP8285-class 1MiB compile surrogate (exact radio unverified)",
+  "board": "FNR-002 characterized ESP8285N08; ESP8266 Arduino esp8285 target",
   "flash": {
     "size_bytes": 1048576,
     "mode": "dout",
     "clock_mhz": 40,
     "measured": false
   },
-  "profile": "none/inert",
+  "profile": "none; opaque datagrams; radio unprovisioned by default",
   "platform_protocol": null,
-  "internal_link_protocol": null,
+  "internal_link_protocol": "FNR-005/v1 (COBS + CRC-16/CCITT-FALSE)",
   "profile_schema": null,
   "command": [
     "bash",
     "tools/build_esp.sh"
   ],
-  "evidence_class": "locked-cross-build-only; no RF/hardware acceptance"
+  "evidence_class": "locked cross-build and native software qualification; accepted hardware inputs from FNR-002; no new physical transport/RF/USB acceptance",
+  "hardware_reference_commit": "e8a80ae21e6432d30f6ec6146ff6754605a5d469",
+  "uart": {
+    "baud": 115200,
+    "format": "8N1",
+    "flow_control": false,
+    "maximum_wire_frame_bytes": 277,
+    "tx_quantum_bytes": 32
+  }
 }

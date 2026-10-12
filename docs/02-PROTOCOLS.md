@@ -66,7 +66,8 @@ Profiles receive only messages accepted by generic ordering unless a profile exp
 
 ## 4. Internal ESP↔RP2040 protocol
 
-FNR-005 freezes this board-local protocol after FNR-002 establishes the physical link.
+FNR-005 freezes [internal protocol v1](FNR-005-TRANSPORT.md), using the accepted
+FNR-002 onboard UART at 115200 8N1 without flow control.
 
 Requirements:
 
@@ -78,16 +79,26 @@ Requirements:
 - integrity check;
 - deterministic corruption recovery.
 
-Preferred UART encoding: COBS + `0x00` delimiter + CRC-16/CCITT.
+Encoding: COBS + `0x00` delimiter + CRC-16/CCITT-FALSE (poly `0x1021`, init
+`0xffff`, no reflection, xorout zero). Multibyte fields and CRC are little
+endian. Header: version u8, type u8, payload length u16, local sequence u32,
+transport generation u64. The CRC covers the entire header plus payload.
+Maximum raw/encoded/wire lengths are 274/276/277 bytes. No empty datagram is
+permitted; a datagram contains six MAC bytes plus 1-250 opaque application bytes.
 
 ### Frame types
 
 Use profile-neutral names:
 
 - `RADIO_DATAGRAM` — raw ESP-NOW application payload + bounded RF/source metadata;
-- `RADIO_STATUS`;
-- `CONTROL`;
-- `CONTROL_ACK`.
+- `RADIO_STATUS` — fixed 48-byte radio/loss snapshot and sticky RESET marker.
+
+Only type values 1 and 2 are accepted. `CONTROL`/`CONTROL_ACK` are not defined
+in v1 because the bounded one-way transport requires neither acknowledgements
+nor retransmission. The transport generation is a local restart discriminator,
+not the generic sender/session identifier. Full offsets, golden vectors,
+ownership, recovery rules and APIs are in the v1 contract. Physical acceptance
+is tracked in the [FNR-005 handoff](FNR-005-HARDWARE-HANDOFF.md).
 
 ## 5. USB HID/profile contract
 

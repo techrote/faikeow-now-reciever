@@ -55,17 +55,23 @@ host
 
 ## Internal transport
 
-FNR-002 establishes physical transport.
+FNR-002 established UART0 GP0/GP1, 115200 8N1, no flow control.
 
-FNR-005 carries generic frame types such as:
+FNR-005 internal v1 carries exactly these generic frame types:
 
 - `RADIO_DATAGRAM`;
 - `RADIO_STATUS`;
-- bounded `CONTROL` / `CONTROL_ACK` if required.
+
+No reverse control plane is required for v1.
 
 Do not define `TILTMOUSE_PACKET` or `MOUSE_PACKET` at this layer.
 
-If UART is confirmed, preferred encoding remains COBS + CRC-16/CCITT with explicit version/type/length/local sequence.
+The [v1 contract](FNR-005-TRANSPORT.md) fixes COBS + CRC-16/CCITT-FALSE,
+version/type/length/local sequence and an opaque transport generation. One
+immutable active TX frame plus newest pending slots bound the producer;
+a 1024-byte IRQ-owned byte ring and two owned frame slots bound reception.
+Sticky transport events must be processed before taking data. This generation
+and the 3-second link watchdog do not implement FNR-006 sender freshness.
 
 ## Generic receiver envelope
 

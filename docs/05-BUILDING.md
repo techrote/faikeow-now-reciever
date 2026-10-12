@@ -1,4 +1,4 @@
-# Building the dual-firmware platform after FNR-003 and FNR-004
+# Building the dual-firmware platform after FNR-005 software integration
 
 ## Current software state
 
@@ -10,10 +10,13 @@ connected into a complete receiver:
 - **ESP8266/ESP8285 / FNR-004:** profile-neutral ESP-NOW receive initialization,
   fail-closed exact-peer admission and bounded generic foreground handoff;
   shipping/default build remains unprovisioned.
+- **FNR-005:** foreground ESP serializer, COBS/CRC16 internal v1, and RP2040
+  UART0 IRQ/parser with a generic owned consumer seam and no HID dispatch.
 
-FNR-005 still owns the physical framed inter-MCU transport. FNR-002 owns the
-actual clone-board wiring/flashing contract. Neither cross-build is physical
-USB/RF acceptance.
+FNR-002's accepted board contract supplies GP0/GP1 and 115200 8N1 without flow
+control. FNR-005's [production framed-link physical campaign](FNR-005-HARDWARE-HANDOFF.md)
+remains open; a cross-build is software evidence. FNR-006 still owns the generic
+receiver envelope and profile integration.
 
 The RP2040 target is deliberately renamed from `fnr_rp2040_inert` to
 `fnr_rp2040_hid`; consumers of the old artifact name must migrate. The ESP8266
@@ -60,6 +63,14 @@ The native suite covers:
   signed/clamped reports, buttons, USB lifecycle, backpressure, recovery-neutral
   barriers, invalidation and deterministic fault stress.
 
+FNR-005 adds independent CRC/COBS/golden vectors, hostile-stream recovery,
+ownership/drop accounting, real ingress-to-transport simulation, and both
+production adapters compiled against minimal SDK substitutes. These include
+the ESP FIFO boundary and RP queued-frame/timeout/IRQ ordering regressions.
+
+CI also configures `build/native-asan` with
+`-fsanitize=address,undefined -fno-sanitize-recover=all` for both C and C++, then
+builds and runs the same suite with strict warnings.
 Native USB/RF simulation is software evidence only.
 
 ## RP2040 TinyUSB HID cross-build
@@ -77,10 +88,16 @@ The target selects `relative_mouse` before TinyUSB initialization, enables one
 HID class instance and disables CDC/MSC/MIDI/vendor classes. Descriptor callbacks
 resolve through the selected backend. The TinyUSB task is serviced
 non-blockingly; the production loop contains no synthetic mouse generator and
-uses no clone-board GPIO assumptions.
+uses the accepted UART0 GPIO0 TX/GPIO1 RX contract. The UART ISR writes a fixed
+1024-byte ring; foreground parses at most 512 bytes per service call. USB and
+transport remain separate, with no synthetic input or direct HID dispatch.
 
 The CI ELF-symbol gate requires the production descriptor/lifecycle callbacks,
 `fnr_usb_adapter_task` and `fnr_hid_device_service` to survive final linking.
+`python3 tools/check_transport_symbols.py rp2040` additionally verifies the
+production IRQ-buffer/parser service and public consumer seams. The compiler
+may inline the standalone decode routine into the linked streaming parser;
+the gate checks the actual retained production entry points.
 
 ## ESP8266 generic ingress cross-build
 
@@ -97,8 +114,11 @@ The default build is fail-closed/unprovisioned. When explicitly configured it
 initializes the pinned NONOS ESP-NOW receive path, selects the explicit SDK
 channel, performs exact-source admission and exposes a bounded generic datagram
 handoff. Channel selection is not a per-datagram physical-channel filter. It does not interpret
-HID/profile payloads or assume a UART/SPI link to the RP2040. CI verifies that
-`esp_now_register_recv_cb` remains linked. See
+HID/profile payloads. FNR-005 takes at most one foreground record per loop and
+writes at most 32 bytes, bounded by the pinned UART's usable FIFO space. It
+sends generic status every second even when the radio is unprovisioned.
+`python3 tools/check_transport_symbols.py esp` verifies that the receive
+registration, foreground handoff, TX scheduler and serializer remain linked. See
 [FNR-004 radio ingress](FNR-004-RADIO-INGRESS.md).
 
 ## CI and artifact identity
@@ -107,10 +127,12 @@ HID/profile payloads or assume a UART/SPI link to the RP2040. CI verifies that
 platform CI. On the exact PR head it gates:
 
 1. text/source sanity;
-2. native UBSan tests;
+2. native UBSan and ASan/UBSan tests, including both real production adapters;
 3. locked RP2040 TinyUSB HID cross-build plus linked-path symbol checks;
-4. locked ESP8266 radio-ingress cross-build plus receive-registration symbol
-   check.
+4. locked ESP8285 radio-ingress/transport cross-build plus linked-path checks.
+
+Each job explicitly checks out the PR source head (or push commit). Hardware
+diagnostic lanes are compile-only regressions; CI never accesses a board.
 
 Each firmware job writes `SHA256SUMS` and `manifest.json`. Manifests record the
 source ID, dependency-lock hash, compiler identity, configuration and artifact
@@ -132,7 +154,7 @@ Current software qualification does **not** establish:
 - USB enumeration/input on the actual clone board or any host OS;
 - physical ESP-NOW reception/channel behavior on that board;
 - clone RP2040/radio pinout or flashing/recovery;
-- the board-internal framed link;
+- production FNR-005 frames traversing the real board-internal UART;
 - FNR-006 envelope/order/session/profile wire semantics;
 - TiltMouse interoperability or end-to-end latency.
 
