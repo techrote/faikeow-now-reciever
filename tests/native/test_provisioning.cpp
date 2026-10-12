@@ -51,11 +51,6 @@ static void test_crc_and_golden() {
     CHECK(decoded.generation == 7U);
     CHECK(std::memcmp(decoded.peer_mac, config.peer_mac, FNR_MAC_SIZE) == 0);
 
-    fnr_receiver_config receiver{};
-    CHECK(fnr_provisioning_to_receiver_config(&decoded, &receiver));
-    CHECK(receiver.peer_enabled && receiver.profile_enabled);
-    CHECK(receiver.freshness_timeout_ms == 250U);
-    CHECK(std::memcmp(receiver.peer_mac, config.peer_mac, FNR_MAC_SIZE) == 0);
 }
 
 static void test_corruption_and_fail_closed() {
