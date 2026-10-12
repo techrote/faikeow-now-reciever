@@ -228,7 +228,6 @@ void fnr_receiver_core_usb_state(fnr_receiver_core *core,
     if (core == NULL || state < FNR_HID_USB_STATE_DETACHED ||
         state > FNR_HID_USB_STATE_SUSPENDED || state == core->usb_state) return;
     core->usb_state = state;
-    core->fresh = false;
     if (core->profile != NULL && core->profile->usb_state != NULL)
         core->profile->usb_state(core->profile->context, state);
     if (state != FNR_HID_USB_STATE_MOUNTED) {
