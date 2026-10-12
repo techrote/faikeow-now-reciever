@@ -178,7 +178,13 @@ the FNR-007/FNR-008 physical campaigns.
 - corrupt public record -> fail closed;
 - missing/all-zero/wrong-size key -> fail closed;
 - wrong peer -> ESP ingress and RP authorization reject it;
-- wrong channel -> no matching READY acknowledgement / no accepted RF path;
+- RP/ESP **configuration mismatch** on expected channel -> no matching READY
+  acknowledgement;
+- sender RF channel mismatch is not treated as an authentication boundary:
+  FNR-004 measured mismatch reception and the pinned ESP8266 callback exposes no
+  trustworthy per-packet channel. Encrypted peer admission + exact source +
+  platform/profile validation remain the safety gates; FNR-007 physical smoke
+  must measure wrong-sender-channel behavior explicitly;
 - wrong profile/version -> RP rejects before profile output;
 - radio/link reset -> neutral output and admission revoked pending fresh READY;
 - USB remains an ordinary profile-defined HID interface; provisioning requires
@@ -232,7 +238,9 @@ The issue-owned representative-board smoke still needs to establish:
 
 - receiver ESP MAC discovery;
 - one provisioned peer/channel/profile;
-- intentional wrong peer/channel/profile safe inactivity;
+- intentional wrong peer/profile safe inactivity;
+- intentional wrong sender channel behavior measured and reconciled with the
+  retained FNR-004 mismatch-reception limitation;
 - correct-config restore;
 - power-cycle persistence;
 - no-solder reconfiguration/recovery.
