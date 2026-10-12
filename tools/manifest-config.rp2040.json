@@ -13,7 +13,7 @@
     "tools/build_rp2040.sh"
   ],
   "evidence_class": "locked cross-build and native software qualification; accepted hardware inputs from FNR-002; no new physical transport/RF/USB acceptance",
-  "hardware_reference_commit": "8d48cdde71ccba824436635858265cb31c4ed88f",
+  "hardware_reference_commit": "e8a80ae21e6432d30f6ec6146ff6754605a5d469",
   "uart": {
     "baud": 115200,
     "format": "8N1",

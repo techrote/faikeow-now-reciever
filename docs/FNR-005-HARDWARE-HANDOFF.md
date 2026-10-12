@@ -4,10 +4,11 @@
 
 Owning issue: [#6 / FNR-005](https://github.com/techrote/faikeow-now-reciever/issues/6).
 
-This document defines future, separately authorized physical work. The FNR-005
-software prepass performs no board identification, serial-port access, flashing,
-reset/button operation, USB enumeration, UART experiment or RF test. It does
-not establish any new physical acceptance. Every campaign item below is pending.
+This document defines the physical acceptance campaign. The historical software
+prepass established no physical claims. The authorized representative-DUT session
+now has [37 passed physical phases](../evidence/FNR-005/README.md) on Board A.
+CPU-reboot recovery after an ordinary cold boot and independent RP reload while
+ESP traffic continues remain required. Overall acceptance is incomplete.
 Native tests, target builds and linked-symbol checks remain software evidence.
 
 The frozen wire, ownership and restart contract is
@@ -25,11 +26,11 @@ merely because it appears in this document.
 General board facts and programming/recovery procedures belong to
 [techrote/picoWcloneESP8285N08](https://github.com/techrote/picoWcloneESP8285N08),
 at the qualified documentation baseline
-`8d48cdde71ccba824436635858265cb31c4ed88f`:
+`e8a80ae21e6432d30f6ec6146ff6754605a5d469`:
 
-- [Board contract](https://github.com/techrote/picoWcloneESP8285N08/blob/8d48cdde71ccba824436635858265cb31c4ed88f/docs/BOARD-CONTRACT.md).
-- [Programming reference](https://github.com/techrote/picoWcloneESP8285N08/blob/8d48cdde71ccba824436635858265cb31c4ed88f/docs/DEVBOARD-PROGRAMMING-REFERENCE.md), especially resource ownership, build selection and performance interpretation.
-- [Operating runbook](https://github.com/techrote/picoWcloneESP8285N08/blob/8d48cdde71ccba824436635858265cb31c4ed88f/docs/DEVBOARD-OPERATING-RUNBOOK.md), especially deployment, task-specific verification and handoff.
+- [Board contract](https://github.com/techrote/picoWcloneESP8285N08/blob/e8a80ae21e6432d30f6ec6146ff6754605a5d469/docs/BOARD-CONTRACT.md).
+- [Programming reference](https://github.com/techrote/picoWcloneESP8285N08/blob/e8a80ae21e6432d30f6ec6146ff6754605a5d469/docs/DEVBOARD-PROGRAMMING-REFERENCE.md), especially resource ownership, build selection and performance interpretation.
+- [Operating runbook](https://github.com/techrote/picoWcloneESP8285N08/blob/e8a80ae21e6432d30f6ec6146ff6754605a5d469/docs/DEVBOARD-OPERATING-RUNBOOK.md), especially deployment, task-specific verification and handoff.
 
 Receiver firmware, dependency locks, protocol definitions and application
 acceptance remain owned here. See [03-HARDWARE.md](03-HARDWARE.md) for that split.
@@ -218,18 +219,18 @@ evidence directory. Preserve the original FNR-002 evidence and checksums unchang
 
 ## Acceptance checklist and programme handoff
 
-These checkboxes are deliberately unchecked. They represent future physical
-evidence, not a record of the software prepass.
+Completed items below are backed by the representative-DUT evidence directory.
+Unchecked items remain acceptance gates, not implied passes.
 
-- [ ] Final source/artifact/protocol/reference identities recorded for the representative DUT.
-- [ ] Production serializer/UART/parser/handoff path established by the observation method.
-- [ ] Minimum and maximum payload/metadata smoke passes on the representative DUT.
-- [ ] Sustained production integrity at a documented wire budget passes on the representative DUT.
-- [ ] Overload and delayed-consumer cases demonstrate bounded loss with reconciled counters.
-- [ ] Corruption, truncation and oversized input recover at a documented frame boundary.
-- [ ] UART errors and IRQ ring overflow are observable and cannot release damaged/stale handoff state.
+- [x] Tested source/artifact/protocol/reference identities recorded for the representative DUT.
+- [x] Production serializer/UART/parser/handoff path established by the observation method.
+- [x] Minimum and maximum payload/metadata smoke passes on the representative DUT.
+- [x] Sustained production integrity at a documented wire budget passes on the representative DUT.
+- [x] Overload and delayed-consumer cases demonstrate bounded loss with reconciled counters.
+- [x] Corruption, truncation and oversized input recover at a documented frame boundary.
+- [x] UART errors and IRQ ring overflow are observable and cannot release damaged/stale handoff state.
 - [ ] Parser reset, ESP restart and RP restart clear old pending ownership without stale replay.
-- [ ] Reset/failure notifications survive delayed consumption and data-slot replacement.
+- [x] Reset/failure notifications survive delayed consumption and data-slot replacement.
 - [ ] Healthy post-fault/restart traffic recovers; failures and untested subcases remain explicit.
 - [ ] Curated evidence and raw-capture hashes reviewed; exact PR/main state reconciled.
 
@@ -255,6 +256,9 @@ profile dispatch and HID behavior outside this transport campaign.
 
 At the end of a later hardware session, stop test traffic, close handles and
 record the actual firmware/fixture state. Do not restore or reflash solely to
-match a historical snapshot. The immediate next step left by this software
-prepass is review/cross-build of production-path qualification tooling, followed
-by a separately authorized hardware session using the dedicated board runbook.
+match a historical snapshot. The immediate next action is Board A's ordinary cold boot (reconnect without
+buttons, Board B unplugged), fresh identity verification and guarded reload of
+the exact d6766e8 SRAM observer. Then retry CPU reboot, run independent RP reload
+with finite ESP traffic active, and require clean recovery. The pinned firmware
+images may be reused after host/evidence-only commits under the source-closure
+guard; do not overwrite their build manifest or relabel their firmware source.

@@ -26,6 +26,7 @@ jobs:
           python3 tools/hardware/test_transport_assessment.py
           (cd evidence/FNR-002 && sha256sum -c SHA256SUMS)
           (cd evidence/FNR-004 && sha256sum -c SHA256SUMS)
+          (cd evidence/FNR-005 && sha256sum -c SHA256SUMS)
           python3 -m json.tool dependencies.lock.json >/dev/null
           if git grep -nI -E -e '-----BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY-----' -- .; then
             echo "Unexpected private key material is tracked" >&2

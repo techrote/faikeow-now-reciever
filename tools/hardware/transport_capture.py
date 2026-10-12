@@ -17,6 +17,29 @@ from rp2040_backup import private_destination, sha256
 
 COMMAND = re.compile(r'(INFO|S|R|H|B|E [0-9]+|[CFI] [0-9]+|X (STOP|SNAP|MUTE|RESUME|RESTART|REBOOT|HASH|ZERO|FAULT [0-9]+|RUN [0-9]+ [0-9]+ [0-9]+ [0-9]+))\Z')
 
+FIRMWARE_INPUTS = ('dependencies.lock.json', '.gitattributes', 'CMakeLists.txt',
+                   'shared', 'firmware', 'diagnostics/transport-qualification/esp',
+                   'diagnostics/transport-qualification/rp2040',
+                   'diagnostics/transport-qualification/pattern.h')
+
+
+def validate_firmware_source(repo, source):
+    """Permit later evidence/tool commits only when compiled inputs are identical.
+
+    Images remain pinned to their actual committed source, never relabeled as a
+    later HEAD. This avoids reflashing merely because evidence was committed.
+    """
+    if not re.fullmatch(r'[0-9a-f]{40}', source):
+        raise ValueError('Exact firmware source commit required')
+    if subprocess.check_output(['git', '-C', str(repo), 'status', '--porcelain'], text=True).strip():
+        raise ValueError('Require a clean committed tool/source tree')
+    for command in (['merge-base', '--is-ancestor', source, 'HEAD'],
+                    ['diff', '--quiet', source, 'HEAD', '--', *FIRMWARE_INPUTS]):
+        result = subprocess.run(['git', '-C', str(repo), *command], capture_output=True)
+        if result.returncode:
+            raise ValueError('Firmware source is not an ancestor with identical compiled inputs')
+    return subprocess.check_output(['git', '-C', str(repo), 'rev-parse', source + '^{tree}'], text=True).strip()
+
 
 def validate_plan(plan):
     if not isinstance(plan, list) or not 1 <= len(plan) <= 256:
@@ -78,9 +101,12 @@ def main():
     head = subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip()
     if subprocess.check_output(['git', '-C', str(repo), 'status', '--porcelain'], text=True).strip():
         raise ValueError('Commit qualification sources before hardware control')
+    source = manifest['source_commit']
+    if validate_firmware_source(repo, source) != manifest['source_tree']:
+        raise ValueError('Firmware source tree mismatch')
     lock_digest = hashlib.sha256(subprocess.check_output(
         ['git', '-C', str(repo), 'show', 'HEAD:dependencies.lock.json'])).hexdigest()
-    if (manifest['source_commit'] != head or lock_digest != manifest['lock_sha256'] or
+    if (lock_digest != manifest['lock_sha256'] or
             sha256(repo / 'dependencies.lock.json') != manifest['working_lock_sha256']):
         raise ValueError('Source/dependency identity mismatch')
     for item in manifest['artifacts']:
@@ -88,8 +114,8 @@ def main():
     rp = json.loads(args.rp_load.read_text(encoding='utf-8'))
     esp = json.loads(args.esp_write.read_text(encoding='utf-8'))
     if (rp['board'] != args.board or esp['board'] != args.board or not rp['verified_load'] or
-            rp['mode'] != 'sram' or not esp['exact_readback'] or rp['source_commit'] != head or
-            esp['source_commit'] != head or rp['image_sha256'] != manifest['rp_sha256'] or
+            rp['mode'] != 'sram' or not esp['exact_readback'] or rp['source_commit'] != source or
+            esp['source_commit'] != source or rp['image_sha256'] != manifest['rp_sha256'] or
             esp['image_sha256'] != manifest['esp_sha256'] or
             sha256(args.esp_write.parent / 'readback.bin') != manifest['esp_sha256']):
         raise ValueError('Exact qualification deployment records required')
@@ -104,8 +130,8 @@ def main():
     records = []
     partial = bytearray()
     start = time.monotonic()
-    result = {'board': args.board, 'source_commit': head, 'source_tree': subprocess.check_output(
-        ['git', '-C', str(repo), 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+    result = {'board': args.board, 'source_commit': source, 'source_tree': manifest['source_tree'],
+        'tool_commit': head, 'rp_load_sha256': sha256(args.rp_load), 'esp_write_sha256': sha256(args.esp_write),
         'manifest_sha256': args.manifest_sha256, 'plan_sha256': sha256(args.plan),
         'tool_sha256': sha256(pathlib.Path(__file__)), 'captured_at_utc': datetime.now(timezone.utc).isoformat(),
         'qualification_result': 'NOT ASSESSED', 'plan_completed': False}
@@ -153,7 +179,7 @@ def main():
                     if port.write(payload) != len(payload): raise ValueError('Short control write')
                 send('INFO')
                 observed = receive(5, 'identity')
-                if (observed.get('identity') != 'FNR-005 observer v1' or observed.get('source') != head or
+                if (observed.get('identity') != 'FNR-005 observer v1' or observed.get('source') != source or
                         observed.get('uid', '').lower() != identity['flash_id'].lower()):
                     raise ValueError('Observer/source/RP UID mismatch; no stimulus sent')
                 # Qualification telemetry uses production CRC framing. Compare
@@ -162,7 +188,7 @@ def main():
                 send('X SNAP')
                 radio = receive(5, 'esp')
                 expected_mac = manifest['radio_mac']
-                if radio.get('source') != head or radio.get('mac') != expected_mac:
+                if radio.get('source') != source or radio.get('mac') != expected_mac:
                     raise ValueError('ESP source/MAC mismatch; no campaign stimulus sent')
                 identity_verified = True
                 for step in plan:

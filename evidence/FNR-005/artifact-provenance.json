@@ -1,0 +1,92 @@
+{
+  "repository": "techrote/faikeow-now-reciever",
+  "branch": "fnr-005-software-transport",
+  "firmware_source_commit": "d6766e8add3a7a659dcb8ea4d87d4f68d628995a",
+  "firmware_source_tree": "b217fa0feeb5f07b7200c68a44b88e8c7e1dcb1d",
+  "dependency_lock_sha256": "8f72ecec0c03aea93d8eecabf9b584e218726a5c89c87915714173f677471e5c",
+  "rp2040_qualification_uf2_sha256": "4e6e5c8081a7e9094c684665b5ac9ae415c62b70fda328801c8f92f833581148",
+  "esp8285_qualification_bin_sha256": "4e2fed0dfe9d9d1ccb5252dcbf6e54d5df01691fce188ea6e04beaaf776e6391",
+  "representative_dut": "FNR-002 Board A",
+  "hardware_reference_repository": "techrote/picoWcloneESP8285N08",
+  "hardware_reference_commit": "e8a80ae21e6432d30f6ec6146ff6754605a5d469",
+  "manifest_sha256": "cc8626eb7bd8ec79ef46fe29c4d0be59bd545a9d0610dda8c2506defa3e015d1",
+  "source_clean_at_build_and_deployment": true,
+  "artifacts": [
+    {
+      "name": "fnr_rp2040_hid.uf2",
+      "bytes": 50688,
+      "sha256": "d525c287b7e3a223d3358b01dba8d47b91bf836442b51bb6126f2107318ac68f"
+    },
+    {
+      "name": "fnr_rp2040_hid.elf",
+      "bytes": 655868,
+      "sha256": "7827111e71ef5067d172ee13d82a89b67feba3ace993d148fc912f307d39a0ae"
+    },
+    {
+      "name": "fnr_transport_observer.uf2",
+      "bytes": 192000,
+      "sha256": "4e6e5c8081a7e9094c684665b5ac9ae415c62b70fda328801c8f92f833581148"
+    },
+    {
+      "name": "fnr_transport_observer.elf",
+      "bytes": 789408,
+      "sha256": "5398fcb3cb5cb9221031d4a3caf7ea790ba5157c1a38274bda0078643a0c5033"
+    },
+    {
+      "name": "esp.ino.bin",
+      "bytes": 285152,
+      "sha256": "4e2fed0dfe9d9d1ccb5252dcbf6e54d5df01691fce188ea6e04beaaf776e6391"
+    },
+    {
+      "name": "esp.ino.elf",
+      "bytes": 2798888,
+      "sha256": "408caee033da6ea53dcfe1f6499603e310595f11c6c34d76cefd53e9e85473c4"
+    },
+    {
+      "name": "fnr005_production_esp.ino.bin",
+      "bytes": 276080,
+      "sha256": "1f9250d5d3040539396ae3305a8faec7153d72f2ced312c0065cbeff1450b58a"
+    },
+    {
+      "name": "fnr005_production_esp.ino.elf",
+      "bytes": 2710776,
+      "sha256": "1029e7fd37db6c76d1ab1e5397ae095ffcfb37fe1b2a1875e4d348cf1e2aa794"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python.exe",
+      "sha256": "0b471133e110cfb53a061cad528ce8e517d7b9ac41a0a396c39ad795a487fc14"
+    },
+    {
+      "name": "cmake.exe",
+      "sha256": "29164594b54ab24965f24ef37e3a6b31395b7c2732f6d398a933faef847e3669"
+    },
+    {
+      "name": "arduino-cli.exe",
+      "sha256": "1017de89179c3167e6b8a38ca6cc4091fa69a3cf97aafa7810f01423003f5571"
+    },
+    {
+      "name": "arm-none-eabi-gcc.exe",
+      "sha256": "0f34a52ca27f1819322eba3a49a771ba757821c7f38769171413a6e091158ead"
+    },
+    {
+      "name": "xtensa-lx106-elf-gcc.exe",
+      "sha256": "413927577a946db9657f8b8d8ea5637ff9628f5be1761e3a3fa5a9c565b1d231"
+    }
+  ],
+  "build_commands": "tools/build_transport_qualification_windows.ps1; exact commands and host paths preserved in private manifest",
+  "manifest_recorded_at_utc": "2026-10-11T23:37:54.2301820Z",
+  "board_flash_uid_sha256": "2fc3eeb7948385c4c3f65fd466eaf697d65b2892d9b134dc39c982ff1a03f922",
+  "board_radio_mac_sha256": "eff3b866a351996b138597576ccd72a50879eb3e031b17443d089c3bd903b6aa",
+  "representative_sampling": "Board A only; identical Board B unplugged after initial read-only inventory; no programming or qualification on B",
+  "qualification_images_deployed_by": "guarded radio_flash exact readback, documented bridge RP ROM request, guarded SRAM load; originals preserved",
+  "radio_write_record_sha256": "94b570af0ba27f6f60eb1088442c7a58aec2d1cf2513d997d4ac78d539d60b60",
+  "rp_load_record_sha256": "d31aa1b8741890a394c6f505d63229a80fc5bb906d40529b43b7201c2c80e590",
+  "linked_path_checks_sha256": "ec1447f24ba4c6d38660dca03140416a67be0b892eeb8070b75b18d3c8a2d49a",
+  "hardware_acceptance": "INCOMPLETE: CPU-reboot cold-boot retry and independent RP reload not yet passed",
+  "ci_runs": [
+    38184969657,
+    38184964916
+  ]
+}

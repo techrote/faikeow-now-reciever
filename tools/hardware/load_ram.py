@@ -16,6 +16,8 @@ def main():
     parser.add_argument('--picotool-sha256', required=True)
     parser.add_argument('--image', type=pathlib.Path, required=True)
     parser.add_argument('--image-sha256', required=True)
+    parser.add_argument('--transport-source-commit',
+                        help='FNR-005 image source when later commits change only tools/evidence')
     parser.add_argument('--output', type=pathlib.Path, required=True)
     args = parser.parse_args()
     repo = pathlib.Path(__file__).resolve().parents[2]
@@ -23,6 +25,11 @@ def main():
     if sha256(args.image) != args.image_sha256 or sha256(args.picotool) != args.picotool_sha256:
         raise ValueError('Image/tool SHA-256 mismatch')
     blocks = validate(args.image.read_bytes())
+    tool_commit = subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip()
+    source_commit = args.transport_source_commit or tool_commit
+    if args.transport_source_commit:
+        from transport_capture import validate_firmware_source
+        validate_firmware_source(repo, source_commit)
     identity = json.loads(args.identities.read_text(encoding='utf-8-sig'))[args.board]
     destination.mkdir(parents=True)
     inventory = destination / 'inventory.json'
@@ -36,7 +43,7 @@ def main():
         raise ValueError('SRAM load failed; see private log')
     result = {'board': args.board, 'captured_at_utc': datetime.now(timezone.utc).isoformat(),
               'mode': 'sram', 'verified_load': True,
-              'source_commit': subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip(),
+              'source_commit': source_commit, 'tool_commit': tool_commit,
               'image_sha256': args.image_sha256, 'blocks': blocks, 'command': command, 'result': 'PASS'}
     (destination / 'result.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     print('PASS: verified SRAM image loaded into the mapped target')

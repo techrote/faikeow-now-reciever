@@ -62,8 +62,16 @@ The target builds also check linked production symbols and preserve manifests.
 These are software checks, with no attached-device use or physical acceptance.
 
 The [precise FNR-005 physical campaign](FNR-005-HARDWARE-HANDOFF.md) requires
-production COBS/CRC16 observations on both characterized boards. The earlier
+production COBS/CRC16 observations on one representative characterized board.
+The two available units are identical hardware designs; a second full campaign
+is required only if evidence warrants comparison for a plausible unit-specific
+fault. The earlier
 SLIP/CRC32 diagnostic runs are accepted FNR-002 inputs, not this evidence.
+
+[FNR-005 representative-DUT evidence](../evidence/FNR-005/README.md) records the
+completed production framing, sustained, overload, corruption and interruption
+cases. Its acceptance gate remains open until the remaining independent MCU
+restart/recovery cases pass and final review/CI/merge verification is complete.
 
 ## Physical FNR-008 evidence
 

@@ -1,0 +1,277 @@
+{
+  "qualification_result": "FAIL / NOT ACCEPTED",
+  "case": "ESP CPU reboot immediately after serial programming, without an intervening cold boot",
+  "provenance": {
+    "repository": "techrote/faikeow-now-reciever",
+    "branch": "fnr-005-software-transport",
+    "firmware_source_commit": "d6766e8add3a7a659dcb8ea4d87d4f68d628995a",
+    "firmware_source_tree": "b217fa0feeb5f07b7200c68a44b88e8c7e1dcb1d",
+    "dependency_lock_sha256": "8f72ecec0c03aea93d8eecabf9b584e218726a5c89c87915714173f677471e5c",
+    "rp2040_qualification_uf2_sha256": "4e6e5c8081a7e9094c684665b5ac9ae415c62b70fda328801c8f92f833581148",
+    "esp8285_qualification_bin_sha256": "4e2fed0dfe9d9d1ccb5252dcbf6e54d5df01691fce188ea6e04beaaf776e6391",
+    "representative_dut": "FNR-002 Board A",
+    "hardware_reference_repository": "techrote/picoWcloneESP8285N08",
+    "hardware_reference_commit": "e8a80ae21e6432d30f6ec6146ff6754605a5d469"
+  },
+  "capture_sha256": "4427a9dc40e82303f0b32e2ac2fc7c7235805e96ab6cec33cd73880f5f95fe17",
+  "result_sha256": "8a88358bc17a9055a597cd1a35ae2e3b1269553d9c4e3f96cdc689a54e30d984",
+  "failed_criterion": "No post-CPU-reboot application telemetry/new generation; no valid recovery proof",
+  "receiver_safety_observed": "Old pending records retired; timeout visible; no normal datagram escaped after paused boundary",
+  "cause": "Consistent with pinned-core documented post-upload ESP.restart limitation; ordinary cold-boot retry pending",
+  "primary_reference": "https://arduino-esp8266.readthedocs.io/en/3.1.2/faq/readme.html#i-have-observed-a-case-when-esp-restart-doesn-t-work-what-is-the-reason-for-that",
+  "preflight_rejections": [
+    {
+      "source_commit": "f2a000259bd77c695e7b1d086e44b28bd0518a85",
+      "case": "RP SRAM SDK unique-ID placeholder rejected before campaign stimulus",
+      "capture_sha256": "f990d54700f5de3ecff3c759304e425de9e736392865dc983e37567a7ae608bf"
+    },
+    {
+      "source_commit": "47825dd928cf608918370c5a60534dee736a736a",
+      "case": "Read-only flash UID returned zero without SRAM QSPI init; rejected before stimulus",
+      "capture_sha256": "291edf1a91c44819f07d5d73d3f7d0ffb2690b4f99fbedcf15d992a17c77a44d"
+    }
+  ],
+  "corrected_identity_reader_source": "d6766e8add3a7a659dcb8ea4d87d4f68d628995a",
+  "preflight_fix": "Reuse accepted FNR-002 read-only UID reader and flash_start_xip initialization; actual A flash UID verified before campaigns",
+  "bounded_receiver_observations": [
+    {
+      "event": "consumer_pause",
+      "ms": 1293460,
+      "delivered": 19687,
+      "statuses": 642,
+      "pattern_errors": 0,
+      "metadata_errors": 0,
+      "duplicates": 0,
+      "gaps": 312,
+      "digest": "d1bc8e88c061e1ae",
+      "payload_bytes": 4907770,
+      "events": 375,
+      "event_batches": 62,
+      "commands_bad": 0,
+      "backwards": 0,
+      "generation": "b981fc105a9d04ec",
+      "sequence": 182,
+      "datagram_pending": 0,
+      "status_pending": 0,
+      "encoded_pending": 188,
+      "ring_pending": 0,
+      "parser": {
+        "bytes_received": 5523606,
+        "bytes_discarded": 539,
+        "frames_valid": 20575,
+        "datagrams_received": 19932,
+        "status_received": 643,
+        "datagrams_consumed": 19815,
+        "status_consumed": 642,
+        "datagrams_replaced": 115,
+        "status_replaced": 1,
+        "datagrams_dropped": 117,
+        "status_dropped": 1,
+        "bad_cobs": 6,
+        "bad_crc": 2,
+        "bad_length": 2,
+        "bad_version": 1,
+        "bad_type": 1,
+        "bad_payload": 0,
+        "oversized_frames": 1,
+        "empty_delimiters": 16,
+        "parser_resets": 1,
+        "link_discontinuities": 3,
+        "link_timeouts": 43,
+        "generation_changes": 1,
+        "sequence_discontinuities": 0,
+        "radio_resets": 1,
+        "radio_unavailable": 0
+      },
+      "uart": {
+        "received": 5531156,
+        "popped": 5523606,
+        "dropped": 7550,
+        "overflows": 1,
+        "faults": 46
+      },
+      "framing": 0,
+      "parity": 0,
+      "breaks": 0,
+      "overruns": 2
+    },
+    {
+      "event": "snapshot",
+      "ms": 1294014,
+      "delivered": 19687,
+      "statuses": 642,
+      "pattern_errors": 0,
+      "metadata_errors": 0,
+      "duplicates": 0,
+      "gaps": 312,
+      "digest": "d1bc8e88c061e1ae",
+      "payload_bytes": 4907770,
+      "events": 375,
+      "event_batches": 62,
+      "commands_bad": 0,
+      "backwards": 0,
+      "generation": "b981fc105a9d04ec",
+      "sequence": 185,
+      "datagram_pending": 0,
+      "status_pending": 0,
+      "encoded_pending": 0,
+      "ring_pending": 0,
+      "parser": {
+        "bytes_received": 5524353,
+        "bytes_discarded": 578,
+        "frames_valid": 20578,
+        "datagrams_received": 19934,
+        "status_received": 644,
+        "datagrams_consumed": 19815,
+        "status_consumed": 642,
+        "datagrams_replaced": 116,
+        "status_replaced": 1,
+        "datagrams_dropped": 119,
+        "status_dropped": 2,
+        "bad_cobs": 6,
+        "bad_crc": 2,
+        "bad_length": 2,
+        "bad_version": 1,
+        "bad_type": 1,
+        "bad_payload": 0,
+        "oversized_frames": 2,
+        "empty_delimiters": 16,
+        "parser_resets": 1,
+        "link_discontinuities": 3,
+        "link_timeouts": 43,
+        "generation_changes": 1,
+        "sequence_discontinuities": 0,
+        "radio_resets": 1,
+        "radio_unavailable": 0
+      },
+      "uart": {
+        "received": 5531903,
+        "popped": 5524353,
+        "dropped": 7550,
+        "overflows": 1,
+        "faults": 46
+      },
+      "framing": 0,
+      "parity": 0,
+      "breaks": 0,
+      "overruns": 2
+    },
+    {
+      "event": "snapshot",
+      "ms": 1296607,
+      "delivered": 19687,
+      "statuses": 642,
+      "pattern_errors": 0,
+      "metadata_errors": 0,
+      "duplicates": 0,
+      "gaps": 312,
+      "digest": "d1bc8e88c061e1ae",
+      "payload_bytes": 4907770,
+      "events": 375,
+      "event_batches": 64,
+      "commands_bad": 0,
+      "backwards": 0,
+      "generation": "b981fc105a9d04ec",
+      "sequence": 185,
+      "datagram_pending": 0,
+      "status_pending": 0,
+      "encoded_pending": 0,
+      "ring_pending": 0,
+      "parser": {
+        "bytes_received": 5524353,
+        "bytes_discarded": 578,
+        "frames_valid": 20578,
+        "datagrams_received": 19934,
+        "status_received": 644,
+        "datagrams_consumed": 19815,
+        "status_consumed": 642,
+        "datagrams_replaced": 116,
+        "status_replaced": 1,
+        "datagrams_dropped": 119,
+        "status_dropped": 2,
+        "bad_cobs": 6,
+        "bad_crc": 2,
+        "bad_length": 2,
+        "bad_version": 1,
+        "bad_type": 1,
+        "bad_payload": 0,
+        "oversized_frames": 2,
+        "empty_delimiters": 16,
+        "parser_resets": 1,
+        "link_discontinuities": 3,
+        "link_timeouts": 44,
+        "generation_changes": 1,
+        "sequence_discontinuities": 0,
+        "radio_resets": 1,
+        "radio_unavailable": 0
+      },
+      "uart": {
+        "received": 5531903,
+        "popped": 5524353,
+        "dropped": 7550,
+        "overflows": 1,
+        "faults": 47
+      },
+      "framing": 0,
+      "parity": 0,
+      "breaks": 0,
+      "overruns": 2
+    }
+  ],
+  "stimulus_plan": [
+    {
+      "command": "E 500000"
+    },
+    {
+      "expect": "expected"
+    },
+    {
+      "command": "X RUN 180 250 30 500000"
+    },
+    {
+      "wait": 1
+    },
+    {
+      "command": "C 2000"
+    },
+    {
+      "expect": "consumer_pause"
+    },
+    {
+      "command": "X REBOOT"
+    },
+    {
+      "wait": 0.5
+    },
+    {
+      "command": "S"
+    },
+    {
+      "expect": "snapshot"
+    },
+    {
+      "wait": 2.5
+    },
+    {
+      "command": "S"
+    },
+    {
+      "expect": "snapshot"
+    },
+    {
+      "command": "X ZERO"
+    },
+    {
+      "wait": 0.1
+    },
+    {
+      "command": "X SNAP"
+    },
+    {
+      "expect": "esp"
+    },
+    {
+      "expect": "after_esp"
+    }
+  ]
+}

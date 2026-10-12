@@ -68,7 +68,20 @@ Plans contain only reviewed bounded commands/waits/markers. Raw JSONL, identity,
 inventory, original backups and local manifest paths stay outside Git.
 Successful capture is **NOT ASSESSED**, never an automatic PASS.
 `transport_assessment.py` separately checks clean, TX overload and consumer-delay
-accounting; ten synthetic regression tests cover false-PASS paths and bounds.
+accounting, parser/watchdog/ring/UART interruptions and active radio lifecycle
+boundaries. Regression tests replay curated observations and mutate counters,
+events and payload digests to reject false-PASS paths. Synthetic mutations are
+not additional physical evidence.
+
+Firmware source and host-tool source are recorded separately. Later committed
+host/evidence changes may reuse the exact images only when their actual source
+is an ancestor and every compiled input remains identical. The manifest, lock,
+image hashes, deployment/readback records and live identities remain mandatory.
+`load_ram.py --transport-source-commit <actual image source>` preserves that
+identity when reloading the same qualified SRAM image after such a commit.
+`transport_restart_capture.py` attaches after an independent RP SRAM reload
+without disrupting an ongoing finite ESP RUN. It pins the prior identity-checked
+capture, verifies fresh RP identity/topology and requires an exact fresh suffix.
 
 ## Build and deployment
 
@@ -83,6 +96,14 @@ regressions, production and qualification builds, linked-path checks and exact
 artifact hashes. Follow the dedicated hardware runbook and guarded helpers for
 radio ROM entry, original-backup validation, exact write/readback and RP SRAM
 load. Do not repurpose an old deployment record or infer a cold boot.
+
+The SRAM observer reads the actual flash UID using the accepted read-only
+FNR-002 routine with QSPI initialization. The SDK's NO_FLASH placeholder is
+rejected. After ESP serial programming, perform the hardware runbook's ordinary
+cold boot before CPU-reboot qualification. The pinned core documents that
+[`ESP.restart()` can fail immediately after serial upload without a physical reset](https://arduino-esp8266.readthedocs.io/en/3.1.2/faq/readme.html#i-have-observed-a-case-when-esp-restart-doesn-t-work-what-is-the-reason-for-that).
+Record this precondition and retain failed attempts; do not relabel an observed
+failure as a pass. No reset/download GPIO is inferred from this core limitation.
 
 Use >=18002 datagrams at 30/s for the sustained phase: 18001 intervals of 33333
 us span approximately 600.027333 seconds. Confirm actual target `active_us`
