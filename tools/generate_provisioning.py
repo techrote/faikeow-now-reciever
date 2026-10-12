@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 import pathlib
+import os
 import struct
 import zlib
 
@@ -176,9 +177,13 @@ def main() -> None:
     record, key, redacted = make_record(doc)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    (args.out_dir / "rp_provisioning_image.c").write_text(rp_source(record), encoding="utf-8")
-    (args.out_dir / "esp_provisioning_image.cpp").write_text(esp_source(record, key), encoding="utf-8")
-    (args.out_dir / "provisioning-redacted.json").write_text(
+    rp_path = args.out_dir / "rp_provisioning_image.c"
+    esp_path = args.out_dir / "esp_provisioning_image.cpp"
+    redacted_path = args.out_dir / "provisioning-redacted.json"
+    rp_path.write_text(rp_source(record), encoding="utf-8")
+    esp_path.write_text(esp_source(record, key), encoding="utf-8")
+    os.chmod(esp_path, 0o600)
+    redacted_path.write_text(
         json.dumps(redacted, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(redacted, sort_keys=True))
 
