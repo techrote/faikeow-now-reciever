@@ -141,6 +141,27 @@ revocation, neutral barriers and recovery-order preservation.
 
 ## Remaining acceptance
 
+The [initial observer results](observer-initial.json), from the same repaired
+source, retain two further physical failures before repair:
+
+- A CRC-correct provisioning record selecting profile ID 1/schema 2 was staged
+  and acknowledged despite the target only supporting schema 1. No RF traffic
+  was sent in this test. Boot admission was disabled until READY, but the
+  unsupported schema subsequently enabled both gates: **FAIL**.
+- A bounded 5000 ms UART RX IRQ interruption revoked acknowledgement, disabled
+  both gates and queued/submitted neutral HID reports. Recovery exceeded the
+  first 6.5-second observation window; a later snapshot confirmed automatic
+  matching READY recovery. Both transitions cleared sender/session ordering.
+  Replaying the already-applied sequence range 1100..1119 then produced 20/20
+  movements: **FAIL**. Deterministic actual-adapter regressions precede repair.
+
+The observer also distinguished 20 RP wrong-profile rejections from 20 ESP
+wrong-source rejections (zero downstream RP packets in the latter case).
+Bare/tag-invalid traffic physically reached ESP but was never admitted. The
+bounded requested-channel 6 versus receiver-channel 1 cases recorded no radio
+reception or HID movement; correct channel operation resumed. Periodic radio
+status counters can lag downstream datagram counts in individual snapshots.
+
 RP admission/counter observation, full power-cycle metadata reconciliation,
 link recovery, factory reset and reconfiguration still require qualification.
 Unsupported provisioning-schema handling and replay after acknowledgement

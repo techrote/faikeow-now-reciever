@@ -264,7 +264,20 @@ static void test_provisioning_radio_ack_gate(void) {
     assert(ps.radio_acknowledged);
     assert(hid.pending && hid.pending_is_neutral);
     service_hid();
-    queue_platform_datagram(7U, 2U, 1, 2, 2U);
+    /* A radio admission transition is not sender reconfiguration. Replaying
+     * a sequence already applied before the fault must remain a duplicate. */
+    const unsigned before_replay = sends;
+    queue_platform_datagram(7U, 0U, 99, 99, 3U);
+    fnr_rp_transport_task();
+    assert(!hid.pending);
+    service_hid();
+    assert(sends == before_replay);
+    fnr_receiver_adapter_snapshot(&snapshot);
+    assert(snapshot.counters.duplicates == 1U);
+    assert(snapshot.have_session && snapshot.have_sequence);
+    assert(snapshot.last_sequence == 0U);
+
+    queue_platform_datagram(8U, 2U, 1, 2, 2U);
     fnr_rp_transport_task();
     assert(hid.pending && !hid.pending_is_neutral);
     service_hid();

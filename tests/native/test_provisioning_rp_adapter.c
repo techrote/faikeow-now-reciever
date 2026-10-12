@@ -108,9 +108,26 @@ static void test_valid_public_record_stages_without_secret(void) {
     assert(s.config.config_id == c.config_id);
 }
 
+static void test_unsupported_profile_schema_fails_closed(void) {
+    reset_fake();
+    fnr_provisioning_config c = fixture();
+    c.profile_schema_version = FNR_RELATIVE_MOUSE_SCHEMA_VERSION + 1U;
+    /* The public codec is generic: this is a valid, CRC-correct record.
+     * The target must reject a schema its registered profile cannot consume. */
+    assert(fnr_provisioning_encode(&c, image) == FNR_PROVISIONING_OK);
+    image_size = sizeof(image);
+    assert(fnr_rp_provisioning_init());
+    assert(revoke_calls == 1U && stage_calls == 0U);
+    fnr_rp_provisioning_status s;
+    fnr_rp_provisioning_snapshot(&s);
+    assert(s.record_result == FNR_PROVISIONING_INVALID_FIELDS);
+    assert(!s.staged && !s.radio_acknowledged);
+}
+
 int main(void) {
     test_empty_and_corrupt_fail_closed();
     test_valid_public_record_stages_without_secret();
+    test_unsupported_profile_schema_fails_closed();
     puts("PASS: RP provisioning loader fails closed and stages public-only config");
     return 0;
 }
