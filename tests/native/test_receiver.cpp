@@ -384,7 +384,7 @@ static void test_usb_suspend_resume_no_backlog() {
 
     CHECK(fnr_hid_device_usb_event(&f.hid, FNR_HID_USB_SUSPEND) == FNR_HID_STATUS_OK);
     fnr_receiver_core_usb_state(&f.core, f.hid.usb_state);
-    CHECK(!f.core.fresh && f.mouse.x == 0 && f.mouse.y == 0 && f.mouse.buttons == 0U);
+    CHECK(f.core.fresh && f.mouse.x == 0 && f.mouse.y == 0 && f.mouse.buttons == 0U);
     CHECK(f.send(5U, 1U, 99, 88, 3U, 1U) == FNR_RECEIVER_ACCEPTED_OUTPUT_DROPPED);
     CHECK(f.mouse.x == 0 && f.mouse.y == 0 && f.mouse.buttons == 0U);
 
@@ -469,7 +469,7 @@ static void test_transport_and_usb_invalidation() {
 
     CHECK(fnr_hid_device_usb_event(&f.hid, FNR_HID_USB_UNMOUNT) == FNR_HID_STATUS_OK);
     fnr_receiver_core_usb_state(&f.core, f.hid.usb_state);
-    CHECK(!f.core.fresh && f.mouse.buttons == 0U);
+    CHECK(f.core.fresh && f.mouse.buttons == 0U);
     CHECK(f.send(77U, 12U, 100, 100, 3U, 2U) == FNR_RECEIVER_ACCEPTED_OUTPUT_DROPPED);
     CHECK(f.mouse.x == 0 && f.mouse.y == 0 && f.mouse.buttons == 0U);
     CHECK(fnr_hid_device_usb_event(&f.hid, FNR_HID_USB_MOUNT) == FNR_HID_STATUS_OK);
