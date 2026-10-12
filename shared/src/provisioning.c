@@ -147,17 +147,3 @@ fnr_provisioning_result fnr_provisioning_decode(
     return FNR_PROVISIONING_OK;
 }
 
-bool fnr_provisioning_to_receiver_config(
-    const fnr_provisioning_config *provisioning,
-    fnr_receiver_config *receiver) {
-    if (!fnr_provisioning_config_valid(provisioning) || receiver == NULL)
-        return false;
-    fnr_receiver_config_default(receiver);
-    receiver->peer_enabled = true;
-    memcpy(receiver->peer_mac, provisioning->peer_mac, FNR_MAC_SIZE);
-    receiver->platform_version = provisioning->platform_version;
-    receiver->profile_enabled = true;
-    receiver->profile_id = provisioning->profile_id;
-    receiver->freshness_timeout_ms = provisioning->freshness_timeout_ms;
-    return fnr_receiver_config_valid(receiver);
-}
