@@ -4,15 +4,15 @@
     "mode": "UF2",
     "measured": false
   },
-  "profile": "relative_mouse TinyUSB HID backend",
-  "platform_protocol": null,
+  "profile": "FNR-006 relative_mouse/v1 through generic receiver core and TinyUSB HID backend; fail-closed until provisioned",
+  "platform_protocol": "FNR-006/v1 (18-byte generic platform envelope)",
   "internal_link_protocol": "FNR-005/v1 (COBS + CRC-16/CCITT-FALSE)",
-  "profile_schema": null,
+  "profile_schema": "relative_mouse/v1 (4-byte full-button-state relative input)",
   "command": [
     "bash",
     "tools/build_rp2040.sh"
   ],
-  "evidence_class": "locked cross-build and native software qualification; accepted hardware inputs from FNR-002; no new physical transport/RF/USB acceptance",
+  "evidence_class": "locked cross-build and native software qualification through FNR-006; accepted hardware inputs/transport evidence retained from FNR-002/FNR-005; no new RF/USB physical acceptance",
   "hardware_reference_commit": "e8a80ae21e6432d30f6ec6146ff6754605a5d469",
   "uart": {
     "baud": 115200,

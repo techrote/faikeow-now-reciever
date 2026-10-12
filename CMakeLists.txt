@@ -14,7 +14,10 @@ add_library(fnr_shared STATIC
   shared/src/transport_tx.c
   shared/src/uart_buffer.c
   shared/src/hid.c
-  shared/src/hid_relative_mouse.c)
+  shared/src/hid_relative_mouse.c
+  shared/src/envelope.c
+  shared/src/receiver.c
+  shared/src/profile_relative_mouse.c)
 target_include_directories(fnr_shared PUBLIC shared/include)
 target_compile_options(fnr_shared PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow)
 add_executable(fnr_native_tests tests/native/test_datagram.cpp)
@@ -61,3 +64,16 @@ target_link_libraries(fnr_transport_rp_adapter_tests PRIVATE fnr_shared)
 target_compile_options(fnr_transport_rp_adapter_tests PRIVATE
   -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
 add_test(NAME transport_rp_production_adapter COMMAND fnr_transport_rp_adapter_tests)
+
+add_executable(fnr_receiver_tests tests/native/test_receiver.cpp)
+target_link_libraries(fnr_receiver_tests PRIVATE fnr_shared)
+target_compile_options(fnr_receiver_tests PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME receiver_envelope_order_freshness_relative_mouse COMMAND fnr_receiver_tests)
+
+add_executable(fnr_receiver_rp_adapter_tests tests/native/test_receiver_rp_adapter.c)
+target_include_directories(fnr_receiver_rp_adapter_tests PRIVATE
+  tests/native/fake_pico firmware/rp2040)
+target_link_libraries(fnr_receiver_rp_adapter_tests PRIVATE fnr_shared)
+target_compile_options(fnr_receiver_rp_adapter_tests PRIVATE
+  -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME receiver_production_rp_consumer_hook COMMAND fnr_receiver_rp_adapter_tests)

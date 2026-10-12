@@ -1,7 +1,7 @@
 name: FNR platform CI
 on:
   push:
-    branches: [main, fnr-001-dual-firmware-ci, fnr-003-generic-tinyusb-hid, fnr-005-software-transport]
+    branches: [main, fnr-001-dual-firmware-ci, fnr-003-generic-tinyusb-hid, fnr-005-software-transport, fnr-006-receiver-core]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -67,6 +67,13 @@ jobs:
         run: cmake --build build/native --parallel 2
       - name: Test
         run: ctest --test-dir build/native --output-on-failure
+      - name: GCC static analyzer for FNR-006 portable core
+        run: |
+          mkdir -p build/analyzer
+          for src in shared/src/envelope.c shared/src/receiver.c shared/src/profile_relative_mouse.c; do
+            cc -std=c17 -Wall -Wextra -Werror -Wconversion -Wshadow -fanalyzer \
+              -Ishared/include -c "$src" -o "build/analyzer/$(basename "$src").o"
+          done
       - name: Address and undefined sanitizer regression
         run: |
           cmake -S . -B build/native-asan -G Ninja -DCMAKE_BUILD_TYPE=Debug \
@@ -93,7 +100,7 @@ jobs:
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
         run: bash tools/build_transport_qualification.sh rp2040
-      - name: Verify production USB path is linked
+      - name: Verify production USB and receiver path is linked
         shell: bash
         run: |
           test -s build/rp2040/fnr_rp2040_hid.uf2
@@ -110,7 +117,11 @@ jobs:
             tud_suspend_cb \
             tud_resume_cb \
             fnr_usb_adapter_task \
-            fnr_hid_device_service; do
+            fnr_hid_device_service \
+            fnr_receiver_adapter_init \
+            fnr_transport_foreground_consume \
+            fnr_receiver_core_accept_datagram \
+            fnr_receiver_core_transport_events; do
             grep -Fxq "$symbol" build/rp2040/DEFINED_SYMBOLS || {
               echo "Required production USB symbol missing: $symbol" >&2
               exit 1
@@ -133,7 +144,7 @@ jobs:
           cat build/rp2040/SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: fnr-005-rp2040-transport
+          name: fnr-006-rp2040-receiver
           path: |
             build/rp2040/fnr_rp2040_hid.uf2
             build/rp2040/fnr_rp2040_hid.elf
@@ -186,7 +197,7 @@ jobs:
           cat build/esp8266/SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: fnr-005-esp8285-transport
+          name: fnr-006-esp8285-regression
           path: |
             build/esp8266/*.bin
             build/esp8266/*.elf

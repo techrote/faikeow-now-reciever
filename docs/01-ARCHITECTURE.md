@@ -75,19 +75,16 @@ and the 3-second link watchdog do not implement FNR-006 sender freshness.
 
 ## Generic receiver envelope
 
-FNR-006 freezes exact encoding.
+FNR-006 freezes an explicit 18-byte little-endian platform-v1 header above the
+FNR-005 datagram payload: version, profile ID, message type, flags, nonzero u64
+sender session, u32 platform sequence and u16 exact payload length. v1 defines
+only PROFILE_DATA type 1 and zero flags. At most 232 profile bytes follow so the
+complete ESP-NOW application packet remains <=250 bytes.
 
-Required logical fields:
-
-- platform protocol version;
-- profile ID;
-- message type/flags;
-- sender/session identifier sufficient to distinguish sender restart/session reset;
-- monotonic message sequence;
-- payload length;
-- profile payload.
-
-The platform envelope is independent of ESP-NOW source MAC, though peer policy may bind/configure allowed senders separately.
+The envelope is independent of ESP-NOW source MAC; the core's configuration
+seam separately authorizes an allowed source peer and explicitly enables the
+selected profile. Sender session is a restart
+discriminator, not authentication. See [FNR-006-RECEIVER.md](FNR-006-RECEIVER.md).
 
 ## Receiver core
 
@@ -107,30 +104,22 @@ The core must not interpret mouse buttons, keyboard keys or gamepad axes.
 
 ## Profile interface
 
-A profile should expose a narrow contract roughly equivalent to:
-
-```text
-profile_id()
-validate_message(type, flags, payload)
-on_message(sequence, payload, now)
-on_timeout(now)
-on_transport_reset()
-on_usb_state(...)
-build/submit HID state
-descriptor/report hooks
-```
-
-Exact API is owned by FNR-003/FNR-006.
-
-Profiles may define different reliability semantics.
+FNR-006 freezes a narrow profile API: a numeric profile ID, payload validation,
+accepted-message handling, neutralization reason and optional USB-state
+notification. The generic core passes opaque profile payload bytes and never
+reads mouse axes/buttons.
 
 ### Relative mouse
 
+Profile ID 1 / schema v1 is exactly four bytes: schema, complete two-bit button
+state, signed X and signed Y. Axes are -127..127; -128 is invalid.
+
 - relative movement is applied at most once;
-- duplicate/stale message -> no movement;
+- duplicate/stale/ambiguous message -> no movement;
 - sequence gap -> count it, do not replay;
 - complete current button state carried by accepted message;
-- timeout/reset -> zero movement + released buttons.
+- freshness/session/transport/USB invalidation -> zero movement + released buttons;
+- unavailable USB drops movement rather than accumulating a replay backlog.
 
 ### Keyboard future example
 
@@ -163,8 +152,8 @@ Future profile backends may use RP2040 PIO/native peripherals for unusual wired 
 ## Safe startup/recovery
 
 - no profile output before configuration and fresh valid platform message;
-- radio/internal-link restart invalidates prior session/freshness state;
-- USB reconnect does not replay queued stale output;
+- radio/internal-link restart invalidates application freshness/output but retains the sender session/sequence baseline so stale same-session packets remain rejectable;
+- USB detach/suspend neutralizes profile output without resetting sender ordering/freshness, and reconnect does not replay queued stale output;
 - profile timeout neutralizes profile state according to profile policy.
 
 ## Concurrency

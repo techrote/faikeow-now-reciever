@@ -12,6 +12,9 @@ lanes = {
          "fnr_uart_rx_take", "fnr_transport_take_events_foreground",
          "fnr_transport_take_datagram_foreground", "fnr_transport_take_status_foreground",
          "fnr_transport_snapshot_foreground", "fnr_transport_reset_foreground",
+         "fnr_receiver_adapter_init", "fnr_transport_foreground_consume",
+         "fnr_receiver_core_accept_datagram", "fnr_receiver_core_transport_events",
+         "fnr_envelope_decode", "fnr_relative_mouse_profile_make_ops",
          "fnr_usb_adapter_task", "fnr_hid_device_service"]),
     "esp": (
         "xtensa/bin/xtensa-lx106-elf-nm", "build/esp8266/fnr_esp8266_ingress.elf",
@@ -31,4 +34,4 @@ missing = sorted(set(required) - symbols)
 if missing:
     raise SystemExit("Missing production symbols: " + ", ".join(missing))
 (elf.parent / "TRANSPORT_SYMBOLS").write_text("\n".join(sorted(required)) + "\n")
-print(f"PASS: {sys.argv[1]} production transport and regression paths linked ({len(required)} symbols)")
+print(f"PASS: {sys.argv[1]} production transport/receiver and regression paths linked ({len(required)} symbols)")

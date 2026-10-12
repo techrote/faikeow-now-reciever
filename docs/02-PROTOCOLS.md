@@ -2,23 +2,26 @@
 
 ## 1. Generic ESP-NOW receiver envelope
 
-This repository owns the platform envelope.
+FNR-006 freezes **platform v1**. See [FNR-006-RECEIVER.md](FNR-006-RECEIVER.md)
+for the complete lifecycle and golden-vector contract.
 
-FNR-006 freezes exact byte encoding and golden vectors.
+All multibyte fields are little endian. The 18-byte header is:
 
-Logical v1 contents must include:
+| Offset | Width | Field |
+| ---: | ---: | --- |
+| 0 | 1 | platform version = 1 |
+| 1 | 1 | profile ID (0 invalid) |
+| 2 | 1 | message type = PROFILE_DATA (1) |
+| 3 | 1 | flags = 0 |
+| 4 | 8 | nonzero sender-session restart discriminator |
+| 12 | 4 | platform sequence u32 |
+| 16 | 2 | exact profile-payload length |
 
-- platform version;
-- profile ID;
-- message type/flags;
-- sender/session identifier or restart discriminator;
-- monotonic message sequence;
-- payload length;
-- profile payload.
-
-Total ESP-NOW application payload must remain <=250 bytes for ESP8266-class interoperability.
-
-The envelope routes/orders data without understanding profile payload semantics.
+At most 232 payload bytes follow, keeping the complete application packet <=250
+bytes. Sender session is not authentication. Sequence comparison is modulo u32:
+duplicate delta 0; newer delta 1..2^31-1; half-range exactly 2^31 rejected as
+ambiguous; larger deltas stale. Default application freshness is 250 ms and only
+an authorized, valid, ordering-accepted profile message refreshes it.
 
 ## 2. Profile contracts
 
@@ -32,37 +35,33 @@ TiltMouse consumes this profile; TiltMouse does not own the generic platform env
 
 ### Relative mouse v1
 
-Freeze exact payload layout in FNR-006.
+Profile ID **1**, schema **1**, exact four-byte payload:
 
-It must carry:
+| Offset | Field |
+| ---: | --- |
+| 0 | schema version = 1 |
+| 1 | complete buttons: bit0 left, bit1 right, other bits zero |
+| 2 | relative X signed int8, -127..127; -128 invalid |
+| 3 | relative Y signed int8, -127..127; -128 invalid |
 
-- bounded relative X;
-- bounded relative Y;
-- complete current logical button state;
-- any profile-specific reserved/version bits required for safe evolution.
-
-Policy:
-
-- accepted movement is applied once;
-- duplicate/stale -> no movement;
-- gaps are diagnostic, not retransmission requests;
-- timeout/reset -> zero movement and released buttons.
+Accepted movement is applied once. Duplicate/stale/ambiguous input contributes no
+output. Gaps are diagnostic only. Timeout/session/transport/USB invalidation
+neutralizes to zero movement plus released buttons; no stale movement backlog is
+replayed.
 
 ## 3. Sequence/session semantics
 
-The generic core owns wrap-safe platform sequence comparison.
+The generic core owns one canonical wrap-safe sequence comparator. First valid
+session observation establishes a baseline; a sender restart uses a fresh nonzero
+u64 session. While the current session is fresh, a different session is accepted
+immediately only at sequence zero; after application timeout it may establish at
+a later sequence if zero was lost. Four recently retired sessions are remembered
+to reject delayed old-session packets.
 
-Requirements:
-
-- first valid message in a new sender/session establishes baseline;
-- duplicate -> reject;
-- older/out-of-order -> reject;
-- newer -> accept;
-- wrap at frozen integer width -> deterministic;
-- session/restart discriminator change resets ordering baseline safely;
-- radio/internal-link restart invalidates freshness and may require fresh session/message.
-
-Profiles receive only messages accepted by generic ordering unless a profile explicitly defines another class of message.
+Board-local FNR-005 faults neutralize/invalidate application freshness but retain
+the last platform session/sequence so a stale same-session RF packet cannot become
+acceptable merely because the UART parser resynchronized. A genuine sender
+restart is represented by the independent platform session.
 
 ## 4. Internal ESP↔RP2040 protocol
 

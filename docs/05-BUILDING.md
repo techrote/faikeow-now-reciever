@@ -1,22 +1,24 @@
-# Building the dual-firmware platform after FNR-005 software integration
+# Building the dual-firmware platform through FNR-006
 
 ## Current software state
 
-The two firmware lanes are independently software-functional but are not yet
-connected into a complete receiver:
+The RP2040 firmware now connects the accepted layers through FNR-006:
 
-- **RP2040 / FNR-003:** generic TinyUSB HID framework with selected
-  `relative_mouse` backend, live USB descriptors and USB service loop.
-- **ESP8266/ESP8285 / FNR-004:** profile-neutral ESP-NOW receive initialization,
-  fail-closed exact-peer admission and bounded generic foreground handoff;
-  shipping/default build remains unprovisioned.
-- **FNR-005:** foreground ESP serializer, COBS/CRC16 internal v1, and RP2040
-  UART0 IRQ/parser with a generic owned consumer seam and no HID dispatch.
+- **FNR-003:** TinyUSB HID framework and relative-mouse backend;
+- **FNR-005:** bounded UART0 framed transport and mandatory event barrier;
+- **FNR-006:** platform-v1 envelope/session/order/freshness core, generic profile
+  dispatch and relative_mouse/v1 adaptation.
 
-FNR-002's accepted board contract supplies GP0/GP1 and 115200 8N1 without flow
-control. FNR-005's [production framed-link physical campaign](FNR-005-HARDWARE-HANDOFF.md)
-remains open; a cross-build is software evidence. FNR-006 still owns the generic
-receiver envelope and profile integration.
+The shipping receiver configuration remains deliberately unprovisioned and
+fail-closed. FNR-007 supplies persistent peer/channel/key/profile provisioning;
+until then, no RF sender is authorized by the production default.
+
+The ESP8266/ESP8285 firmware remains FNR-004/FNR-005 profile-neutral ingress and
+transport. It forwards opaque application bytes and does not interpret FNR-006.
+
+FNR-002 hardware and FNR-005 production-link evidence remain accepted inputs.
+FNR-006 adds no new physical claim; FNR-008 owns integrated RF/USB/reference
+sender acceptance.
 
 The RP2040 target is deliberately renamed from `fnr_rp2040_inert` to
 `fnr_rp2040_hid`; consumers of the old artifact name must migrate. The ESP8266
@@ -67,6 +69,10 @@ FNR-005 adds independent CRC/COBS/golden vectors, hostile-stream recovery,
 ownership/drop accounting, real ingress-to-transport simulation, and both
 production adapters compiled against minimal SDK substitutes. These include
 the ESP FIFO boundary and RP queued-frame/timeout/IRQ ordering regressions.
+
+FNR-006 adds platform-envelope/profile golden vectors, session/order/freshness and
+USB-lifecycle tests plus a production-adapter integration test. The hostile
+envelope test uses fixed seed `0xd6e8feb8` over 12,000 streams.
 
 CI also configures `build/native-asan` with
 `-fsanitize=address,undefined -fno-sanitize-recover=all` for both C and C++, then
