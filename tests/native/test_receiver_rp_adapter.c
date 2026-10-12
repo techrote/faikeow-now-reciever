@@ -88,7 +88,7 @@ static void queue_platform_datagram(uint32_t transport_sequence,
     envelope.version = FNR_PLATFORM_VERSION;
     envelope.profile_id = FNR_PROFILE_ID_RELATIVE_MOUSE;
     envelope.message_type = FNR_PLATFORM_MESSAGE_PROFILE_DATA;
-    envelope.session = UINT32_C(0x12345678);
+    envelope.session = UINT64_C(0x0123456789abcdef);
     envelope.sequence = platform_sequence;
     envelope.payload_length = FNR_RELATIVE_MOUSE_PAYLOAD_SIZE;
     memcpy(envelope.payload, profile, sizeof(profile));
