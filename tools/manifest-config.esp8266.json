@@ -7,14 +7,14 @@
     "measured": false
   },
   "profile": "none; opaque datagrams; radio unprovisioned by default",
-  "platform_protocol": null,
+  "platform_protocol": "FNR-006/v1 opaque application payload passthrough",
   "internal_link_protocol": "FNR-005/v1 (COBS + CRC-16/CCITT-FALSE)",
   "profile_schema": null,
   "command": [
     "bash",
     "tools/build_esp.sh"
   ],
-  "evidence_class": "locked cross-build and native software qualification; accepted hardware inputs from FNR-002; no new physical transport/RF/USB acceptance",
+  "evidence_class": "locked ESP ingress/transport regression build against FNR-006 receiver contract; profile-neutral and unprovisioned; no new physical RF acceptance",
   "hardware_reference_commit": "e8a80ae21e6432d30f6ec6146ff6754605a5d469",
   "uart": {
     "baud": 115200,
