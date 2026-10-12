@@ -11,6 +11,13 @@ static uint32_t read_u32_le(const uint8_t *p) {
            ((uint32_t)p[2] << 16U) | ((uint32_t)p[3] << 24U);
 }
 
+static uint64_t read_u64_le(const uint8_t *p) {
+    uint64_t value = 0U;
+    for (unsigned i = 0U; i < 8U; ++i)
+        value |= (uint64_t)p[i] << (8U * i);
+    return value;
+}
+
 static void write_u16_le(uint8_t *p, uint16_t value) {
     p[0] = (uint8_t)(value & UINT16_C(0xff));
     p[1] = (uint8_t)(value >> 8U);
@@ -21,6 +28,11 @@ static void write_u32_le(uint8_t *p, uint32_t value) {
     p[1] = (uint8_t)((value >> 8U) & UINT32_C(0xff));
     p[2] = (uint8_t)((value >> 16U) & UINT32_C(0xff));
     p[3] = (uint8_t)(value >> 24U);
+}
+
+static void write_u64_le(uint8_t *p, uint64_t value) {
+    for (unsigned i = 0U; i < 8U; ++i)
+        p[i] = (uint8_t)(value >> (8U * i));
 }
 
 static fnr_envelope_result validate_header(const fnr_envelope *envelope) {
@@ -49,9 +61,9 @@ fnr_envelope_result fnr_envelope_encode(const fnr_envelope *envelope,
     out[1] = envelope->profile_id;
     out[2] = envelope->message_type;
     out[3] = envelope->flags;
-    write_u32_le(out + 4U, envelope->session);
-    write_u32_le(out + 8U, envelope->sequence);
-    write_u16_le(out + 12U, envelope->payload_length);
+    write_u64_le(out + 4U, envelope->session);
+    write_u32_le(out + 12U, envelope->sequence);
+    write_u16_le(out + 16U, envelope->payload_length);
     if (envelope->payload_length != 0U)
         memcpy(out + FNR_PLATFORM_ENVELOPE_HEADER_SIZE, envelope->payload,
                envelope->payload_length);
@@ -70,9 +82,9 @@ fnr_envelope_result fnr_envelope_decode(const uint8_t *bytes, size_t length,
     candidate.profile_id = bytes[1];
     candidate.message_type = bytes[2];
     candidate.flags = bytes[3];
-    candidate.session = read_u32_le(bytes + 4U);
-    candidate.sequence = read_u32_le(bytes + 8U);
-    candidate.payload_length = read_u16_le(bytes + 12U);
+    candidate.session = read_u64_le(bytes + 4U);
+    candidate.sequence = read_u32_le(bytes + 12U);
+    candidate.payload_length = read_u16_le(bytes + 16U);
     const fnr_envelope_result valid = validate_header(&candidate);
     if (valid != FNR_ENVELOPE_OK) return valid;
     if ((size_t)candidate.payload_length != length - FNR_PLATFORM_ENVELOPE_HEADER_SIZE)
