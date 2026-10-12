@@ -6,6 +6,7 @@ extern "C" {
 }
 
 #include "fnr/radio_ingress.h"
+#include "fnr/radio_auth.h"
 #include "../../firmware/esp8266/radio_adapter.h"
 
 #include <array>
@@ -108,6 +109,17 @@ extern "C" int esp_now_add_peer(uint8_t *mac_addr, uint8_t role,
 extern "C" int esp_now_is_peer_exist(uint8_t *) { return fake.peer_exists ? 1 : 0; }
 extern "C" int esp_now_get_peer_channel(uint8_t *) { return fake.peer_channel; }
 
+/* Deterministic keyed provider seam; actual BearSSL has an RFC 4231 target
+ * self-test before READY. This test exercises the production callback gate. */
+bool fnr_auth_crypto_selftest(void) { return true; }
+bool fnr_auth_crypto_hmac(void *key, const uint8_t *message, size_t size,
+                          uint8_t digest[32]) {
+    std::memcpy(digest, key, 16);
+    std::memcpy(digest + 16, key, 16);
+    for (size_t i = 0; i < size; ++i)
+        digest[i % 32] = static_cast<uint8_t>(digest[i % 32] * 33U ^ message[i]);
+    return true;
+}
 #include "../../firmware/esp8266/radio_adapter.cpp"
 
 static fnr_radio_provisioning valid_provisioning() {
@@ -120,6 +132,7 @@ static fnr_radio_provisioning valid_provisioning() {
     for (size_t i = 0U; i < FNR_ESPNOW_KEY_SIZE; ++i)
         p.key[i] = static_cast<uint8_t>(i + 1U);
     p.config_id = UINT64_C(0x123456789abcdef0);
+    p.generation = 1;
     return p;
 }
 
@@ -168,6 +181,27 @@ static void test_encrypted_provisioning_and_receive() {
      * configured MAC even when that peer was registered with an ESP-NOW key.
      * A bare platform packet must never reach the production transport. */
     assert(!fnr_radio_take_foreground(&d));
+    fnr_auth_context c{};
+    c.config_id = p.config_id; c.generation = p.generation;
+    std::memcpy(c.sender, peer, 6);
+    std::memcpy(c.receiver, fake.station_mac, 6);
+    uint8_t wire[250]; size_t wire_size = 0;
+    auto key = p.key;
+    uint8_t key_copy[16]; std::memcpy(key_copy, key, 16);
+    assert(fnr_auth_wrap(&c, fnr_auth_crypto_hmac, key_copy, payload,
+                         sizeof(payload), wire, sizeof(wire), &wire_size));
+    fake.recv_cb(peer, wire, static_cast<uint8_t>(wire_size));
+    assert(fnr_radio_take_foreground(&d) && d.size == sizeof(payload));
+    assert(std::memcmp(d.payload, payload, sizeof(payload)) == 0);
+    for (size_t i = 0; i < wire_size; ++i) {
+        wire[i] ^= 1;
+        fake.recv_cb(peer, wire, static_cast<uint8_t>(wire_size));
+        assert(!fnr_radio_take_foreground(&d));
+        wire[i] ^= 1;
+    }
+    fnr_radio_provisioning_status_foreground(&status);
+    assert(status.authentication_enabled &&
+           status.authentication_rejected == wire_size + 1);
 }
 
 static void test_missing_key_and_peer_failure_fail_closed() {
@@ -208,11 +242,63 @@ static void test_legacy_diagnostic_plaintext_is_explicit_only() {
     assert(ps.configured && !ps.encryption_enabled && ps.config_id == 0U);
 }
 
+static void test_auth_bounds_and_identity_binding() {
+    auto p = valid_provisioning();
+    fnr_auth_context c{};
+    c.config_id = p.config_id; c.generation = p.generation;
+    std::memcpy(c.sender, p.ingress.allowed_mac, 6);
+    std::memcpy(c.receiver, fake.station_mac, 6);
+    uint8_t payload[229]{};
+    uint8_t wire[251]{};
+    for (size_t size = 1; size <= FNR_AUTH_INNER_MAX; ++size) {
+        size_t written = 999;
+        assert(fnr_auth_wrap(&c, fnr_auth_crypto_hmac, p.key, payload, size,
+                             wire, sizeof(wire), &written));
+        assert(written == size + FNR_AUTH_OVERHEAD && written <= 250);
+        const uint8_t *inner = nullptr; size_t inner_size = 999;
+        assert(fnr_auth_unwrap(&c, fnr_auth_crypto_hmac, p.key, wire, written,
+                               &inner, &inner_size));
+        assert(inner_size == size && std::memcmp(inner, payload, size) == 0);
+        for (size_t truncated = 0; truncated < written; ++truncated) {
+            assert(!fnr_auth_unwrap(&c, fnr_auth_crypto_hmac, p.key, wire,
+                                    truncated, &inner, &inner_size));
+            assert(inner == nullptr && inner_size == 0);
+        }
+    }
+    size_t written = 999;
+    assert(!fnr_auth_wrap(&c, fnr_auth_crypto_hmac, p.key, payload, 229,
+                          wire, sizeof(wire), &written) && written == 0);
+    assert(!fnr_auth_wrap(&c, fnr_auth_crypto_hmac, p.key, payload, 0,
+                          wire, sizeof(wire), &written));
+    assert(!fnr_auth_wrap(&c, fnr_auth_crypto_hmac, p.key, payload, 228,
+                          wire, 249, &written));
+    assert(fnr_auth_wrap(&c, fnr_auth_crypto_hmac, p.key, payload, 228,
+                         wire, 250, &written));
+    const uint8_t *inner; size_t inner_size;
+    for (unsigned field = 0; field < 4; ++field) {
+        auto wrong = c;
+        if (field == 0) ++wrong.config_id;
+        if (field == 1) ++wrong.generation;
+        if (field == 2) wrong.sender[5] ^= 1;
+        if (field == 3) wrong.receiver[5] ^= 1;
+        assert(!fnr_auth_unwrap(&wrong, fnr_auth_crypto_hmac, p.key, wire,
+                                written, &inner, &inner_size));
+    }
+    p.key[0] ^= 1;
+    assert(!fnr_auth_unwrap(&c, fnr_auth_crypto_hmac, p.key, wire, written,
+                            &inner, &inner_size));
+    assert(!fnr_auth_unwrap(&c, nullptr, p.key, wire, written,
+                            &inner, &inner_size));
+    assert(!fnr_auth_unwrap(&c, fnr_auth_crypto_hmac, p.key, wire, 251,
+                            &inner, &inner_size));
+}
+
 int main() {
     test_factory_is_off();
     test_encrypted_provisioning_and_receive();
     test_missing_key_and_peer_failure_fail_closed();
     test_legacy_diagnostic_plaintext_is_explicit_only();
+    test_auth_bounds_and_identity_binding();
     std::puts("PASS: actual ESP radio adapter requires encrypted production peer and fails closed");
     return 0;
 }

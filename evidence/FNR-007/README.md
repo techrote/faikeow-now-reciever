@@ -77,6 +77,11 @@ change. A deterministic production-adapter regression is added before the fix.
 The original failure remains part of acceptance evidence. No merge is authorized
 by the initial CI success or by the positive movement smoke.
 
+Regression-first commit `ad10a9a7d22092ba5938eb5cbef25eafd31082ed` reproduced
+the defect in push CI `38309757230`: the actual production radio-adapter test
+failed `!fnr_radio_take_foreground(&d)` after a bare packet from the configured
+MAC. The other 14 native tests passed; this expected failure precedes the repair.
+
 Wrong-profile/channel measurement, RP admission/counter observation,
 power-cycle persistence, link recovery, factory reset and reconfiguration still
 require qualification of the repaired exact source. FNR-008 is not dependency

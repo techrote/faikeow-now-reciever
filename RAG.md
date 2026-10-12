@@ -66,7 +66,10 @@ FNR-006 freezes platform v1. The explicit little-endian header is 18 bytes:
 version u8, profile ID u8, message type u8, flags u8, nonzero sender-session
 u64, platform sequence u32 and profile-payload length u16. v1 accepts only
 PROFILE_DATA type 1 and flags zero. The complete ESP-NOW application packet
-remains <=250 bytes, leaving at most 232 profile bytes.
+codec accepts <=250 bytes, leaving at most 232 profile bytes. Provisioned
+FNR-007 radio deployments additionally require a 22-byte authenticated wrapper,
+leaving 228 enclosed platform bytes / 210 profile bytes on the RF path. See
+[authenticated radio wrapper v1](docs/FNR-007-RADIO-AUTH.md).
 
 Sender session is a restart discriminator, not authentication. Platform sequence
 uses one modulo-u32 comparator: zero delta is duplicate, deltas below 2^31 are

@@ -103,6 +103,7 @@ static void test_valid_key_reaches_only_radio_adapter() {
     assert(applied.ingress.enabled && applied.ingress.channel == 11U);
     assert(std::memcmp(applied.ingress.allowed_mac, c.peer_mac, FNR_MAC_SIZE) == 0);
     assert(applied.key_present && applied.config_id == c.config_id);
+    assert(applied.generation == c.generation);
     assert(std::memcmp(applied.key, secret_key.data(), secret_key.size()) == 0);
 
     fnr_esp_provisioning_status s{};

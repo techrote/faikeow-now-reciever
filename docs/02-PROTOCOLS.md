@@ -17,8 +17,11 @@ All multibyte fields are little endian. The 18-byte header is:
 | 12 | 4 | platform sequence u32 |
 | 16 | 2 | exact profile-payload length |
 
-At most 232 payload bytes follow, keeping the complete application packet <=250
-bytes. Sender session is not authentication. Sequence comparison is modulo u32:
+At most 232 payload bytes follow in the codec, keeping the platform packet
+<=250 bytes. Provisioned FNR-007 RF traffic additionally requires the
+[authenticated radio wrapper v1](FNR-007-RADIO-AUTH.md), leaving 228 enclosed
+platform bytes / 210 profile bytes within the same radio ceiling. Sender session
+is not authentication. Sequence comparison is modulo u32:
 duplicate delta 0; newer delta 1..2^31-1; half-range exactly 2^31 rejected as
 ambiguous; larger deltas stale. Default application freshness is 250 ms and only
 an authorized, valid, ordering-accepted profile message refreshes it.

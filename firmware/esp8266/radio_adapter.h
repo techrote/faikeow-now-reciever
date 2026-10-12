@@ -17,6 +17,7 @@ typedef struct fnr_radio_provisioning {
     uint8_t key[FNR_ESPNOW_KEY_SIZE];
     bool key_present;
     uint64_t config_id;
+    uint32_t generation;
 } fnr_radio_provisioning;
 
 typedef struct fnr_radio_provisioning_status {
@@ -25,6 +26,8 @@ typedef struct fnr_radio_provisioning_status {
     uint8_t channel;
     uint8_t peer_mac[FNR_MAC_SIZE];
     uint64_t config_id;
+    bool authentication_enabled;
+    uint32_t authentication_rejected;
     fnr_radio_state state;
 } fnr_radio_provisioning_status;
 

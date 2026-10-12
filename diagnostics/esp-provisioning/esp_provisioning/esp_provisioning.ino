@@ -29,6 +29,10 @@ static void print_status(void) {
     Serial.print(provisioning.radio_ready ? 1 : 0);
     Serial.print(",\"encryption_enabled\":");
     Serial.print(radio.encryption_enabled ? 1 : 0);
+    Serial.print(",\"authentication_enabled\":");
+    Serial.print(radio.authentication_enabled ? 1 : 0);
+    Serial.print(",\"authentication_rejected\":");
+    Serial.print((unsigned long)radio.authentication_rejected);
     Serial.print(",\"channel\":");
     Serial.print((unsigned)provisioning.config.channel);
     Serial.print(",\"peer\":\"");

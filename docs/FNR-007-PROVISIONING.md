@@ -129,11 +129,17 @@ The ESP production path:
 4. initializes ESP-NOW;
 5. registers the configured sender as an encrypted peer;
 6. verifies peer existence/channel using the pinned SDK;
-7. registers the receive callback;
-8. enters `FNR_RADIO_READY` only after those steps succeed.
+7. checks the pinned HMAC implementation against known-answer vectors;
+8. registers a receive callback requiring the authenticated radio wrapper;
+9. enters `FNR_RADIO_READY` only after those steps succeed.
 
 A missing key, corrupt record, peer-registration failure or channel/setup error
-never falls back to production plaintext receive.
+never falls back to unwrapped production receive. Encrypted peer registration
+alone proved insufficient on the physical SDK path. The mandatory
+[authenticated radio wrapper v1](FNR-007-RADIO-AUTH.md) supplies packet
+authentication before forwarding and changes the sender's over-air contract.
+It leaves 228 enclosed platform bytes / 210 profile bytes within the 250-byte
+ESP-NOW limit. Its exact format, key derivation and security limits are normative.
 
 The old explicit plaintext `fnr_radio_apply_config()` seam remains solely for
 the already accepted isolated FNR-002/FNR-004 diagnostic firmware. Production
@@ -164,6 +170,7 @@ Available redacted state includes:
 - freshness timeout;
 - public config ID/generation;
 - key-present/encryption-enabled boolean;
+- authentication-enabled boolean and authentication-rejection counter;
 - public record validation result;
 - RP staged/radio-acknowledged state;
 - current radio state.
@@ -192,11 +199,14 @@ production image.
 - corrupt public record -> fail closed;
 - missing/all-zero/wrong-size key -> fail closed;
 - wrong peer -> ESP ingress and RP authorization reject it;
-- RP/ESP **configuration mismatch** on expected channel -> no matching READY
-  acknowledgement;
+- READY acknowledgement checks radio state and expected channel. FNR-005 does
+  not carry a public config ID/hash; it cannot detect a same-channel mismatch
+  of separately flashed records. Matching paired artifact manifests and the
+  authenticated configuration identity are required;
 - sender RF channel mismatch is not treated as an authentication boundary:
   FNR-004 measured mismatch reception and the pinned ESP8266 callback exposes no
-  trustworthy per-packet channel. Encrypted peer admission + exact source +
+  trustworthy per-packet channel. Authenticated wrapper + encrypted peer
+  registration + exact source +
   platform/profile validation remain the safety gates; FNR-007 physical smoke
   must measure wrong-sender-channel behavior explicitly;
 - wrong profile/version -> RP rejects before profile output;
@@ -240,6 +250,7 @@ Software qualification covers:
 - RP public-record loading and fail-closed behavior;
 - ESP key loader and redacted diagnostics;
 - actual production ESP radio adapter encrypted-peer setup/failure behavior;
+- mandatory wrapper bounds, tamper/configuration/address/key rejection;
 - actual FNR-005 -> RP staged/READY/revoke/re-enable gate;
 - UBSan/ASan and GCC `-fanalyzer`;
 - both locked target cross-builds and linked-symbol checks.

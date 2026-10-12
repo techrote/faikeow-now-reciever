@@ -10,6 +10,7 @@ include(CTest)
 add_library(fnr_shared STATIC
   shared/src/datagram.c
   shared/src/radio_ingress.c
+  shared/src/radio_auth.c
   shared/src/transport.c
   shared/src/transport_tx.c
   shared/src/uart_buffer.c

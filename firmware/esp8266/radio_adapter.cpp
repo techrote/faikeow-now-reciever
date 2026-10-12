@@ -9,6 +9,9 @@ extern "C" {
 #include <type_traits>
 
 #include "radio_adapter.h"
+#include "fnr/radio_auth.h"
+#include "radio_auth_crypto.h"
+#include <limits.h>
 
 using expected_rx = void (*)(uint8_t *, uint8_t *, uint8_t);
 static_assert(std::is_same<esp_now_recv_cb_t, expected_rx>::value,
@@ -24,11 +27,29 @@ static bool runtime_config_present = false;
 static bool runtime_encrypted = false;
 static uint8_t runtime_key[FNR_ESPNOW_KEY_SIZE] = {};
 static uint64_t runtime_config_id = 0U;
+static fnr_auth_context auth_context = {};
+static uint32_t authentication_rejected = 0U;
 static uint32_t lifecycle_generation = 0; /* foreground owner only */
 
 static void rx(uint8_t *mac, uint8_t *bytes, uint8_t length) {
+    const uint8_t *inner = bytes;
+    size_t inner_size = length;
+    /* SDK peer registration does not authenticate every delivered callback.
+     * Check the exact source before bounded crypto. Never forward raw packets
+     * on the provisioned path. SDK callbacks/foreground are cooperative; HMAC
+     * neither allocates nor yields, and runs outside interrupt masking. */
+    if (runtime_encrypted && mac &&
+        std::memcmp(mac, runtime_config.allowed_mac, FNR_MAC_SIZE) == 0 &&
+        !fnr_auth_unwrap(&auth_context, fnr_auth_crypto_hmac, runtime_key,
+                         bytes, length, &inner, &inner_size)) {
+        noInterrupts();
+        if (ingress.counters.received != UINT32_MAX) ++ingress.counters.received;
+        if (authentication_rejected != UINT32_MAX) ++authentication_rejected;
+        interrupts();
+        return;
+    }
     noInterrupts();
-    fnr_radio_receive(&ingress, mac, bytes, length);
+    fnr_radio_receive(&ingress, mac, inner, inner_size);
     interrupts();
 }
 
@@ -40,7 +61,8 @@ static void clear_runtime_secret(void) {
 static bool provisioning_valid(const fnr_radio_provisioning *provisioning) {
     if (provisioning == nullptr ||
         !fnr_radio_config_valid(&provisioning->ingress) ||
-        !provisioning->key_present || provisioning->config_id == 0U) {
+        !provisioning->key_present || provisioning->config_id == 0U ||
+        provisioning->generation == 0U) {
         return false;
     }
     uint8_t any = 0U;
@@ -82,6 +104,7 @@ void fnr_radio_start(void) {
     WiFi.persistent(false);
     WiFi.setAutoReconnect(false);
     WiFi.mode(WIFI_STA);
+    WiFi.macAddress(auth_context.receiver);
     wifi_station_set_auto_connect(0);
     wifi_station_disconnect();
     if (!wifi_set_channel(cfg.channel) || wifi_get_channel() != cfg.channel ||
@@ -97,6 +120,10 @@ void fnr_radio_start(void) {
     }
 
     if (runtime_encrypted) {
+        if (!fnr_auth_crypto_selftest()) {
+            transition_error();
+            return;
+        }
         if (esp_now_add_peer(runtime_config.allowed_mac,
                              ESP_NOW_ROLE_CONTROLLER,
                              runtime_config.channel,
@@ -128,6 +155,7 @@ void fnr_radio_apply_config(const fnr_radio_config *config) {
     runtime_config_present = false;
     runtime_encrypted = false;
     runtime_config_id = 0U;
+    auth_context = fnr_auth_context{};
     clear_runtime_secret();
     runtime_config = config != nullptr ? *config : fnr_radio_config{};
     runtime_config_present = config != nullptr;
@@ -138,6 +166,7 @@ bool fnr_radio_apply_provisioning(const fnr_radio_provisioning *provisioning) {
     runtime_config_present = false;
     runtime_encrypted = false;
     runtime_config_id = 0U;
+    auth_context = fnr_auth_context{};
     clear_runtime_secret();
     runtime_config = fnr_radio_config{};
 
@@ -147,6 +176,10 @@ bool fnr_radio_apply_provisioning(const fnr_radio_provisioning *provisioning) {
         runtime_config_present = true;
         runtime_encrypted = true;
         runtime_config_id = provisioning->config_id;
+        auth_context.config_id = provisioning->config_id;
+        auth_context.generation = provisioning->generation;
+        std::memcpy(auth_context.sender, provisioning->ingress.allowed_mac,
+                    FNR_MAC_SIZE);
     }
 
     fnr_radio_restart();
@@ -167,6 +200,9 @@ void fnr_radio_provisioning_status_foreground(
     out->channel = runtime_config.channel;
     std::memcpy(out->peer_mac, runtime_config.allowed_mac, FNR_MAC_SIZE);
     out->config_id = runtime_config_id;
+    out->authentication_enabled = runtime_config_present && runtime_encrypted &&
+                                  snapshot.state == FNR_RADIO_READY;
+    out->authentication_rejected = authentication_rejected;
     out->state = snapshot.state;
 }
 

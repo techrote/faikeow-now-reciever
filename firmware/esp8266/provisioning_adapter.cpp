@@ -49,6 +49,7 @@ bool fnr_esp_provisioning_init(void) {
     provisioning.key_present = true;
     std::memcpy(provisioning.key, key, FNR_ESPNOW_KEY_SIZE);
     provisioning.config_id = status.config.config_id;
+    provisioning.generation = status.config.generation;
 
     status.radio_ready = fnr_radio_apply_provisioning(&provisioning);
     zero_secret(&provisioning);

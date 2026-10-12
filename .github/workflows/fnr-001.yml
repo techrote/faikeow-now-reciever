@@ -75,7 +75,7 @@ jobs:
       - name: GCC static analyzer for portable receiver/provisioning core
         run: |
           mkdir -p build/analyzer
-          for src in shared/src/envelope.c shared/src/receiver.c shared/src/profile_relative_mouse.c shared/src/provisioning.c; do
+          for src in shared/src/envelope.c shared/src/receiver.c shared/src/profile_relative_mouse.c shared/src/provisioning.c shared/src/radio_auth.c; do
             cc -std=c17 -Wall -Wextra -Werror -Wconversion -Wshadow -fanalyzer \
               -Ishared/include -c "$src" -o "build/analyzer/$(basename "$src").o"
           done

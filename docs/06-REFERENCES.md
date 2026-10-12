@@ -32,7 +32,10 @@ TiltMouse is the first reference sender for the faikeow `relative_mouse` profile
 - ESP8266 Arduino SDK ESP-NOW API header:
   https://github.com/esp8266/Arduino/blob/master/tools/sdk/include/espnow.h
 
-Keep the generic application envelope plus profile payload at or below the ESP-NOW v1 250-byte interoperability ceiling for the accepted ESP8266-class receiver.
+Keep the complete radio payload, including FNR-007's 22-byte authenticated
+wrapper, at or below the ESP-NOW v1 250-byte interoperability ceiling for the
+accepted ESP8266-class receiver. Provisioned operation leaves 228 enclosed
+platform bytes / 210 profile bytes; see [the wrapper contract](FNR-007-RADIO-AUTH.md).
 
 ## Authoritative devboard hardware reference
 
