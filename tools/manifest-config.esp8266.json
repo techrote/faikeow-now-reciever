@@ -6,7 +6,7 @@
     "clock_mhz": 40,
     "measured": false
   },
-  "profile": "none; opaque datagrams; radio unprovisioned by default",
+  "profile": "opaque datagrams; FNR-007 factory build unprovisioned; provisioned builds require encrypted per-device ESP-NOW peer",
   "platform_protocol": "FNR-006/v1 opaque application payload passthrough",
   "internal_link_protocol": "FNR-005/v1 (COBS + CRC-16/CCITT-FALSE)",
   "profile_schema": null,
@@ -14,7 +14,7 @@
     "bash",
     "tools/build_esp.sh"
   ],
-  "evidence_class": "locked ESP ingress/transport regression build against FNR-006 receiver contract; profile-neutral and unprovisioned; no new physical RF acceptance",
+  "evidence_class": "locked cross-build and native FNR-007 provisioning/radio regression; factory artifact remains unprovisioned; no new physical RF acceptance",
   "hardware_reference_commit": "e8a80ae21e6432d30f6ec6146ff6754605a5d469",
   "uart": {
     "baud": 115200,
@@ -22,5 +22,6 @@
     "flow_control": false,
     "maximum_wire_frame_bytes": 277,
     "tx_quantum_bytes": 32
-  }
+  },
+  "provisioning": "FNR-007/v1 public CRC32 record plus ESP-only 16-byte per-device key when generated"
 }
