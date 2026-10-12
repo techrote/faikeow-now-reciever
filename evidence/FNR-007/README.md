@@ -191,6 +191,22 @@ motion/button output during faults and full positive movement totals. These
 are observation-tool corrections, not hidden firmware failures or performance
 claims.
 
-Factory reset and second-configuration qualification remain outstanding.
+The [factory reset results](factory-reset.json) establish safe inactivity with
+the normal unprovisioned production pair: bare, encrypted and wrong-source
+traffic produce no HID movement/button events. Subsequent factory observation
+reports an EMPTY RP record, radio OFF, no acknowledgement, both gates disabled
+and no received/admitted datagrams. Factory accessors contain no public record
+or key; image scans exclude both deployment records, keys and derived auth
+keys. Key absence is source/image evidence; radio OFF and disabled admission
+are physical observations. The factory ESP diagnostic was not substituted for
+the production image. Near-button BOOTSEL recovery and observer reflashing
+succeeded without soldering after the factory deployment.
+
+[Artifact provenance](artifacts.json) records exact firmware source/tree/lock,
+public provisioning identities, target build hashes and compiler identities.
+The second configuration is built but not yet physically qualified. Both raw
+configurations/keys and generated secret sources remain private or ignored.
+
+Second-configuration qualification and final production restoration remain outstanding.
 FNR-008 is not dependency ready; TiltMouse interoperability/performance is not
 claimed.

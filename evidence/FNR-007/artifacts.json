@@ -1,0 +1,301 @@
+{
+  "source_commit": "9d813d7143124a8dcadc3b2a339db00ac792392b",
+  "source_tree": "88e767007442c09dc19dc9ea3b26d2b899436aaf",
+  "dependency_lock_sha256": "c0db1d46dc684668b3770bd5029f8d90206aa1395179f1ff79d1eb1908c1bae8",
+  "scope": "Supplemental native Windows locked-source builds; Linux canonical factory/provisioned fixture scripts are qualified separately by exact-head CI. Artifact build records are private, not acceptance by themselves. Both local provisioning JSONs and secret sources remain private/ignored.",
+  "representative_receiver": "Board A only, RP2040 B2 / 2 MiB, ESP8285N08 / 1 MiB",
+  "receiver_station_mac": "ec:94:cb:b3:c4:65",
+  "sender_station_mac": "ec:94:cb:b3:c4:91",
+  "configurations": [
+    {
+      "config_id": "0x6529df3c591471ca",
+      "generation": 1,
+      "peer_mac": "ec:94:cb:b3:c4:91",
+      "channel": 1,
+      "platform_version": 1,
+      "profile_id": 1,
+      "profile_schema_version": 1,
+      "freshness_timeout_ms": 250,
+      "public_record_sha256": "6020de6b184ade32f047ecf2eeabfb3dc50f0687fe1fa91ce79d16e32e65ae22",
+      "radio_key_present": true
+    },
+    {
+      "config_id": "0x9133bd03ee60b75f",
+      "generation": 2,
+      "peer_mac": "ec:94:cb:b3:c4:91",
+      "channel": 1,
+      "platform_version": 1,
+      "profile_id": 1,
+      "profile_schema_version": 1,
+      "freshness_timeout_ms": 250,
+      "public_record_sha256": "44d1d60265677a844a9115e50e46cb96b4ebb597db94d7bbd998e2b05516e8c8",
+      "radio_key_present": true
+    }
+  ],
+  "toolchains": {
+    "arm_gcc": {
+      "sha256": "0f34a52ca27f1819322eba3a49a771ba757821c7f38769171413a6e091158ead",
+      "version": "arm-none-eabi-gcc.exe (Arm GNU Toolchain 13.3.Rel1 (Build arm-13.24)) 13.3.1 20240614"
+    },
+    "xtensa_gcc": {
+      "sha256": "413927577a946db9657f8b8d8ea5637ff9628f5be1761e3a3fa5a9c565b1d231",
+      "version": "xtensa-lx106-elf-gcc.exe (GCC) 10.3.0"
+    },
+    "cmake": {
+      "sha256": "29164594b54ab24965f24ef37e3a6b31395b7c2732f6d398a933faef847e3669",
+      "version": "cmake version 3.31.6"
+    },
+    "ninja": {
+      "sha256": "9ee2fc6bc8c0acd1de6e6dcadf009c0598e6336646b87cfb5ed2918604b81597",
+      "version": "1.11.1.git.kitware.jobserver-1"
+    },
+    "arduino_cli": {
+      "sha256": "1017de89179c3167e6b8a38ca6cc4091fa69a3cf97aafa7810f01423003f5571",
+      "version": "arduino-cli  Version: 1.5.1 Commit: 01f3d4f2b Date: 2026-06-05T10:22:12Z"
+    },
+    "picotool": {
+      "sha256": "cba868e55e30bf717196d5b6a3bb5ab3d8ffea8d56afe182d5c4243dfa39d714",
+      "version": "picotool v2.2.0 (Windows, GNU-15.1.0, Release)"
+    },
+    "pico_sdk": {
+      "commit": "a1438dff1d38bd9c65dbd693f0e5db4b9ae91779",
+      "dirty": false
+    },
+    "tinyusb": {
+      "commit": "86ad6e56c1700e85f1c5678607a762cfe3aa2f47",
+      "dirty": false
+    }
+  },
+  "rp_builds": [
+    {
+      "configuration": "first",
+      "kind": "production",
+      "artifacts": [
+        {
+          "extension": "uf2",
+          "sha256": "6780b1cb30b2c2ed58ae84ba0b6d416af134b0d3c4cb083e297b4ed8c9c2fbe4",
+          "bytes": 60416,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "elf",
+          "sha256": "1adaa18f31966b09f92aadea80849a462e0b0d55cdff6793781b869dfa6c58ac",
+          "bytes": 66916,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "bin",
+          "sha256": "1084100d711729a22291ac028346f5afe7d7b9083beb350eff512a48ee536f4e",
+          "bytes": 30196,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        }
+      ]
+    },
+    {
+      "configuration": "first",
+      "kind": "observer",
+      "artifacts": [
+        {
+          "extension": "uf2",
+          "sha256": "757764d9a742d190a02aaa8a1e42ae5de4076dfeef40795cde49ed243a2485a4",
+          "bytes": 198656,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "elf",
+          "sha256": "1022095b540749932bbe55ba29f8a168c97ae0cfbc8f3d5ccc1673d91caf09fb",
+          "bytes": 154752,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "bin",
+          "sha256": "1d703ee0c237a623cda5739d52d91b58c77ae298826473bdb847a29a8bca4d4f",
+          "bytes": 99140,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        }
+      ]
+    },
+    {
+      "configuration": "unsupported-schema",
+      "kind": "observer",
+      "artifacts": [
+        {
+          "extension": "uf2",
+          "sha256": "48337162658495040c62c620a460ceff8b37fc32dc88f97d4a687660139eaa7d",
+          "bytes": 198656,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "elf",
+          "sha256": "b3b119dbd39b0acd0903f1737336700e321864475a83c16b243e966ae18d29d9",
+          "bytes": 154752,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "bin",
+          "sha256": "c320c6ed39f64d03b08452575d9dbd52847bbab939fcee359ac180ecf951c2d0",
+          "bytes": 99140,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        }
+      ]
+    },
+    {
+      "configuration": "second",
+      "kind": "production",
+      "artifacts": [
+        {
+          "extension": "uf2",
+          "sha256": "b9b6f1d6152227e681734f3eb2e777dea29015eade1c85915a1386fd9f5d770a",
+          "bytes": 60416,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "elf",
+          "sha256": "354f33ed68c883effd070606e9fd079ceb03eeb138a37d5cf60ac0d795d68428",
+          "bytes": 66916,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "bin",
+          "sha256": "9b6df8c1a1670e8e9ec0128f0e87f68cd024cd08fe0f3311450fe5abdaf920ed",
+          "bytes": 30196,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        }
+      ]
+    },
+    {
+      "configuration": "second",
+      "kind": "observer",
+      "artifacts": [
+        {
+          "extension": "uf2",
+          "sha256": "ddd01f5ce876288f4002aebdf501fe368842b67950074a56b5fad7617ec42800",
+          "bytes": 198656,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "elf",
+          "sha256": "e7a5fe0b816aa86c5e43f8e69c6a8280f6d50190dc791ce7917ad02004103088",
+          "bytes": 154752,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "bin",
+          "sha256": "781ff3f9858f2dfc0e92a33cea20a286c8fcf693438546c5c99ce734bc092e82",
+          "bytes": 99140,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        }
+      ]
+    },
+    {
+      "configuration": "factory",
+      "kind": "production",
+      "artifacts": [
+        {
+          "extension": "uf2",
+          "sha256": "762d6aa099c810b6835ad6dd37e222021418ce0bab547b117cb769300046db15",
+          "bytes": 60416,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "elf",
+          "sha256": "21d63bc48ecb86f29d39c8345e56542b92bd2d51c811eeb78b23995eed40dab1",
+          "bytes": 66852,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "bin",
+          "sha256": "295dd98ad388eb26474ba70821e754e38cd9ec5dccd1e2e12b40a8bb8f47cf16",
+          "bytes": 30148,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        }
+      ]
+    },
+    {
+      "configuration": "factory",
+      "kind": "observer",
+      "artifacts": [
+        {
+          "extension": "uf2",
+          "sha256": "ef2a2bf047e5f46e1adc2066092d03a1e4d571c74ba832fb831e81cea081d4a9",
+          "bytes": 198656,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "elf",
+          "sha256": "9bf111c2f07e0de153fb6a3066f8d2440c1c61af662776a1dc892aaf780b55f8",
+          "bytes": 154688,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        },
+        {
+          "extension": "bin",
+          "sha256": "e4ad50547bc597e1d0200bb6ab974e0fe34554c05df185e8fee84cda644748a2",
+          "bytes": 99092,
+          "deployment_keys_absent": true,
+          "derived_auth_keys_absent": true
+        }
+      ]
+    }
+  ],
+  "esp_builds": [
+    {
+      "artifact": "fnr007_recovery_provisioned_esp.ino.bin",
+      "sha256": "67f242d7a8909f93b58a696598d5b0e344c28b9c67b83cfc0f8a66244ddaa80a",
+      "bytes": 282752
+    },
+    {
+      "artifact": "fnr007_recovery_diag_esp.ino.bin",
+      "sha256": "7f44fb804b9707a646ca60c2f4b6ef4e8d8519da6f850bf7c70d4055390b9ce5",
+      "bytes": 281424
+    },
+    {
+      "artifact": "fnr007_recovery_factory_esp.ino.bin",
+      "sha256": "a240c7f3ae67217f4b6170c7f299c23d06089aac5c90cb75dbe41af8d0162675",
+      "bytes": 282672
+    },
+    {
+      "artifact": "fnr007_second_provisioned_esp.ino.bin",
+      "sha256": "e1071cfcb04167b5b52287eaadf1305089b9bd4aeee30d7e04a2f32c1983b187",
+      "bytes": 282752
+    },
+    {
+      "artifact": "fnr007_second_diag_esp.ino.bin",
+      "sha256": "32603d32f5c1a597d9ce5d096f9c62c37cc5c7b2f83b95bc2f091ae2b3c9cd2c",
+      "bytes": 281424
+    }
+  ],
+  "paired_record_inspection": [
+    {
+      "configuration": "first",
+      "same_public_record_compiled_both": true,
+      "esp_key_present": true,
+      "rp_key_absent": true
+    },
+    {
+      "configuration": "second",
+      "same_public_record_compiled_both": true,
+      "esp_key_present": true,
+      "rp_key_absent": true
+    }
+  ]
+}
