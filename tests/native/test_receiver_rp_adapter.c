@@ -185,6 +185,10 @@ static void test_provisioning_radio_ack_gate(void) {
     fnr_receiver_provisioning_status ps;
     fnr_receiver_adapter_provisioning_snapshot(&ps);
     assert(ps.staged && !ps.radio_acknowledged && ps.expected_channel == 6U);
+    /* Staging itself is a safety transition and therefore queues a neutral
+     * HID barrier. Clear it before testing admission of later packets. */
+    assert(hid.pending && hid.pending_is_neutral);
+    service_hid();
 
     /* Before radio acknowledgement the same otherwise-valid packet is denied. */
     queue_boundary();
@@ -206,6 +210,10 @@ static void test_provisioning_radio_ack_gate(void) {
     fnr_rp_transport_task();
     fnr_receiver_adapter_provisioning_snapshot(&ps);
     assert(ps.radio_acknowledged);
+    /* Enabling the desired peer/profile is another reconfiguration barrier:
+     * no movement may overtake the all-buttons-up report. */
+    assert(hid.pending && hid.pending_is_neutral);
+    service_hid();
 
     queue_platform_datagram(3U, 0U, -9, 12, 3U);
     fnr_rp_transport_task();
@@ -233,6 +241,8 @@ static void test_provisioning_radio_ack_gate(void) {
     fnr_rp_transport_task();
     fnr_receiver_adapter_provisioning_snapshot(&ps);
     assert(ps.radio_acknowledged);
+    assert(hid.pending && hid.pending_is_neutral);
+    service_hid();
     queue_platform_datagram(7U, 2U, 1, 2, 2U);
     fnr_rp_transport_task();
     assert(hid.pending && !hid.pending_is_neutral);
