@@ -111,7 +111,9 @@ failure/restart events; no transport data feeds HID output yet.
 
 These are software-qualified targets, not a complete or physically accepted
 dongle. FNR-002's clone-board pinout/recovery/UART evidence is accepted;
-FNR-005's production framing physical gate remains open. FNR-006 owns
+FNR-005's [production transport campaign](evidence/FNR-005/README.md) passes on
+one representative board; this does not establish the integrated dongle.
+FNR-006 owns
 receiver/envelope/profile dispatch, and
 FNR-008 owns physical USB/RF/reference-profile acceptance.
 
@@ -137,7 +139,7 @@ Current firmware outputs are `build/rp2040/fnr_rp2040_hid.uf2`/`.elf` and
 [FNR-004 radio ingress](docs/FNR-004-RADIO-INGRESS.md),
 [FNR-005 protocol and ownership](docs/FNR-005-TRANSPORT.md),
 [FNR-005 software prepass](docs/FNR-005-SOFTWARE-PREPASS.md), and
-[the exact remaining production physical campaign](docs/FNR-005-HARDWARE-HANDOFF.md).
+[the production physical campaign and checklist](docs/FNR-005-HARDWARE-HANDOFF.md).
 CI runs all native tests plus both locked target cross-builds and publishes
 checksummed manifests with `physical_acceptance: false`.
 

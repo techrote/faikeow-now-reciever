@@ -84,9 +84,25 @@
   "radio_write_record_sha256": "94b570af0ba27f6f60eb1088442c7a58aec2d1cf2513d997d4ac78d539d60b60",
   "rp_load_record_sha256": "d31aa1b8741890a394c6f505d63229a80fc5bb906d40529b43b7201c2c80e590",
   "linked_path_checks_sha256": "ec1447f24ba4c6d38660dca03140416a67be0b892eeb8070b75b18d3c8a2d49a",
-  "hardware_acceptance": "INCOMPLETE: CPU-reboot cold-boot retry and independent RP reload not yet passed",
+  "hardware_acceptance": "Representative-DUT physical campaign PASS; final exact-head CI, review/merge and post-merge programme closure remain administrative gates",
   "ci_runs": [
     38184969657,
     38184964916
-  ]
+  ],
+  "additional_rp_load_record_sha256": [
+    "eefbdff9963f9b4f710e47c76283fc6cf901ed348c98c10e210707521bde64a9",
+    "e174446fa15387a8e422a25aae8615afe5f55d5ca9d98fde09e699272ac22c01"
+  ],
+  "cold_boot_record_sha256": "168edebdf17366dbd2dfecf64527f905afb4a65c18d6f0c23e9b1eb33e60efe5",
+  "physical_pass_phases": 44,
+  "final_fixture_state": {
+    "board": "A",
+    "esp_flash": "qualification d6766e8, stopped finite injector, STOP telemetry verified",
+    "rp_sram": "qualification d6766e8, consumer/parser/ring drained",
+    "rp_flash": "preserved FNR-002 bridge unchanged",
+    "board_B": "unplugged, unprogrammed in this campaign",
+    "host_handles": "closed by capture context managers",
+    "source_stop_verified": true,
+    "final_capture_sha256": "d22ad95456a38289f05174f0be82d6ec8694d83f002434ee4562e4a0d378d7a8"
+  }
 }

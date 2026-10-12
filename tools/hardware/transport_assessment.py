@@ -164,6 +164,11 @@ def assess_corruption(before, after, *, expected_rejections, oversized=False, em
         a, b = esp_values(esp_before), esp_values(esp_after)
         if fault not in range(13): raise ValueError('Unknown terminated corruption stimulus')
         raw_sizes = (8, 30, 59, 57, 58, 58, 58, 58, 58, 58, 277, 278, 94)
+        reasons = (None, 'bad_cobs', 'bad_cobs', 'bad_cobs', 'bad_crc', 'bad_crc',
+                   'bad_cobs', 'bad_version', 'bad_type', 'bad_length', 'bad_length',
+                   'oversized_frames', 'bad_cobs')
+        if reasons[fault] and observed[reasons[fault]] != 1:
+            errors.append('wrong production parser rejection reason')
         raw = delta(a, b, 'raw_written')
         wire = delta(a, b, 'bytes_written') + raw
         if raw != raw_sizes[fault] or delta(a, b, 'bytes_written') != 202:
@@ -182,12 +187,17 @@ def assess_corruption(before, after, *, expected_rejections, oversized=False, em
             errors.append('corruption recovery telemetry missing')
         if before['generation'] != after['generation'] or esp_before['source'] != esp_after['source']:
             errors.append('unexpected source/generation boundary')
+        if int(after['generation'], 16) != (b['generation_hi'] << 32) | b['generation_lo']:
+            errors.append('ESP/receiver generation disagreement')
+        if (after['sequence'] - before['sequence']) & 0xffffffff != 1:
+            errors.append('recovery telemetry sequence disagreement')
     return errors
 
 
 def assess_interruption(case, before, after, esp_before, esp_after, observations):
     """Predeclared reset/timeout/ring/UART cases; never infer RX loss from TX aborts."""
-    if case not in ('partial-parser-reset', 'watchdog-delimiters', 'foreground-stall-small',
+    if case not in ('partial-parser-reset', 'complete-parser-reset', 'watchdog-delimiters',
+                    'watchdog-continuing-junk', 'foreground-stall-small',
                     'foreground-stall-repeat', 'consumer-timeout', 'ring-overflow', 'uart-overrun'):
         raise ValueError('Unknown interruption case')
     errors = []
@@ -223,6 +233,11 @@ def assess_interruption(case, before, after, esp_before, esp_after, observations
         first = 200000 if case == 'ring-overflow' else 300000
         need(int(after['digest'], 16) == qualification_digest(first + 60 - delivered, delivered, 250, int(before['digest'], 16)), 'non-suffix/stale recovery delivery')
     else:
+        generated = 2 if case == 'foreground-stall-repeat' else int(case in ('foreground-stall-small', 'consumer-timeout', 'complete-parser-reset'))
+        for k in ('generated', 'received', 'accepted', 'ingress_consumed', 'sent_data'):
+            need(delta(a, b, k) == generated, 'source stage ' + k)
+        for k in ('ingress_dropped', 'tx_replaced', 'aborted', 'invalid_offers'):
+            need(delta(a, b, k) == 0, 'unexpected source loss ' + k)
         need(delta(before, after, 'delivered') == 0, 'retired normal data escaped')
         need(before['digest'] == after['digest'] and delta(before, after, 'payload_bytes') == 0, 'retired payload changed observer digest')
         need(p['datagrams_consumed'] == 1, 'only recovery telemetry may be consumed')
@@ -231,10 +246,18 @@ def assess_interruption(case, before, after, esp_before, esp_after, observations
         for k in ('framing', 'parity', 'breaks', 'overruns'):
             need(delta(before, after, k) == 0, 'unexpected UART ' + k)
         need(u['overflows'] == 0, 'unexpected ring overflow')
-        if case == 'partial-parser-reset':
+        if case in ('partial-parser-reset', 'complete-parser-reset'):
             partial = next((r for r in observations if r.get('event') == 'snapshot'), None)
-            need(partial is not None and partial['encoded_pending'] == 29, 'partial input not held')
-            need(p['parser_resets'] == 1 and p['link_timeouts'] == 0 and p['frames_valid'] == 1 and u['dropped'] == 0, 'parser reset retirement')
+            if case == 'partial-parser-reset':
+                need(partial is not None and partial['encoded_pending'] == 29, 'partial input not held')
+                need(p['frames_valid'] == 1, 'partial parser reset recovery')
+            else:
+                need(partial is not None and partial['datagram_pending'] == 1 and partial['encoded_pending'] == 0, 'complete record not held')
+                need(p['frames_valid'] == 2 and p['datagrams_dropped'] == 1 and p['datagrams_replaced'] == 0, 'complete parser reset retirement')
+                need(p['bytes_discarded'] == 201, 'automatic telemetry not accounted at reset resynchronization')
+                need(delta(a, b, 'frames_completed') == 3 and delta(a, b, 'raw_written') == 1, 'complete parser reset source frames')
+            need(p['parser_resets'] == 1 and p['link_timeouts'] == 0 and u['dropped'] == 0, 'parser reset retirement')
+            need(after['events'] & 1 and delta(before, after, 'event_batches') >= 1, 'parser reset event absent')
         else:
             wanted = 2 if case == 'foreground-stall-repeat' else 1
             need(p['link_timeouts'] == wanted and u['faults'] == wanted, 'watchdog boundary count')
@@ -245,6 +268,8 @@ def assess_interruption(case, before, after, esp_before, esp_after, observations
                 need(p['frames_valid'] == 3 and p['datagrams_replaced'] == 1 and p['datagrams_dropped'] == 2 and u['dropped'] == 0, 'consumer timeout retirement')
             else:
                 need(p['frames_valid'] == 1 and p['empty_delimiters'] >= 8 and u['dropped'] == 0, 'delimiter watchdog behavior')
+                if case == 'watchdog-continuing-junk':
+                    need(p['empty_delimiters'] >= 32 and delta(a, b, 'raw_written') == 33, 'invalid bytes did not continue across watchdog interval')
     return errors
 
 
@@ -282,6 +307,8 @@ def assess_lifecycle(before, after, esp_before, esp_after, pause, during):
     need(p['status_received'] == p['status_consumed'] + p['status_dropped'], 'status accounting')
     prefix = delta(before, pause, 'delivered')
     suffix = delta(pause, after, 'delivered')
+    need(p['datagrams_consumed'] == prefix + suffix + 1 and
+         delta(before, after, 'payload_bytes') == (prefix + suffix) * 250, 'consumer delivery/byte disagreement')
     need(prefix + suffix <= 179 and suffix > 0, 'missing post-boundary delivery')
     digest = qualification_digest(400000, prefix, 250, int(before['digest'], 16))
     digest = qualification_digest(400180 - suffix, suffix, 250, digest)
@@ -311,7 +338,68 @@ def assess_published_phase(row):
                               first=int(run[-1]), minimum_us=600000000 if case == 'sustained-600' else 0)
     if case == 'esp-lifecycle':
         return assess_lifecycle(before, after, eb, ea, observed['pause'], observed['during_boundary'])
+    if case == 'esp-cpu-reboot':
+        return assess_cpu_restart(before, after, eb, ea, observed['pause'], observed['old_pending'],
+                                  observed['during_boundary'], observed['resumed'])
+    if case == 'rp-restart':
+        return assess_rp_restart(before, after, eb, ea, observed['prior_pending'],
+                                first=observed['first'], count=observed['count'], length=observed['length'])
     return assess_interruption(case, before, after, eb, ea, row['phase_snapshots'])
+
+
+def assess_cpu_restart(before, after, esp_before, esp_after, pause, old, during, resumed):
+    """CPU reset has separate volatile source epochs and explicit boot UART faults.
+
+    Do not subtract ESP counters across reboot or label unobserved in-flight
+    source records receiver drops. The safety boundary is the observed UART
+    error/new-generation reset. No new fault or old delivery may follow it.
+    """
+    errors = []
+    def need(condition, reason):
+        if not condition: errors.append(reason)
+    p = {k: delta(before['parser'], after['parser'], k) for k in before['parser']}
+    u = {k: delta(before['uart'], after['uart'], k) for k in before['uart']}
+    need(old['datagram_pending'] == 1, 'old slot not held')
+    need(during['generation'] != before['generation'] and during['sequence'] == 0 and
+         during['status_pending'] == 1 and during['datagram_pending'] == 0, 'new reset boundary did not clear old slot')
+    need(during['delivered'] == resumed['delivered'] == after['delivered'] == pause['delivered'], 'old normal data escaped after boundary')
+    need(p['generation_changes'] == p['radio_resets'] == 1 and p['link_timeouts'] == 0, 'generation/reset/timeout mismatch')
+    need(resumed['event_batches'] > pause['event_batches'] and resumed['events'] & 4 and resumed['events'] & 16, 'delayed event visibility')
+    need(after['events'] & 4 and after['events'] & 16, 'final reset/generation event visibility')
+    need(p['datagrams_received'] == p['datagrams_consumed'] + p['datagrams_dropped'], 'receiver ownership disagreement')
+    need(p['frames_valid'] == p['datagrams_received'] + p['status_received'], 'validated frame accounting')
+    need(p['datagrams_dropped'] == p['datagrams_replaced'] + 1, 'old pending retirement disagreement')
+    prefix = delta(before, after, 'delivered')
+    need(p['datagrams_consumed'] == prefix + 1, 'consumer count disagreement')
+    need(int(after['digest'], 16) == qualification_digest(500000, prefix, 250, int(before['digest'], 16)), 'old/intermediate replay')
+    need(delta(before, after, 'payload_bytes') == prefix * 250, 'payload byte disagreement')
+    need(p['status_received'] == p['status_consumed'] + p['status_dropped'], 'status ownership disagreement')
+    v = esp_values(esp_after)
+    need(all(v[k] == 0 for k in ('generated', 'received', 'accepted', 'ingress_consumed', 'sent_data',
+                                'tx_replaced', 'aborted', 'command_errors', 'invalid_offers')), 'new epoch source counters')
+    need(v['sent_status'] == v['frames_completed'] == v['frames_started'] == 1, 'new epoch RESET status accounting')
+    need(v['offered'] == 0 and v['bytes_written'] == 69, 'new epoch RESET wire accounting')
+    need(esp_before['source'] == esp_after['source'], 'firmware source changed')
+    need(after['generation'] == during['generation'] and after['sequence'] == 1 and
+         int(after['generation'], 16) == (v['generation_hi'] << 32) | v['generation_lo'], 'new epoch telemetry disagreement')
+    for k in ('pattern_errors', 'metadata_errors', 'duplicates', 'backwards', 'commands_bad', 'parity', 'overruns'):
+        need(delta(before, after, k) == 0, 'observer/UART ' + k)
+    for k in ('bad_cobs', 'bad_crc', 'bad_length', 'bad_version', 'bad_type', 'bad_payload', 'oversized_frames', 'sequence_discontinuities'):
+        need(p[k] == 0, 'unexpected parser ' + k)
+    need(u['overflows'] == 0 and u['faults'] == p['link_discontinuities'] == delta(before, after, 'framing'), 'boot fault/discontinuity disagreement')
+    need(u['received'] == u['popped'] + u['dropped'] and u['popped'] == p['bytes_received'], 'boot ring retirement byte disagreement')
+    for section, keys in (('uart', ('dropped', 'overflows', 'faults')),
+                          ('parser', ('bad_cobs', 'bad_crc', 'bad_length', 'bad_version', 'bad_type',
+                                      'bad_payload', 'oversized_frames', 'sequence_discontinuities',
+                                      'link_discontinuities', 'link_timeouts'))):
+        for key in keys:
+            need(after[section][key] == during[section][key], 'new post-boundary fault ' + key)
+    for key in ('framing', 'parity', 'breaks', 'overruns'):
+        need(after[key] == during[key], 'new post-boundary UART ' + key)
+    need(delta(during['uart'], after['uart'], 'received') ==
+         delta(during['parser'], after['parser'], 'bytes_received') == 203, 'new epoch delimiter/telemetry bytes')
+    need(all(after[k] == 0 for k in ('datagram_pending', 'status_pending', 'encoded_pending', 'ring_pending')), 'final ownership not drained')
+    return errors
 
 
 def assess_rp_restart(initial, after, esp_before, esp_after, prior_pending, *, first, count, length):
@@ -327,7 +415,8 @@ def assess_rp_restart(initial, after, esp_before, esp_after, prior_pending, *, f
     a, b = esp_values(esp_before), esp_values(esp_after)
     for key in ('generated', 'received', 'accepted', 'ingress_consumed', 'sent_data'):
         need(delta(a, b, key) == count, 'source stage ' + key)
-    for key in ('tx_replaced', 'ingress_dropped', 'aborted', 'command_errors', 'invalid_offers', 'restarts'):
+    for key in ('tx_replaced', 'ingress_dropped', 'aborted', 'command_errors', 'invalid_offers',
+                'restarts', 'raw_written', 'uart_overrun', 'uart_rx_error'):
         need(delta(a, b, key) == 0, 'unexpected source loss/error ' + key)
     need(delta(a, b, 'offered') == count + 1, 'source offers')
     status = delta(a, b, 'sent_status')

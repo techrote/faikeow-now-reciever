@@ -181,7 +181,7 @@ class PublishedEvidenceTests(unittest.TestCase):
         cls.phases = json.loads(path.read_text(encoding='utf-8'))
 
     def test_all_published_observations_reassess(self):
-        self.assertGreaterEqual(len(self.phases), 37)
+        self.assertGreaterEqual(len(self.phases), 44)
         for phase in self.phases:
             with self.subTest(case=phase['case_id']):
                 self.assertEqual(assess_published_phase(phase), [])
@@ -196,7 +196,8 @@ class PublishedEvidenceTests(unittest.TestCase):
     def test_loss_boundaries_require_events_and_fresh_payloads(self):
         for phase in self.phases:
             if phase['test_kind'] not in ('ring-overflow', 'uart-overrun', 'consumer-timeout',
-                                           'foreground-stall-small', 'foreground-stall-repeat', 'esp-lifecycle'):
+                                           'foreground-stall-small', 'foreground-stall-repeat', 'esp-lifecycle',
+                                           'esp-cpu-reboot', 'rp-restart'):
                 continue
             for field, value in (('events', 0), ('digest', '0000000000000000')):
                 if field == 'digest' and phase['test_kind'] in ('consumer-timeout', 'foreground-stall-small', 'foreground-stall-repeat'):
@@ -205,6 +206,21 @@ class PublishedEvidenceTests(unittest.TestCase):
                 bad['observations']['rp_after'][field] = value
                 with self.subTest(case=phase['case_id'], field=field):
                     self.assertTrue(assess_published_phase(bad))
+
+    def test_header_fault_must_reject_for_the_expected_reason(self):
+        for phase in self.phases:
+            if phase['test_kind'] != 'corruption-7': continue
+            bad = copy.deepcopy(phase)
+            bad['observations']['rp_after']['parser']['bad_version'] -= 1
+            bad['observations']['rp_after']['parser']['bad_crc'] += 1
+            self.assertIn('wrong production parser rejection reason', assess_published_phase(bad))
+
+    def test_cpu_reboot_does_not_excuse_post_boundary_corruption(self):
+        for phase in self.phases:
+            if phase['test_kind'] != 'esp-cpu-reboot': continue
+            bad = copy.deepcopy(phase)
+            bad['observations']['rp_after']['framing'] += 1
+            self.assertIn('new post-boundary UART framing', assess_published_phase(bad))
 
 
 class RpRestartAssessmentTests(unittest.TestCase):

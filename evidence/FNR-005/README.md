@@ -1,10 +1,12 @@
 # FNR-005 representative-board production transport evidence
 
-**Acceptance is incomplete.** These are 37 passed physical phases on the one
-representative DUT, FNR-002 Board A. The failed ESP CPU-reboot attempt is retained;
-its cold-boot retry and independent RP reload while ESP traffic continues are
-still required. PR #20 and issue #6 must remain open until those gates, final
-review, exact-head CI, merge and post-merge verification are satisfied.
+**The representative-DUT physical campaign passes.** These are 44 passed
+physical phases on FNR-002 Board A. They include ESP CPU reboot after ordinary
+cold boot, independent RP reload during active ESP traffic, both partial and
+complete pending parser reset, continuing-invalid-input watchdog, and clean
+post-fault bursts. Failed attempts are retained. Final exact-head CI, squash
+merge, post-merge main verification and issue/tracker closure are separate
+programme gates, recorded in PR #20 and issue #6.
 
 Board B is an identical unit of the same hardware design. It was unplugged after
 initial read-only inventory and received no programming or FNR-005 qualification.
@@ -52,14 +54,16 @@ new physical evidence.
 | TX overload, 50 maximum datagrams/s | 1,500 generated/admitted/taken; 253 ESP pending replacements; 1,247 transmitted and delivered. No RP consumer loss, abort, corruption or UART/ring loss. |
 | Delayed consumer, 2 s | All 120 records transmitted/parsed; 57 RP slot replacements; 63 delivered, exactly IDs 57..119. No ESP replacement or wire corruption. |
 | Corruption cases 0..12 | Repeated delimiters, truncation, insertion/removal/change, CRC damage, malformed COBS, CRC-valid unsupported version/unknown type/impossible length, exact encoded-size segment, oversized segment and garbage. No invalid application data escaped; next production telemetry accepted in each phase. |
-| Partial parser reset | 29 undelimited encoded bytes actually held; parser reset retired them; recovery telemetry accepted without old delivery. |
-| Watchdog, delimiters only | Repeated delimiters did not refresh valid-frame liveness; timeout/event exposed and clean recovery observed. |
+| Parser resets | 29 undelimited encoded bytes retired by explicit reset. Separate complete-record case held one unconsumed record, reset retired it, and no old payload escaped. One automatic telemetry frame was discarded through the reset delimiter (201 nonzero bytes counted), and the next requested telemetry validated/consumed. |
+| Watchdog, invalid delimiters | Original delimiter-only case and four eight-delimiter injections 0.85 s apart: invalid input continued across 3000 ms without refreshing valid-frame liveness; timeout/event and clean recovery observed. |
 | Foreground stalls | 3.5 s stall retired 478 buffered bytes before parsing; two-stall case retired 956 bytes and exposed two timeouts. No buffered normal record refreshed the retired phase. |
 | Consumer timeout | No held normal record escaped. One replacement and one timeout retirement counted separately; recovery telemetry consumed. |
 | Ring overflow | 60 sent; one overflow/discontinuity, 6,080 ring bytes dropped; 37 records delivered as exact fresh suffix 200023..200059. No UART overrun or parser corruption. |
-| UART IRQ pause | 60 sent; two actual hardware overruns/discontinuities and 36 ring bytes retired; 58 delivered as fresh suffix 300002..300059. Hardware wire loss is separate from ring retirement. |
+| UART IRQ pause | 60 sent; two actual hardware overruns/discontinuities and 36 ring bytes retired; 58 delivered as fresh suffix 300002..300059. 244 submitted bytes were not read by UART IRQ; 36 additionally retired ring bytes are a separate count. |
 | Active radio lifecycle restart | 180 generated/admitted/taken; 179 completed data frames and one active record aborted; one partial frame rejected as bad COBS. New generation/reset event, 57 RP replacements and one old slot retirement; digest exactly 31-record prefix plus fresh 90-record suffix. |
-| Recovery bursts | Separate clean maximum-size bursts after TX overload, consumer delay, ring/UART interruption and lifecycle restart. |
+| ESP CPU reboot | After confirmed ordinary cold boot, a complete old slot was held. Reboot produced 20 visible UART framing batches/one break batch, 79 ring bytes retired and 20 link discontinuities before new-generation RESET status sequence 0. Old slot retired once; no old delivery or further fault after that boundary. New telemetry sequence 1 accepted, followed by clean ten-record maximum-size burst. |
+| Independent RP reload | ESP generated/admitted/taken/transmitted all 1,800 records and 59 statuses (501,014 submitted bytes). RP held an old slot before ROM entry. New SRAM observer retained ESP generation and delivered exact suffix 600353..601799: 1,447 records, 48 statuses and telemetry; no new observer error/replacement/loss. |
+| Recovery bursts | Separate clean maximum-size bursts after TX overload, consumer delay, ring/UART interruption, lifecycle restart, CPU reboot, RP reload and final parser/watchdog cases. |
 
 The sustained interval reconciles **5,009,486 wire bytes** at ESP submission,
 RP UART receipt, ring pop and parser feed. There are **18,602 validated frames**:
@@ -80,23 +84,54 @@ begins when RP observes the generation/reset/error event. The 1 sender abort is
 not a receiver-drop count. Its partially submitted bytes reconcile separately
 from complete frames; pending RP retirement/replacement uses receiver counters.
 
-## Retained failures and remaining gates
+## Reset accounting, retained attempts and limitations
 
-[retained-failures.json](retained-failures.json) retains two identity-preflight
-rejections before any campaign stimulus and the CPU-reboot failure. The SRAM
-observer UID reader was corrected to use the accepted read-only flash operation
-with QSPI initialization; the actual Board A UID then passed the guard.
+Independent RP reload has distinct receiver epochs. The old pre-ROM snapshot
+observed 39 normal records: 31 consumed, seven replacements and one held slot.
+The new observer delivered 1,447 fresh records. Another 314 source records fall
+between those recorded epochs; the old snapshot is not a final old-epoch count.
+They are intentional/unobserved during reset/reload, not inferred receiver or
+wire drops. The source remained active without reboot, so its complete 1,800
+source/TX records reconcile independently. No old RP slot appears in the new
+epoch's exact suffix digest. The new epoch has RESET event visibility, 1,496
+validated frames (1,447 data + 48 status + telemetry), and matching UART/ring/parser
+byte accounting.
 
-`ESP.restart()` immediately after serial programming produced no new application
-telemetry. RP retired held data, exposed a timeout and delivered no stale normal
-record, but **ESP recovery failed**. The pinned core documents a matching
+CPU reboot resets volatile ESP counters. They are not subtracted across the
+reset. RP observed 41 pre-reboot normal datagrams: 31 consumed, nine replaced and
+one pending slot retired at the error/reset boundary; final new telemetry adds
+one validated datagram. Old source/TX state at CPU reset is intentionally
+unobserved, so no exact whole-reset source-loss count is invented. New ESP epoch
+has zero generated normal records, one RESET status (69 bytes including leading
+zero), followed by sequence-1 telemetry. The following clean burst reconciles
+all source/TX/UART/parser/handoff stages normally. ROM/reboot UART errors belong
+to this deliberate interruption phase, never to the clean sustained result.
+
+[retained-failures.json](retained-failures.json) preserves two identity-preflight
+rejections before campaign stimuli, the immediate post-upload CPU-reboot failure,
+and the first cold-retry capture timing failure. The SRAM UID reader was fixed
+using the accepted read-only flash operation and QSPI initialization before all
+qualified campaigns.
+
+`ESP.restart()` immediately after serial programming returned no application
+telemetry. The pinned core documents a matching
 [post-upload restart limitation](https://arduino-esp8266.readthedocs.io/en/3.1.2/faq/readme.html#i-have-observed-a-case-when-esp-restart-doesn-t-work-what-is-the-reason-for-that).
-That is a hypothesis for this attempt, not a successful recovery result. An
-ordinary cold boot using the hardware runbook, followed by the same guarded
-SRAM observer load and CPU-reboot retry, is still required. No unknown reset or
-download pin may be used. Independent RP reload with ESP traffic continuing is
-also still unrun. Volatile counters across a CPU reset must be treated as distinct
-epochs; subtracting them or treating sender aborts as receiver losses is invalid.
+An ordinary cold boot was explicitly performed and identity-checked; CPU restart
+then produced new generation/RESET status. That first cold capture nevertheless
+failed because its final telemetry request crossed the independent watchdog
+interval; cleanup telemetry arrived. The retained bounded retry kept the final
+check inside that interval and passed. The separate timeout campaign still
+requires retirement at 3000 ms. These attempts were not relabeled as passes;
+normal cold boot before CPU-reboot qualification is an explicit fixture
+precondition. No unknown reset/download GPIO or unconditional post-upload CPU
+restart reliability is claimed.
+
+The [fresh implementation/evidence review](review.md) records the arithmetic,
+ownership, concurrency, boundary and false-PASS audit. All 44 retained passed
+phases satisfy the final stricter assessment. Final STOP telemetry was received,
+generator counters stopped advancing, and parser/ring/consumer state drained.
+Board A remains on the exact ESP qualification image and RP SRAM observer;
+its persistent RP bridge and original backups remain preserved. Handles closed.
 
 Software CI at firmware source d6766e8 passed all four jobs in independent
 [PR run 38184969657](https://github.com/techrote/faikeow-now-reciever/actions/runs/38184969657)
@@ -111,5 +146,5 @@ inputs. This campaign newly establishes only the completed production transport
 claims listed above. It does not resolve FNR-004 channel isolation, implement
 FNR-006 sender/session/freshness/profile semantics, establish incoming-radio HID
 behavior or mouse/TiltMouse interpretation, provisioning/security (FNR-007), or
-reference interoperability (FNR-008). FNR-006 production integration remains
-dependency-blocked until FNR-005 acceptance and merge.
+reference interoperability (FNR-008). FNR-006 production integration requires FNR-005 acceptance and merge; issue #6
+and tracker #1 record the post-merge dependency decision.

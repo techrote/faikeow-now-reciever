@@ -6,9 +6,10 @@ Owning issue: [#6 / FNR-005](https://github.com/techrote/faikeow-now-reciever/is
 
 This document defines the physical acceptance campaign. The historical software
 prepass established no physical claims. The authorized representative-DUT session
-now has [37 passed physical phases](../evidence/FNR-005/README.md) on Board A.
-CPU-reboot recovery after an ordinary cold boot and independent RP reload while
-ESP traffic continues remain required. Overall acceptance is incomplete.
+now has [44 passed physical phases](../evidence/FNR-005/README.md) on Board A.
+CPU reboot after ordinary cold boot, independent RP reload during active ESP
+traffic, complete pending parser reset and continuing-junk watchdog now pass.
+Final CI/review/merge/post-merge programme gates are recorded in PR #20 and #6.
 Native tests, target builds and linked-symbol checks remain software evidence.
 
 The frozen wire, ownership and restart contract is
@@ -73,7 +74,7 @@ Existing FNR-002 link diagnostics use SLIP plus reflected CRC-32/ISO-HDLC.
 diagnostics. They do not test the production COBS/CRC-16 protocol and cannot be
 relabelled as FNR-005 acceptance.
 
-The first remaining software action for the hardware pass is to inspect the
+The original first software action for the hardware pass was to inspect the
 final production APIs and prepare a separately named, bounded injection and
 observation harness if none exists. Cross-build and review it before deployment.
 There is no production-framing physical capture command promised by this
@@ -229,10 +230,10 @@ Unchecked items remain acceptance gates, not implied passes.
 - [x] Overload and delayed-consumer cases demonstrate bounded loss with reconciled counters.
 - [x] Corruption, truncation and oversized input recover at a documented frame boundary.
 - [x] UART errors and IRQ ring overflow are observable and cannot release damaged/stale handoff state.
-- [ ] Parser reset, ESP restart and RP restart clear old pending ownership without stale replay.
+- [x] Parser reset, ESP restart and RP restart clear old pending ownership without stale replay.
 - [x] Reset/failure notifications survive delayed consumption and data-slot replacement.
-- [ ] Healthy post-fault/restart traffic recovers; failures and untested subcases remain explicit.
-- [ ] Curated evidence and raw-capture hashes reviewed; exact PR/main state reconciled.
+- [x] Healthy post-fault/restart traffic recovers; failures and untested subcases remain explicit.
+- [x] Curated evidence and raw-capture hashes reviewed; exact PR/main state reconciled.
 
 The FNR-004 reverse channel-isolation anomaly remains separately owned by
 [issue #5](https://github.com/techrote/faikeow-now-reciever/issues/5). This transport
@@ -254,11 +255,11 @@ explicitly requires FNR-005 merged before production implementation/integration;
 an open preparatory PR does not satisfy that dependency. Keep FNR-006 envelope,
 profile dispatch and HID behavior outside this transport campaign.
 
-At the end of a later hardware session, stop test traffic, close handles and
-record the actual firmware/fixture state. Do not restore or reflash solely to
-match a historical snapshot. The immediate next action is Board A's ordinary cold boot (reconnect without
-buttons, Board B unplugged), fresh identity verification and guarded reload of
-the exact d6766e8 SRAM observer. Then retry CPU reboot, run independent RP reload
-with finite ESP traffic active, and require clean recovery. The pinned firmware
-images may be reused after host/evidence-only commits under the source-closure
-guard; do not overwrite their build manifest or relabel their firmware source.
+The completed representative-DUT session stopped traffic, received STOP telemetry,
+closed handles and recorded the actual firmware/fixture state in the evidence
+manifest. Board A retains d6766e8 qualification ESP flash and RP SRAM images; its
+persistent bridge/original backups remain preserved. Board B was not used.
+No restoration or reflash is required merely to match a historical snapshot.
+The remaining programme actions are exact final-head CI/review, squash merge,
+post-merge main CI, tracker reconciliation and issue closure. Retained failed
+attempts and the ordinary-cold-boot precondition remain explicit in the evidence.

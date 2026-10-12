@@ -70,8 +70,9 @@ SLIP/CRC32 diagnostic runs are accepted FNR-002 inputs, not this evidence.
 
 [FNR-005 representative-DUT evidence](../evidence/FNR-005/README.md) records the
 completed production framing, sustained, overload, corruption and interruption
-cases. Its acceptance gate remains open until the remaining independent MCU
-restart/recovery cases pass and final review/CI/merge verification is complete.
+cases, including independent MCU restart/recovery. All 44 physical phases pass;
+final review, exact-head CI and merge/post-merge verification remain separate
+programme gates recorded in PR #20 and issue #6.
 
 ## Physical FNR-008 evidence
 

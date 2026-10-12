@@ -145,9 +145,11 @@ needed in v1. Maximum raw/encoded/wire sizes are 274/276/277 bytes.
 The foreground ESP serializer and RP2040 UART0 IRQ/parser use fixed storage,
 explicit drops and sticky events before generic consumers may take data.
 The default radio remains unprovisioned and no transport output feeds HID.
-The software implementation does not establish production physical framing;
-[FNR-005's exact physical handoff](docs/FNR-005-HARDWARE-HANDOFF.md) remains open
-under #6. FNR-006 owns sender/session/freshness and profile interpretation.
+The [representative-DUT campaign](evidence/FNR-005/README.md) now establishes
+production framing, sustained integrity, bounded overload, corruption recovery
+and independent reset/watchdog behavior on Board A. Identical Board B was not
+requalified. PR #20 and #6 record final CI/merge/post-merge programme closure.
+FNR-006 owns sender/session/freshness and profile interpretation.
 
 ## USB policy
 

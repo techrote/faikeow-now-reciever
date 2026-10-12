@@ -86,8 +86,11 @@ The accepted FNR-002 UART supports the
 [FNR-005 v1 software implementation](FNR-005-TRANSPORT.md): COBS + CRC16,
 bounded producer/consumer storage, foreground ESP TX, RP2040 IRQ RX, and
 generic failure/restart events. Its
-[production physical campaign](FNR-005-HARDWARE-HANDOFF.md) remains open under
-#6. Existing diagnostic UART evidence does not accept production framing.
+[production physical campaign](FNR-005-HARDWARE-HANDOFF.md) has 44 passed phases
+on one representative identical-design board, including sustained production
+framing and independent reset/recovery. See [curated evidence](../evidence/FNR-005/README.md).
+PR #20/#6 record final CI, merge and post-merge programme closure. Earlier
+diagnostic UART evidence remains an accepted input, separate from these results.
 
 ## FNR-006 — Generic receiver core, profile dispatch and relative mouse
 
