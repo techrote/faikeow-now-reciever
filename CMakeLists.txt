@@ -69,3 +69,11 @@ add_executable(fnr_receiver_tests tests/native/test_receiver.cpp)
 target_link_libraries(fnr_receiver_tests PRIVATE fnr_shared)
 target_compile_options(fnr_receiver_tests PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
 add_test(NAME receiver_envelope_order_freshness_relative_mouse COMMAND fnr_receiver_tests)
+
+add_executable(fnr_receiver_rp_adapter_tests tests/native/test_receiver_rp_adapter.c)
+target_include_directories(fnr_receiver_rp_adapter_tests PRIVATE
+  tests/native/fake_pico firmware/rp2040)
+target_link_libraries(fnr_receiver_rp_adapter_tests PRIVATE fnr_shared)
+target_compile_options(fnr_receiver_rp_adapter_tests PRIVATE
+  -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME receiver_production_rp_consumer_hook COMMAND fnr_receiver_rp_adapter_tests)
