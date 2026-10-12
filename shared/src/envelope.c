@@ -2,6 +2,12 @@
 
 #include <string.h>
 
+_Static_assert(FNR_PLATFORM_ENVELOPE_HEADER_SIZE == 18,
+               "platform-v1 header size must remain frozen");
+_Static_assert(FNR_PLATFORM_ENVELOPE_HEADER_SIZE + FNR_PLATFORM_PAYLOAD_CAPACITY ==
+                   FNR_DATAGRAM_CAPACITY,
+               "platform envelope must fill exactly the ESP-NOW v1 bound");
+
 static uint16_t read_u16_le(const uint8_t *p) {
     return (uint16_t)((uint16_t)p[0] | ((uint16_t)p[1] << 8U));
 }
