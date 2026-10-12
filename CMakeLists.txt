@@ -98,3 +98,12 @@ target_link_libraries(fnr_provisioning_esp_adapter_tests PRIVATE fnr_shared)
 target_compile_options(fnr_provisioning_esp_adapter_tests PRIVATE
   -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
 add_test(NAME provisioning_esp_secret_loader COMMAND fnr_provisioning_esp_adapter_tests)
+
+add_executable(fnr_radio_provisioning_adapter_tests
+  tests/native/test_radio_provisioning_adapter.cpp)
+target_include_directories(fnr_radio_provisioning_adapter_tests PRIVATE
+  tests/native/fake_esp firmware/esp8266)
+target_link_libraries(fnr_radio_provisioning_adapter_tests PRIVATE fnr_shared)
+target_compile_options(fnr_radio_provisioning_adapter_tests PRIVATE
+  -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME provisioning_actual_esp_radio_adapter COMMAND fnr_radio_provisioning_adapter_tests)
