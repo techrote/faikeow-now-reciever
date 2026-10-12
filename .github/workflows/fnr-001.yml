@@ -93,7 +93,7 @@ jobs:
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
         run: bash tools/build_transport_qualification.sh rp2040
-      - name: Verify production USB path is linked
+      - name: Verify production USB and receiver path is linked
         shell: bash
         run: |
           test -s build/rp2040/fnr_rp2040_hid.uf2
