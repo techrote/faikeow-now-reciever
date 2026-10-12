@@ -162,8 +162,35 @@ bounded requested-channel 6 versus receiver-channel 1 cases recorded no radio
 reception or HID movement; correct channel operation resumed. Periodic radio
 status counters can lag downstream datagram counts in individual snapshots.
 
-RP admission/counter observation, full power-cycle metadata reconciliation,
-link recovery, factory reset and reconfiguration still require qualification.
-Unsupported provisioning-schema handling and replay after acknowledgement
-revocation are explicitly included in the observer phase. FNR-008 is not
-dependency ready; TiltMouse interoperability/performance is not claimed.
+The [repaired recovery results](recovery-smoke.json) qualify source
+`9d813d7143124a8dcadc3b2a339db00ac792392b`. Its exact-head push `38316882028`
+and PR `38316887891` both passed 4/4 checks. Regression-first commit
+`167abf21182aee5966115dc6b4fe8ca6c3600090` failed exactly the two new native
+actual-adapter tests before repair (push `38316801289`, PR `38316806431`).
+
+The unsupported schema now fails closed. Correct traffic and wrong-profile
+rejection pass. The same 5000 ms UART RX interruption revokes admission and
+submits neutral HID reports; fresh READY restores both gates, with the prior
+session/sequence retained. Replaying 1100..1119 causes 19 stale rejections and
+one duplicate rejection, zero accepted packets and zero movement. Fresh
+traffic subsequently produces 20 accepted packets and 20 moving HID reports.
+
+An operator-confirmed complete A power cycle required no host provisioning.
+The public identity/channel/platform/profile/schema/freshness were unchanged;
+boot staging had acknowledgement and both admission gates disabled, followed
+by matching READY and successful correct traffic. ESP production was unchanged
+and rebuilt byte-for-byte identically; its successful authenticated traffic
+after power-up confirms retention of the accepted key/config relationship.
+
+Two overly strict host predicates are retained explicitly in the JSON. One
+classified four all-zero Raw Input records as a failure despite neutral reports
+being expected. The other required one Raw Input event per HID report; Windows
+coalesced two movements into one +2/-2 event, retaining full +20/-20 totals from
+20 RP admissions and 20 moving TinyUSB submissions. Reconciliation checks no
+motion/button output during faults and full positive movement totals. These
+are observation-tool corrections, not hidden firmware failures or performance
+claims.
+
+Factory reset and second-configuration qualification remain outstanding.
+FNR-008 is not dependency ready; TiltMouse interoperability/performance is not
+claimed.
