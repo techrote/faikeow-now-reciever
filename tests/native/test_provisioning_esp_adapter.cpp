@@ -69,7 +69,6 @@ static void reset_fake() {
 
 static void test_factory_and_missing_key_revoke() {
     reset_fake();
-    CHECK:
     assert(fnr_esp_provisioning_init());
     assert(apply_calls == 1U && saw_null);
     fnr_esp_provisioning_status s{};
