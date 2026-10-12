@@ -100,7 +100,13 @@ The generator writes only under ignored `build/provisioning/`:
 - `esp_provisioning_image.cpp` — public record + per-device key;
 - `provisioning-redacted.json` — no key material.
 
-Unset `FNR_PROVISIONING_CONFIG` for factory/unprovisioned artifacts. See
+Unset `FNR_PROVISIONING_CONFIG` for factory/unprovisioned artifacts. CI also
+cross-builds deterministic non-secret provisioned fixtures in separate build
+directories, so generated-source integration is tested without publishing a
+production key.
+
+The redacted physical-smoke diagnostic is built with
+`tools/build_esp_provisioning_diag.sh`. See
 [FNR-007-PROVISIONING.md](FNR-007-PROVISIONING.md).
 
 ## RP2040 TinyUSB HID cross-build
