@@ -50,6 +50,20 @@ with tempfile.TemporaryDirectory() as tmp:
     assert redacted["peer_mac"] == "02:03:04:05:06:07"
     assert len(redacted["public_record_sha256"]) == 64
 
+    subprocess.run([
+        "cc", "-std=c17", "-Wall", "-Wextra", "-Werror", "-Wconversion", "-Wshadow",
+        "-I", str(ROOT / "shared" / "include"),
+        "-c", str(out / "rp_provisioning_image.c"),
+        "-o", str(root / "rp_provisioning_image.o"),
+    ], check=True)
+    subprocess.run([
+        "c++", "-std=c++17", "-Wall", "-Wextra", "-Werror", "-Wconversion", "-Wshadow",
+        "-I", str(ROOT / "shared" / "include"),
+        "-I", str(ROOT / "firmware" / "esp8266"),
+        "-c", str(out / "esp_provisioning_image.cpp"),
+        "-o", str(root / "esp_provisioning_image.o"),
+    ], check=True)
+
     bad = dict(doc)
     bad["radio_key_hex"] = "00" * 16
     cfg.write_text(json.dumps(bad), encoding="utf-8")
