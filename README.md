@@ -99,23 +99,22 @@ v0.1 implements one production profile:
 
 `techrote/ESP32-QMI8658C-TiltMouse` is the first reference sender and physical interoperability target, not the product definition of this repository.
 
-## Developer builds (FNR-003, FNR-004 and FNR-005 software)
+## Developer builds (through FNR-006 software)
 
-The RP2040 build contains the FNR-003 generic TinyUSB HID framework and the
-`relative_mouse` backend. The ESP8266 build contains the FNR-004 profile-neutral
-ESP-NOW ingress and **defaults unprovisioned**. FNR-005 now connects the radio's
-foreground handoff to a bounded COBS/CRC16 UART serializer and an RP2040
-interrupt-fed parser. The link uses the already accepted FNR-002 pins and
-115200 8N1 configuration. Transport consumers see owned generic frames and
-failure/restart events; no transport data feeds HID output yet.
+The RP2040 build contains the FNR-003 generic TinyUSB HID framework, FNR-005
+bounded UART transport and the FNR-006 generic receiver core. FNR-006 freezes an
+18-byte platform-v1 envelope plus relative_mouse/v1 and routes authorized fresh
+profile messages into the existing three-byte USB mouse backend. The production
+default remains deliberately unprovisioned/fail-closed: FNR-007 must configure an
+allowed peer before RF data can drive HID output.
 
-These are software-qualified targets, not a complete or physically accepted
-dongle. FNR-002's clone-board pinout/recovery/UART evidence is accepted;
-FNR-005's [production transport campaign](evidence/FNR-005/README.md) passes on
-one representative board; this does not establish the integrated dongle.
-FNR-006 owns
-receiver/envelope/profile dispatch, and
-FNR-008 owns physical USB/RF/reference-profile acceptance.
+The ESP8266 build remains profile-neutral: FNR-004 receives opaque ESP-NOW
+application datagrams and FNR-005 transports them unchanged. It does not decode
+FNR-006 profile contents.
+
+These are software-qualified targets, not complete physical dongle acceptance.
+FNR-002 hardware and FNR-005 representative-board transport evidence remain
+accepted inputs. FNR-008 owns physical USB/RF/reference-profile acceptance.
 
 A canonical Linux x86_64 environment (including WSL2) can run:
 
@@ -138,7 +137,8 @@ Current firmware outputs are `build/rp2040/fnr_rp2040_hid.uf2`/`.elf` and
 [FNR-003 software evidence](docs/FNR-003-IMPLEMENTATION.md),
 [FNR-004 radio ingress](docs/FNR-004-RADIO-INGRESS.md),
 [FNR-005 protocol and ownership](docs/FNR-005-TRANSPORT.md),
-[FNR-005 software prepass](docs/FNR-005-SOFTWARE-PREPASS.md), and
+[FNR-005 software prepass](docs/FNR-005-SOFTWARE-PREPASS.md),
+[FNR-006 receiver/profile contract](docs/FNR-006-RECEIVER.md), and
 [the production physical campaign and checklist](docs/FNR-005-HARDWARE-HANDOFF.md).
 CI runs all native tests plus both locked target cross-builds and publishes
 checksummed manifests with `physical_acceptance: false`.
