@@ -200,8 +200,11 @@ void fnr_receiver_core_transport_events(fnr_receiver_core *core,
         FNR_TRANSPORT_EVENT_RADIO_UNAVAILABLE |
         FNR_TRANSPORT_EVENT_TIMEOUT;
     if ((events & invalidating) == 0U) return;
+    /* Preserve sender/session ordering across board-local link faults.
+     * Retaining last_sequence prevents an old same-session RF datagram from
+     * becoming acceptable merely because FNR-005 resynchronized. A genuine
+     * sender restart has its own distinct session discriminator. */
     core->fresh = false;
-    core->have_sequence = false;
     neutralize(core, FNR_PROFILE_NEUTRAL_TRANSPORT);
     bump(&core->counters.transport_invalidations);
 }
