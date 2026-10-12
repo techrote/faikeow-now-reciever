@@ -93,3 +93,12 @@ repository maintains the verified hardware contract for the measured units.
 Use a pinned reference version and matching board/evidence identity for
 reproducible application claims; record unresolved differences before relying
 on a changed hardware assumption.
+
+## FNR-006 protocol/profile references
+
+- [Frozen FNR-006 receiver and relative-mouse v1 contract](FNR-006-RECEIVER.md).
+- [Generic protocol authority](02-PROTOCOLS.md).
+- [HID/profile authority](08-HID-PROFILES.md).
+- TiltMouse compatibility baseline consulted by FNR-006:
+  `techrote/ESP32-QMI8658C-TiltMouse@bd610235367de52d41631b0242e6a8a7e6f8dd9a`,
+  including TM-005A logical reports and TM-005B / #16.
