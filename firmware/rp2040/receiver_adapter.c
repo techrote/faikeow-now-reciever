@@ -74,14 +74,18 @@ bool fnr_receiver_adapter_stage_provisioning(const fnr_receiver_config *config,
         return false;
     }
 
+    fnr_receiver_config candidate_safe = *config;
+    candidate_safe.peer_enabled = false;
+    candidate_safe.profile_enabled = false;
+    if (!fnr_receiver_core_reconfigure(&receiver_core, &candidate_safe))
+        return false;
+
     desired_config = *config;
-    safe_config = *config;
-    safe_config.peer_enabled = false;
-    safe_config.profile_enabled = false;
+    safe_config = candidate_safe;
     provisioning_staged = true;
     radio_acknowledged = false;
     expected_channel = radio_channel;
-    return fnr_receiver_core_reconfigure(&receiver_core, &safe_config);
+    return true;
 }
 
 bool fnr_receiver_adapter_revoke_provisioning(void) {
