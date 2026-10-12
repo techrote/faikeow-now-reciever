@@ -145,7 +145,7 @@ The [representative-DUT campaign](evidence/FNR-005/README.md) now establishes
 production framing, sustained integrity, bounded overload, corruption recovery
 and independent reset/watchdog behavior on Board A. Identical Board B was not
 requalified. PR #20 and #6 record final CI/merge/post-merge programme closure.
-FNR-006 now owns and implements sender-session/order/freshness plus profile dispatch. The shipping core remains fail-closed until FNR-007 provisions an allowed peer.
+FNR-006 now owns and implements sender-session/order/freshness plus profile dispatch. The shipping core remains fail-closed until FNR-007 enables both an allowed peer and the selected profile.
 
 ## USB policy
 
