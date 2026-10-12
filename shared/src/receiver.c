@@ -78,13 +78,13 @@ static bool peer_matches(const fnr_receiver_config *config, const uint8_t *mac) 
     return config->peer_enabled && memcmp(config->peer_mac, mac, FNR_MAC_SIZE) == 0;
 }
 
-static bool session_retired(const fnr_receiver_core *core, uint32_t session) {
+static bool session_retired(const fnr_receiver_core *core, uint64_t session) {
     for (uint8_t i = 0U; i < core->retired_count; ++i)
         if (core->retired_sessions[i] == session) return true;
     return false;
 }
 
-static void retire_session(fnr_receiver_core *core, uint32_t session) {
+static void retire_session(fnr_receiver_core *core, uint64_t session) {
     if (session == 0U || session_retired(core, session)) return;
     core->retired_sessions[core->retired_next] = session;
     core->retired_next = (uint8_t)((core->retired_next + 1U) %
