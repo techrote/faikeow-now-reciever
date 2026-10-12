@@ -309,12 +309,12 @@ static void test_transport_and_usb_invalidation() {
     CHECK(fnr_hid_device_usb_event(&f.hid, FNR_HID_USB_UNMOUNT) == FNR_HID_STATUS_OK);
     fnr_receiver_core_usb_state(&f.core, f.hid.usb_state);
     CHECK(!f.core.fresh && f.mouse.buttons == 0U);
-    CHECK(f.send(77U, 4U, 100, 100, 3U, 2U) == FNR_RECEIVER_ACCEPTED_OUTPUT_DROPPED);
+    CHECK(f.send(77U, 12U, 100, 100, 3U, 2U) == FNR_RECEIVER_ACCEPTED_OUTPUT_DROPPED);
     CHECK(f.mouse.x == 0 && f.mouse.y == 0 && f.mouse.buttons == 0U);
     CHECK(fnr_hid_device_usb_event(&f.hid, FNR_HID_USB_MOUNT) == FNR_HID_STATUS_OK);
     fnr_receiver_core_usb_state(&f.core, f.hid.usb_state);
     f.service();
-    CHECK(f.send(77U, 5U, 6, 7, 2U, 3U) == FNR_RECEIVER_ACCEPTED);
+    CHECK(f.send(77U, 13U, 6, 7, 2U, 3U) == FNR_RECEIVER_ACCEPTED);
     f.service();
 }
 
