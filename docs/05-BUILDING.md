@@ -1,4 +1,4 @@
-# Building the dual-firmware platform through FNR-006
+# Building the dual-firmware platform through FNR-007
 
 ## Current software state
 
@@ -9,9 +9,11 @@ The RP2040 firmware now connects the accepted layers through FNR-006:
 - **FNR-006:** platform-v1 envelope/session/order/freshness core, generic profile
   dispatch and relative_mouse/v1 adaptation.
 
-The shipping receiver configuration remains deliberately unprovisioned and
-fail-closed. FNR-007 supplies persistent peer/channel/key/profile provisioning;
-until then, no RF sender is authorized by the production default.
+The factory receiver configuration remains deliberately unprovisioned and
+fail-closed. FNR-007 supplies paired build-time peer/channel/key/profile
+provisioning. The public record is embedded in both images; only the ESP image
+contains the per-device radio key. RP admission is gated on a matching READY
+radio status.
 
 The ESP8266/ESP8285 firmware remains FNR-004/FNR-005 profile-neutral ingress and
 transport. It forwards opaque application bytes and does not interpret FNR-006.
@@ -71,13 +73,35 @@ production adapters compiled against minimal SDK substitutes. These include
 the ESP FIFO boundary and RP queued-frame/timeout/IRQ ordering regressions.
 
 FNR-006 adds platform-envelope/profile golden vectors, session/order/freshness and
-USB-lifecycle tests plus a production-adapter integration test. The hostile
+USB-lifecycle tests plus a production-adapter integration test. FNR-007 adds
+provisioning record/corruption/property tests, secret-separated generator tests,
+and actual RP/ESP provisioning adapter regressions. The hostile
 envelope test uses fixed seed `0xd6e8feb8` over 12,000 streams.
 
 CI also configures `build/native-asan` with
 `-fsanitize=address,undefined -fno-sanitize-recover=all` for both C and C++, then
 builds and runs the same suite with strict warnings.
 Native USB/RF simulation is software evidence only.
+
+## Provisioned paired build
+
+Keep the provisioning JSON outside the repository and use the same file for both
+lanes:
+
+```sh
+export FNR_PROVISIONING_CONFIG=/absolute/path/outside/repo/provisioning.json
+bash tools/build_rp2040.sh
+FNR_SOURCE_ID="$(git rev-parse HEAD)" bash tools/build_esp.sh
+```
+
+The generator writes only under ignored `build/provisioning/`:
+
+- `rp_provisioning_image.c` — public record only;
+- `esp_provisioning_image.cpp` — public record + per-device key;
+- `provisioning-redacted.json` — no key material.
+
+Unset `FNR_PROVISIONING_CONFIG` for factory/unprovisioned artifacts. See
+[FNR-007-PROVISIONING.md](FNR-007-PROVISIONING.md).
 
 ## RP2040 TinyUSB HID cross-build
 
