@@ -7,22 +7,22 @@
 #include <cstring>
 
 static std::array<uint8_t, FNR_PROVISIONING_RECORD_SIZE> public_record{};
-static size_t public_size;
+static size_t fake_public_size;
 static std::array<uint8_t, FNR_PROVISIONING_RADIO_KEY_SIZE> secret_key{};
-static size_t key_size;
+static size_t fake_key_size;
 static unsigned apply_calls;
 static bool apply_ready;
 static bool saw_null;
 static fnr_radio_provisioning applied{};
 
 extern "C" const uint8_t *fnr_provisioning_image_public(size_t *size) {
-    if (size != nullptr) *size = public_size;
-    return public_size == 0U ? nullptr : public_record.data();
+    if (size != nullptr) *size = fake_public_size;
+    return fake_public_size == 0U ? nullptr : public_record.data();
 }
 
 extern "C" const uint8_t *fnr_provisioning_image_radio_key(size_t *size) {
-    if (size != nullptr) *size = key_size;
-    return key_size == 0U ? nullptr : secret_key.data();
+    if (size != nullptr) *size = fake_key_size;
+    return fake_key_size == 0U ? nullptr : secret_key.data();
 }
 
 extern "C" bool fnr_radio_apply_provisioning(
@@ -58,9 +58,9 @@ static fnr_provisioning_config fixture() {
 
 static void reset_fake() {
     public_record.fill(0U);
-    public_size = 0U;
+    fake_public_size = 0U;
     secret_key.fill(0U);
-    key_size = 0U;
+    fake_key_size = 0U;
     apply_calls = 0U;
     apply_ready = true;
     saw_null = false;
@@ -79,7 +79,7 @@ static void test_factory_and_missing_key_revoke() {
     reset_fake();
     auto c = fixture();
     assert(fnr_provisioning_encode(&c, public_record.data()) == FNR_PROVISIONING_OK);
-    public_size = public_record.size();
+    fake_public_size = public_record.size();
     assert(fnr_esp_provisioning_init());
     assert(apply_calls == 1U && saw_null);
     fnr_esp_provisioning_snapshot(&s);
@@ -91,10 +91,10 @@ static void test_valid_key_reaches_only_radio_adapter() {
     reset_fake();
     auto c = fixture();
     assert(fnr_provisioning_encode(&c, public_record.data()) == FNR_PROVISIONING_OK);
-    public_size = public_record.size();
+    fake_public_size = public_record.size();
     for (size_t i = 0U; i < secret_key.size(); ++i)
         secret_key[i] = static_cast<uint8_t>(i + 1U);
-    key_size = secret_key.size();
+    fake_key_size = secret_key.size();
 
     assert(fnr_esp_provisioning_init());
     assert(apply_calls == 1U && !saw_null);
