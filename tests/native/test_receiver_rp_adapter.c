@@ -51,6 +51,9 @@ static void start(void) {
     assert(fnr_hid_device_select_profile(&hid, "relative_mouse") == FNR_HID_STATUS_OK);
     assert(fnr_hid_device_usb_event(&hid, FNR_HID_USB_MOUNT) == FNR_HID_STATUS_OK);
     service_hid();
+    fnr_relative_mouse_state wrong_mouse;
+    fnr_relative_mouse_init(&wrong_mouse);
+    assert(!fnr_receiver_adapter_init(&hid, &wrong_mouse));
     assert(fnr_receiver_adapter_init(&hid, &mouse));
 
     fnr_receiver_config config;
