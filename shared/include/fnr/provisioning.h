@@ -2,7 +2,6 @@
 #define FNR_PROVISIONING_H
 
 #include "fnr/envelope.h"
-#include "fnr/profile_relative_mouse.h"
 
 #include <stdbool.h>
 #include <stddef.h>
