@@ -171,6 +171,22 @@ must use this seam rather than reimplement sender/session/order logic.
 
 ## Golden vectors
 
+### Minimum structurally valid platform envelope
+
+The generic envelope itself permits zero profile bytes. With profile ID 1,
+session 1 and sequence 0 the exact 18 bytes are:
+
+```text
+01 01 01 00
+01 00 00 00 00 00 00 00
+00 00 00 00
+00 00
+```
+
+This is structurally valid at the generic-envelope layer but is not a valid
+relative_mouse message, because relative_mouse/v1 requires exactly four profile
+bytes.
+
 ### Representative relative_mouse packet
 
 Logical values:
@@ -197,6 +213,24 @@ ef cd ab 89
 01 03 fb 07
 ```
 
+### relative_mouse neutral/release payload
+
+Zero movement and all buttons released:
+
+```text
+01 00 00 00
+```
+
+A complete relative_mouse platform packet with session 1 and sequence 0 is:
+
+```text
+01 01 01 00
+01 00 00 00 00 00 00 00
+00 00 00 00
+04 00
+01 00 00 00
+```
+
 ### relative_mouse extrema payload
 
 Both buttons, X=-127, Y=+127:
@@ -217,10 +251,13 @@ FNR-006 was reconciled against
 including TM-005A's accepted logical-report contract and TM-005B / #16.
 
 TM-005B must map its transport-neutral CURRENT logical report to the exact
-platform/profile bytes above, generate a fresh nonzero u64 session on sender
-application restart, start sequence at zero and monotonically advance sequence
-for reports offered to the wireless transport. It must not add private receiver
-framing or stale-motion retransmission.
+platform/profile bytes above: `dx` -> X, `dy` -> Y, and the complete
+`TM_MOUSE_BUTTON_LEFT/RIGHT` bits -> profile button bits 0/1. A safe retained
+release is encoded as the neutral payload `01 00 00 00`; INVALID reports do
+not become wireless packets. It must generate a fresh nonzero u64 session on
+sender application restart, start sequence at zero and monotonically advance
+sequence for reports offered to the wireless transport. It must not add private
+receiver framing or stale-motion retransmission.
 
 ## Explicit non-claims
 
