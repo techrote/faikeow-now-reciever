@@ -121,6 +121,22 @@ struct Fixture {
 
 static void test_envelope_golden_and_bounds() {
     const uint8_t profile[] = {1U, 3U, 0xFBU, 7U};
+    fnr_envelope minimum{};
+    minimum.version = 1U;
+    minimum.profile_id = 1U;
+    minimum.message_type = 1U;
+    minimum.session = 1U;
+    std::array<uint8_t, FNR_DATAGRAM_CAPACITY> bytes{};
+    size_t written = 999U;
+    CHECK(fnr_envelope_encode(&minimum, bytes.data(), bytes.size(), &written) == FNR_ENVELOPE_OK);
+    const std::array<uint8_t, 18> minimum_golden{{
+        0x01, 0x01, 0x01, 0x00,
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+    }};
+    CHECK(written == minimum_golden.size());
+    CHECK(std::memcmp(bytes.data(), minimum_golden.data(), minimum_golden.size()) == 0);
+
     fnr_envelope envelope{};
     envelope.version = 1U;
     envelope.profile_id = 1U;
@@ -130,8 +146,7 @@ static void test_envelope_golden_and_bounds() {
     envelope.sequence = UINT32_C(0x89abcdef);
     envelope.payload_length = sizeof(profile);
     std::memcpy(envelope.payload, profile, sizeof(profile));
-    std::array<uint8_t, FNR_DATAGRAM_CAPACITY> bytes{};
-    size_t written = 999U;
+    written = 999U;
     CHECK(fnr_envelope_encode(&envelope, bytes.data(), bytes.size(), &written) == FNR_ENVELOPE_OK);
     const std::array<uint8_t, 22> golden{{
         0x01, 0x01, 0x01, 0x00, 0xef, 0xcd, 0xab, 0x89,
@@ -193,6 +208,9 @@ static void test_envelope_golden_and_bounds() {
 
 static void test_profile_payload_contract() {
     uint8_t bytes[4]{};
+    CHECK(fnr_relative_mouse_payload_encode(0, 0, 0U, bytes, sizeof(bytes)) == FNR_RELATIVE_MOUSE_PAYLOAD_OK);
+    const uint8_t zero[] = {1U, 0U, 0U, 0U};
+    CHECK(std::memcmp(bytes, zero, sizeof(zero)) == 0);
     CHECK(fnr_relative_mouse_payload_encode(-127, 127, 3U, bytes, sizeof(bytes)) == FNR_RELATIVE_MOUSE_PAYLOAD_OK);
     const uint8_t golden[] = {1U, 3U, 0x81U, 0x7fU};
     CHECK(std::memcmp(bytes, golden, sizeof(golden)) == 0);
