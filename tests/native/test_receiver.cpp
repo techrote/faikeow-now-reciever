@@ -6,6 +6,7 @@
 #include "fnr/receiver.h"
 #include "fnr/transport.h"
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <cstdint>
