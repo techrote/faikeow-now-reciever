@@ -467,6 +467,42 @@ static void test_transport_and_usb_invalidation() {
     f.service();
 }
 
+static void test_pending_motion_is_retired_by_neutralization() {
+    Fixture f;
+    f.mount();
+
+    CHECK(f.send(9U, 0U, 40, 30, 3U, 0U) == FNR_RECEIVER_ACCEPTED);
+    CHECK(f.hid.pending && !f.hid.pending_is_neutral);
+    fnr_receiver_core_transport_events(&f.core, FNR_TRANSPORT_EVENT_LINK_ERROR);
+    CHECK(f.hid.pending && f.hid.pending_is_neutral);
+    f.service();
+    auto report = f.usb.sent[f.usb.count - 1U];
+    CHECK(report.data[0] == 0U && report.data[1] == 0U && report.data[2] == 0U);
+
+    CHECK(f.send(9U, 1U, 50, 20, 1U, 1U) == FNR_RECEIVER_ACCEPTED);
+    CHECK(f.hid.pending && !f.hid.pending_is_neutral);
+    fnr_receiver_core_tick(&f.core, 251U);
+    CHECK(f.hid.pending && f.hid.pending_is_neutral);
+    f.service();
+    report = f.usb.sent[f.usb.count - 1U];
+    CHECK(report.data[0] == 0U && report.data[1] == 0U && report.data[2] == 0U);
+
+    CHECK(f.send(9U, 2U, 60, 10, 2U, 252U) == FNR_RECEIVER_ACCEPTED);
+    CHECK(f.hid.pending && !f.hid.pending_is_neutral);
+    CHECK(f.send(10U, 0U, 70, 5, 3U, 253U) ==
+          FNR_RECEIVER_ACCEPTED_OUTPUT_DROPPED);
+    CHECK(f.hid.pending && f.hid.pending_is_neutral);
+    f.service();
+    report = f.usb.sent[f.usb.count - 1U];
+    CHECK(report.data[0] == 0U && report.data[1] == 0U && report.data[2] == 0U);
+
+    CHECK(f.send(10U, 1U, -4, 6, 2U, 254U) == FNR_RECEIVER_ACCEPTED);
+    f.service();
+    report = f.usb.sent[f.usb.count - 1U];
+    CHECK(report.data[0] == 2U && report.data[1] == static_cast<uint8_t>(-4) &&
+          report.data[2] == 6U);
+}
+
 static void test_real_transport_to_hid_chain() {
     Fixture f;
     f.mount();
@@ -523,6 +559,7 @@ int main() {
     test_session_change_and_retirement();
     test_freshness_wrap_and_nonrefresh();
     test_transport_and_usb_invalidation();
+    test_pending_motion_is_retired_by_neutralization();
     test_real_transport_to_hid_chain();
     test_hostile_envelope_property();
     std::printf("PASS: FNR-006 envelope/core/profile/HID integration seed=0xd6e8feb8\n");
