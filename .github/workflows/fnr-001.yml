@@ -1,7 +1,7 @@
 name: FNR platform CI
 on:
   push:
-    branches: [main, fnr-001-dual-firmware-ci, fnr-003-generic-tinyusb-hid, fnr-005-software-transport, fnr-006-receiver-core]
+    branches: [main, fnr-001-dual-firmware-ci, fnr-003-generic-tinyusb-hid, fnr-005-software-transport, fnr-006-receiver-core, fnr-007-provisioning]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -21,6 +21,11 @@ jobs:
         run: |
           git diff --check "${{ github.event.pull_request.base.sha || 'HEAD~1' }}" HEAD
           python3 -m compileall -q tools
+          python3 tools/test_provisioning.py
+          if git ls-files '*provisioning.local.json' '*.provisioning-secret.json' | grep -q .; then
+            echo "Provisioning secret/config file is tracked" >&2
+            exit 1
+          fi
           python3 tools/hardware/test_guards.py
           python3 tools/hardware/test_rf_assessment.py
           python3 tools/hardware/test_transport_assessment.py
@@ -67,10 +72,10 @@ jobs:
         run: cmake --build build/native --parallel 2
       - name: Test
         run: ctest --test-dir build/native --output-on-failure
-      - name: GCC static analyzer for FNR-006 portable core
+      - name: GCC static analyzer for portable receiver/provisioning core
         run: |
           mkdir -p build/analyzer
-          for src in shared/src/envelope.c shared/src/receiver.c shared/src/profile_relative_mouse.c; do
+          for src in shared/src/envelope.c shared/src/receiver.c shared/src/profile_relative_mouse.c shared/src/provisioning.c; do
             cc -std=c17 -Wall -Wextra -Werror -Wconversion -Wshadow -fanalyzer \
               -Ishared/include -c "$src" -o "build/analyzer/$(basename "$src").o"
           done
@@ -144,7 +149,7 @@ jobs:
           cat build/rp2040/SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: fnr-006-rp2040-receiver
+          name: fnr-007-rp2040-provisioning
           path: |
             build/rp2040/fnr_rp2040_hid.uf2
             build/rp2040/fnr_rp2040_hid.elf
@@ -197,7 +202,7 @@ jobs:
           cat build/esp8266/SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: fnr-006-esp8285-regression
+          name: fnr-007-esp8285-provisioning
           path: |
             build/esp8266/*.bin
             build/esp8266/*.elf
