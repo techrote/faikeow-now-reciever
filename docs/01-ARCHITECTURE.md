@@ -153,7 +153,7 @@ Future profile backends may use RP2040 PIO/native peripherals for unusual wired 
 
 - no profile output before configuration and fresh valid platform message;
 - radio/internal-link restart invalidates application freshness/output but retains the sender session/sequence baseline so stale same-session packets remain rejectable;
-- USB reconnect does not replay queued stale output;
+- USB detach/suspend neutralizes profile output without resetting sender ordering/freshness, and reconnect does not replay queued stale output;
 - profile timeout neutralizes profile state according to profile policy.
 
 ## Concurrency
