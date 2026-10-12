@@ -97,8 +97,16 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Acquire exact dependencies
         run: python3 tools/acquire_deps.py --lane rp2040
-      - name: Cross-compile
+      - name: Cross-compile factory image
         run: bash tools/build_rp2040.sh
+      - name: Cross-compile generated provisioned RP fixture
+        shell: bash
+        run: |
+          cat > build/ci-provisioning.json <<'JSON'
+          {"schema_version":1,"config_id":"0x0102030405060708","generation":1,"peer_mac":"02:03:04:05:06:07","channel":6,"platform_version":1,"profile_id":1,"profile_schema_version":1,"freshness_timeout_ms":250,"radio_key_hex":"00112233445566778899aabbccddeeff"}
+          JSON
+          FNR_PROVISIONING_CONFIG="$PWD/build/ci-provisioning.json"             FNR_RP_BUILD_DIR="$PWD/build/rp2040-provisioned-test"             bash tools/build_rp2040.sh
+          test -s build/rp2040-provisioned-test/fnr_rp2040_hid.uf2
       - name: Build SRAM-only hardware diagnostics
         run: bash tools/build_observer.sh
       - name: Build production transport SRAM observer
@@ -169,10 +177,24 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Acquire exact dependencies
         run: python3 tools/acquire_deps.py --lane esp
-      - name: Cross-compile
+      - name: Cross-compile factory image
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
         run: bash tools/build_esp.sh
+      - name: Cross-compile generated provisioned ESP fixture
+        env:
+          FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          cat > build/ci-provisioning.json <<'JSON'
+          {"schema_version":1,"config_id":"0x0102030405060708","generation":1,"peer_mac":"02:03:04:05:06:07","channel":6,"platform_version":1,"profile_id":1,"profile_schema_version":1,"freshness_timeout_ms":250,"radio_key_hex":"00112233445566778899aabbccddeeff"}
+          JSON
+          FNR_PROVISIONING_CONFIG="$PWD/build/ci-provisioning.json"             FNR_ESP_BUILD_DIR="$PWD/build/esp8266-provisioned-test"             bash tools/build_esp.sh
+          test -s build/esp8266-provisioned-test/fnr_esp8266_ingress.bin
+      - name: Compile redacted provisioning diagnostic
+        env:
+          FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: bash tools/build_esp_provisioning_diag.sh
       - name: Compile isolated UART diagnostic (not physical evidence)
         env:
           FNR_SOURCE_ID: ${{ github.event.pull_request.head.sha || github.sha }}
