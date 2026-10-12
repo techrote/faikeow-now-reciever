@@ -82,7 +82,8 @@ only PROFILE_DATA type 1 and zero flags. At most 232 profile bytes follow so the
 complete ESP-NOW application packet remains <=250 bytes.
 
 The envelope is independent of ESP-NOW source MAC; the core's configuration
-seam separately authorizes an allowed source peer. Sender session is a restart
+seam separately authorizes an allowed source peer and explicitly enables the
+selected profile. Sender session is a restart
 discriminator, not authentication. See [FNR-006-RECEIVER.md](FNR-006-RECEIVER.md).
 
 ## Receiver core
