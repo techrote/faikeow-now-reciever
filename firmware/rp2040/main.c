@@ -2,9 +2,10 @@
 
 #include "fnr/hid.h"
 #include "fnr/hid_relative_mouse.h"
-#include "usb_adapter.h"
-#include "transport_adapter.h"
+#include "provisioning_adapter.h"
 #include "receiver_adapter.h"
+#include "transport_adapter.h"
+#include "usb_adapter.h"
 
 static fnr_hid_device fnr_usb_device;
 static fnr_relative_mouse_state fnr_mouse_state;
@@ -29,15 +30,16 @@ static bool fnr_usb_profile_init(void) {
 int main(void) {
     fnr_rp_transport_init();
     if (!fnr_usb_profile_init() ||
-        !fnr_receiver_adapter_init(&fnr_usb_device, &fnr_mouse_state)) {
+        !fnr_receiver_adapter_init(&fnr_usb_device, &fnr_mouse_state) ||
+        !fnr_rp_provisioning_init()) {
         for (;;) {
             tight_loop_contents();
         }
     }
 
-    /* The FNR-005 foreground hook processes transport events before owned
-     * datagrams, then FNR-006 validates/order-checks and dispatches the selected
-     * profile. Shipping configuration remains fail-closed until FNR-007. */
+    /* FNR-007 stages any embedded configuration fail-closed. Peer/profile
+     * admission is enabled only after a matching READY radio status crosses
+     * the accepted FNR-005 transport. */
     for (;;) {
         fnr_rp_transport_task();
         fnr_usb_adapter_task();
