@@ -131,6 +131,18 @@ A future gamepad profile may treat each message as the newest complete controlle
 
 These examples justify keeping loss semantics inside profiles.
 
+## Provisioning boundary
+
+FNR-007 keeps provisioning outside the generic application envelope and FNR-005
+framing. A CRC-protected public record identifies peer/channel/platform/profile
+and freshness policy. The ESP image alone contains the per-device ESP-NOW key.
+
+RP peer/profile admission is staged disabled and becomes active only after a
+matching READY radio status crosses FNR-005. Link/radio failure revokes that
+acknowledgement. Factory firmware has no configured peer/key and remains inert.
+Reconfiguration uses paired image rebuild/reflash through the accepted no-solder
+recovery paths.
+
 ## USB HID framework
 
 FNR-003 owns a generic TinyUSB framework:
