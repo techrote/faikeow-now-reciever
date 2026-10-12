@@ -16,7 +16,8 @@ jobs:
       - name: Archive pinned baseline without secrets or workspace files
         run: |
           git archive --format=tar 136ef3b612f83fd9cad74a5dd50c2e5f629b44de > fnr-baseline.tar
-          git bundle create fnr-baseline.bundle main
+          git branch snapshot-base 136ef3b612f83fd9cad74a5dd50c2e5f629b44de
+          git bundle create fnr-baseline.bundle snapshot-base
           sha256sum fnr-baseline.tar fnr-baseline.bundle > SHA256SUMS
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
