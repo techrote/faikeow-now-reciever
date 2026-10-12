@@ -130,13 +130,19 @@ Drop/coalescing policy may depend on message type/profile. The radio layer may u
 
 ## 7. Provisioning/configuration
 
-FNR-007 owns:
+FNR-007 freezes public provisioning-record v1 as a 40-byte little-endian,
+CRC-32/IEEE-protected record carrying channel, allowed peer, platform/profile
+versions, freshness timeout, public config ID and generation. Provisioned v0.1
+requires encryption.
 
-- allowed sender peer(s);
-- RF channel;
-- keys/encryption when used;
-- enabled/selected profile;
-- compatible platform/profile versions.
+The per-device 16-byte ESP-NOW key is **not** part of the public record and is
+linked only into the generated ESP8285 image. The RP2040 image contains no radio
+key. Factory images contain neither provisioning record nor key.
+
+RP peer/profile admission is enabled only after a matching READY radio status is
+received on the expected channel; radio/link loss revokes that acknowledgement.
+No FNR-005 frame type or generic platform-envelope field is added for
+provisioning. See [FNR-007-PROVISIONING.md](FNR-007-PROVISIONING.md).
 
 No real universal production secret is committed.
 
