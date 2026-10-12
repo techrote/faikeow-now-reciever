@@ -66,10 +66,10 @@ typedef struct fnr_receiver_core {
     bool have_session;
     bool have_sequence;
     bool fresh;
-    uint32_t session;
+    uint64_t session;
     uint32_t last_sequence;
     uint32_t last_accepted_ms;
-    uint32_t retired_sessions[FNR_RECEIVER_RETIRED_SESSION_CAPACITY];
+    uint64_t retired_sessions[FNR_RECEIVER_RETIRED_SESSION_CAPACITY];
     uint8_t retired_count;
     uint8_t retired_next;
     fnr_hid_usb_state usb_state;
