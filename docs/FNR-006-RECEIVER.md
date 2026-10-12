@@ -147,8 +147,10 @@ FNR-003 remains authority for descriptors and USB report ownership. FNR-006
 observes the selected HID device state.
 
 - unmount/suspend/reset causes FNR-003 to discard pending output and neutralize;
-- FNR-006 also invalidates application freshness on observed USB state changes;
-- packets while USB is unavailable do not accumulate movement;
+- FNR-006 fences/neutralizes profile output on non-mounted USB states without
+  conflating host lifecycle with sender freshness;
+- packets while USB is unavailable may advance sender ordering/freshness but do
+  not accumulate movement;
 - mount/resume starts behind FNR-003's neutral-report barrier;
 - no relative movement is replayed after reconnect.
 
