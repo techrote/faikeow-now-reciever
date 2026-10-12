@@ -87,6 +87,21 @@ native target compiles the real RP2040 FNR-005 consumer hook together with the
 FNR-006 adapter. Both locked target builds remain required. These are software
 evidence, not RF or USB-host physical acceptance.
 
+## FNR-007 software acceptance boundary
+
+FNR-007 software checks cover the exact public-record/CRC vector, full-byte
+corruption rejection, 20,000 deterministic codec cases, generated-source secret
+separation, RP/ESP provisioning loaders, the actual encrypted ESP radio adapter,
+and the actual RP FNR-005 status-to-admission gate. UBSan, ASan/UBSan, GCC
+`-fanalyzer`, locked RP2040/ESP8285 cross-builds and linked-symbol checks remain
+required.
+
+These do not prove physical provisioning. Before FNR-007 acceptance, one
+representative characterized board must establish MAC discovery, correct
+peer/channel/profile provisioning, intentional wrong peer/channel/profile safe
+inactivity, correct-config restoration, power-cycle persistence, and no-solder
+reconfiguration/recovery.
+
 ## Physical FNR-008 evidence
 
 Separate claims.
