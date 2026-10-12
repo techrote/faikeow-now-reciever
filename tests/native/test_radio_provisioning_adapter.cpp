@@ -164,9 +164,10 @@ static void test_encrypted_provisioning_and_receive() {
     std::memcpy(peer, p.ingress.allowed_mac, sizeof(peer));
     fake.recv_cb(peer, payload, sizeof(payload));
     fnr_datagram d{};
-    assert(fnr_radio_take_foreground(&d));
-    assert(d.size == sizeof(payload));
-    assert(std::memcmp(d.payload, payload, sizeof(payload)) == 0);
+    /* Physical regression: SDK callbacks can deliver plaintext from the
+     * configured MAC even when that peer was registered with an ESP-NOW key.
+     * A bare platform packet must never reach the production transport. */
+    assert(!fnr_radio_take_foreground(&d));
 }
 
 static void test_missing_key_and_peer_failure_fail_closed() {
