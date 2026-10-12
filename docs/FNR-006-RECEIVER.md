@@ -159,12 +159,15 @@ FNR-006 defines a bounded in-memory configuration seam containing:
 - whether a peer is enabled;
 - one allowed six-byte source MAC for v0.1;
 - platform version;
+- whether profile dispatch is enabled;
 - selected profile ID;
 - application freshness timeout.
 
 The shipping/default configuration is deliberately **unprovisioned and
-fail-closed**: peer admission is disabled, so RF datagrams cannot drive HID
-output merely because the receiver firmware boots.
+fail-closed**: peer admission and profile dispatch are both disabled, so RF
+datagrams cannot drive HID output merely because the receiver firmware boots.
+A known peer with profile dispatch still disabled is rejected before
+sender-session/order/profile state can mutate.
 
 FNR-007 owns persistent peer/channel/key/profile provisioning and recovery. It
 must use this seam rather than reimplement sender/session/order logic.
