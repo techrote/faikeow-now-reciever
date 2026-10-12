@@ -20,6 +20,7 @@ typedef struct fnr_receiver_config {
     bool peer_enabled;
     uint8_t peer_mac[FNR_MAC_SIZE];
     uint8_t platform_version;
+    bool profile_enabled;
     uint8_t profile_id;
     uint32_t freshness_timeout_ms;
 } fnr_receiver_config;
@@ -30,6 +31,7 @@ typedef enum fnr_receiver_result {
     FNR_RECEIVER_UNAUTHORIZED_PEER,
     FNR_RECEIVER_MALFORMED_ENVELOPE,
     FNR_RECEIVER_WRONG_PROFILE,
+    FNR_RECEIVER_PROFILE_DISABLED,
     FNR_RECEIVER_INVALID_PROFILE_PAYLOAD,
     FNR_RECEIVER_DUPLICATE,
     FNR_RECEIVER_STALE,
@@ -44,6 +46,7 @@ typedef struct fnr_receiver_counters {
     uint32_t unauthorized_peer;
     uint32_t malformed_envelopes;
     uint32_t wrong_profile;
+    uint32_t profile_disabled;
     uint32_t invalid_profile_payload;
     uint32_t accepted;
     uint32_t output_dropped;
