@@ -17,7 +17,8 @@ add_library(fnr_shared STATIC
   shared/src/hid_relative_mouse.c
   shared/src/envelope.c
   shared/src/receiver.c
-  shared/src/profile_relative_mouse.c)
+  shared/src/profile_relative_mouse.c
+  shared/src/provisioning.c)
 target_include_directories(fnr_shared PUBLIC shared/include)
 target_compile_options(fnr_shared PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow)
 add_executable(fnr_native_tests tests/native/test_datagram.cpp)
@@ -77,3 +78,23 @@ target_link_libraries(fnr_receiver_rp_adapter_tests PRIVATE fnr_shared)
 target_compile_options(fnr_receiver_rp_adapter_tests PRIVATE
   -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
 add_test(NAME receiver_production_rp_consumer_hook COMMAND fnr_receiver_rp_adapter_tests)
+
+add_executable(fnr_provisioning_tests tests/native/test_provisioning.cpp)
+target_link_libraries(fnr_provisioning_tests PRIVATE fnr_shared)
+target_compile_options(fnr_provisioning_tests PRIVATE
+  -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME provisioning_record_crc_corruption_properties COMMAND fnr_provisioning_tests)
+
+add_executable(fnr_provisioning_rp_adapter_tests tests/native/test_provisioning_rp_adapter.c)
+target_include_directories(fnr_provisioning_rp_adapter_tests PRIVATE firmware/rp2040)
+target_link_libraries(fnr_provisioning_rp_adapter_tests PRIVATE fnr_shared)
+target_compile_options(fnr_provisioning_rp_adapter_tests PRIVATE
+  -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME provisioning_rp_public_loader COMMAND fnr_provisioning_rp_adapter_tests)
+
+add_executable(fnr_provisioning_esp_adapter_tests tests/native/test_provisioning_esp_adapter.cpp)
+target_include_directories(fnr_provisioning_esp_adapter_tests PRIVATE firmware/esp8266)
+target_link_libraries(fnr_provisioning_esp_adapter_tests PRIVATE fnr_shared)
+target_compile_options(fnr_provisioning_esp_adapter_tests PRIVATE
+  -Wall -Wextra -Werror -Wconversion -Wshadow -UNDEBUG)
+add_test(NAME provisioning_esp_secret_loader COMMAND fnr_provisioning_esp_adapter_tests)
