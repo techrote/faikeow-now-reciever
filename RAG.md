@@ -62,21 +62,17 @@ The core must not contain TiltMouse-specific field names.
 
 ## Generic receiver envelope
 
-FNR-006 freezes v1.
+FNR-006 freezes platform v1. The explicit little-endian header is 18 bytes:
+version u8, profile ID u8, message type u8, flags u8, nonzero sender-session
+u64, platform sequence u32 and profile-payload length u16. v1 accepts only
+PROFILE_DATA type 1 and flags zero. The complete ESP-NOW application packet
+remains <=250 bytes, leaving at most 232 profile bytes.
 
-It must contain enough information to route and order profile messages without understanding profile payloads, including at minimum:
-
-- platform protocol version;
-- profile ID;
-- message type/flags;
-- sender/session identity or equivalent restart discriminator;
-- monotonic message sequence;
-- payload length;
-- profile payload.
-
-Exact field widths/encoding are owned here, not by TiltMouse.
-
-ESP-NOW application payload remains <=250 bytes for ESP8266 interoperability.
+Sender session is a restart discriminator, not authentication. Platform sequence
+uses one modulo-u32 comparator: zero delta is duplicate, deltas below 2^31 are
+newer, exactly 2^31 is ambiguous/rejected and larger deltas are stale. Application
+freshness defaults to 250 ms and is separate from FNR-005 link liveness. See
+[the frozen FNR-006 contract](docs/FNR-006-RECEIVER.md).
 
 ## Profiles
 
@@ -149,7 +145,7 @@ The [representative-DUT campaign](evidence/FNR-005/README.md) now establishes
 production framing, sustained integrity, bounded overload, corruption recovery
 and independent reset/watchdog behavior on Board A. Identical Board B was not
 requalified. PR #20 and #6 record final CI/merge/post-merge programme closure.
-FNR-006 owns sender/session/freshness and profile interpretation.
+FNR-006 now owns and implements sender-session/order/freshness plus profile dispatch. The shipping core remains fail-closed until FNR-007 provisions an allowed peer.
 
 ## USB policy
 
@@ -180,7 +176,7 @@ FNR-001 pins exact versions:
 - FNR-003 — generic RP2040 TinyUSB HID framework and relative-mouse profile backend.
 - FNR-004 — generic ESP-NOW datagram ingress.
 - FNR-005 — framed inter-MCU datagram transport.
-- FNR-006 — generic receiver core, profile dispatch and relative-mouse profile semantics.
+- FNR-006 — generic receiver core, frozen platform v1, profile dispatch and relative-mouse v1 semantics (implemented in this branch).
 - FNR-007 — generic peer/channel/key/profile provisioning and recovery.
 - FNR-008 — platform physical acceptance using TiltMouse as the reference sender/profile.
 - FNR-009 — generic v0.1 release consolidation.
