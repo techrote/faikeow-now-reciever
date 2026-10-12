@@ -94,26 +94,20 @@ diagnostic UART evidence remains an accepted input, separate from these results.
 
 ## FNR-006 — Generic receiver core, profile dispatch and relative mouse
 
-Freeze the generic receiver envelope v1 and implement RP2040 core semantics:
+Freeze and implement generic platform v1 plus the first production profile.
+The accepted software contract is documented in [FNR-006-RECEIVER.md](FNR-006-RECEIVER.md):
 
-- platform version;
-- profile ID;
-- message type/flags;
-- sender/session restart discrimination;
-- sequence ordering;
-- payload length;
-- profile dispatch;
-- generic peer/session/freshness state.
+- explicit 18-byte little-endian platform header;
+- nonzero u64 sender-session restart discriminator;
+- modulo-u32 ordering with an explicit half-range rejection rule;
+- 250 ms default application freshness, separate from FNR-005 link liveness;
+- fail-closed one-peer/profile configuration seam for FNR-007;
+- generic profile dispatch with no mouse fields in the receiver core;
+- relative_mouse profile ID 1 / schema v1, exact four-byte full-button-state payload;
+- transport/session/USB invalidation to neutral output with no stale movement replay.
 
-Then implement the first production profile:
-
-- relative X/Y;
-- complete button state;
-- duplicate/stale rejection;
-- timeout -> released buttons;
-- no stale movement replay.
-
-TiltMouse is a compatibility/reference implementation of this profile, not the protocol owner.
+TiltMouse TM-005B consumes this repository-owned byte contract and vectors; it
+does not define a competing receiver protocol.
 
 ## FNR-007 — Generic provisioning and recovery
 
