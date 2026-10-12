@@ -67,6 +67,13 @@ jobs:
         run: cmake --build build/native --parallel 2
       - name: Test
         run: ctest --test-dir build/native --output-on-failure
+      - name: GCC static analyzer for FNR-006 portable core
+        run: |
+          mkdir -p build/analyzer
+          for src in shared/src/envelope.c shared/src/receiver.c shared/src/profile_relative_mouse.c; do
+            cc -std=c17 -Wall -Wextra -Werror -Wconversion -Wshadow -fanalyzer \
+              -Ishared/include -c "$src" -o "build/analyzer/$(basename "$src").o"
+          done
       - name: Address and undefined sanitizer regression
         run: |
           cmake -S . -B build/native-asan -G Ninja -DCMAKE_BUILD_TYPE=Debug \
