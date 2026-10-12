@@ -70,6 +70,7 @@ struct Fixture {
         fnr_relative_mouse_profile_make_ops(&wire_profile, &profile_ops);
         fnr_receiver_config_default(&config);
         config.peer_enabled = true;
+        config.profile_enabled = true;
         std::memcpy(config.peer_mac, kPeer.data(), kPeer.size());
         CHECK(fnr_receiver_core_init(&core, &config, &profile_ops));
     }
@@ -250,6 +251,17 @@ static void test_config_and_authorization() {
     CHECK(fnr_receiver_core_accept_datagram(&f.core, &d, 0U) == FNR_RECEIVER_UNAUTHORIZED_PEER);
     blocked.peer_enabled = true;
     CHECK(!fnr_receiver_config_valid(&blocked));
+    std::memcpy(blocked.peer_mac, kPeer.data(), kPeer.size());
+    CHECK(fnr_receiver_config_valid(&blocked));
+    auto disabled = f.make_datagram(1U, 0U, 1, 2, 0U);
+    CHECK(fnr_receiver_core_reconfigure(&f.core, &blocked));
+    CHECK(fnr_receiver_core_accept_datagram(&f.core, &disabled, 0U) ==
+          FNR_RECEIVER_PROFILE_DISABLED);
+    CHECK(!f.core.have_session && !f.core.fresh);
+    blocked.profile_enabled = true;
+    CHECK(fnr_receiver_core_reconfigure(&f.core, &blocked));
+    CHECK(fnr_receiver_core_accept_datagram(&f.core, &disabled, 1U) ==
+          FNR_RECEIVER_ACCEPTED_OUTPUT_DROPPED);
     blocked.freshness_timeout_ms = 0U;
     CHECK(!fnr_receiver_config_valid(&blocked));
 }
