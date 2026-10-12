@@ -212,7 +212,7 @@ ignored. The final source differs from the qualified firmware source only in
 evidence/documentation; firmware, shared code, diagnostics, build tooling and
 dependency locks are unchanged.
 
-## Reconfiguration and final production — 2026-10-13 local date
+## Reconfiguration and final production  -  2026-10-13 local date
 
 [Reconfiguration evidence](reconfiguration.json) records config ID
 `0x9133bd03ee60b75f`, generation 2, a fresh distinct private key, the same
