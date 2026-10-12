@@ -15,6 +15,7 @@ Pure code should cover:
 
 ### Platform
 
+- FNR-006 explicit platform-v1 envelope/golden vectors and hostile-byte round trips;
 - internal frame codec/parser;
 - CRC vectors;
 - generic envelope version/length validation;
@@ -22,7 +23,9 @@ Pure code should cover:
 - sender/session restart handling;
 - wrap-safe sequence comparison;
 - duplicate/stale rejection;
-- freshness/timeout transitions;
+- freshness/timeout transitions and u32 timer wrap;
+- FNR-005 event-to-core invalidation with platform ordering retained;
+- production FNR-005 consumer-hook -> FNR-006 -> HID integration;
 - bounded queue/drop behavior;
 - provisioning/config validation.
 
@@ -73,6 +76,16 @@ completed production framing, sustained, overload, corruption and interruption
 cases, including independent MCU restart/recovery. All 44 physical phases pass;
 final review, exact-head CI and merge/post-merge verification remain separate
 programme gates recorded in PR #20 and issue #6.
+
+## FNR-006 software acceptance boundary
+
+FNR-006 adds deterministic native tests for the exact 18-byte envelope,
+relative_mouse/v1 bytes, peer authorization, session restart/retirement,
+modulo-u32 duplicate/stale/gap/wrap/half-range behavior, 250 ms application
+freshness, USB lifecycle neutralization and fixed-seed hostile input. A separate
+native target compiles the real RP2040 FNR-005 consumer hook together with the
+FNR-006 adapter. Both locked target builds remain required. These are software
+evidence, not RF or USB-host physical acceptance.
 
 ## Physical FNR-008 evidence
 
