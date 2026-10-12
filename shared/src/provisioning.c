@@ -145,4 +145,3 @@ fnr_provisioning_result fnr_provisioning_decode(
     *out = candidate;
     return FNR_PROVISIONING_OK;
 }
-
