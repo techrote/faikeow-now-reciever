@@ -19,7 +19,14 @@ bool fnr_rp_provisioning_init(void) {
     }
 
     fnr_receiver_config receiver;
-    if (!fnr_provisioning_to_receiver_config(&status.config, &receiver)) {
+    fnr_receiver_config_default(&receiver);
+    receiver.peer_enabled = true;
+    memcpy(receiver.peer_mac, status.config.peer_mac, FNR_MAC_SIZE);
+    receiver.platform_version = status.config.platform_version;
+    receiver.profile_enabled = true;
+    receiver.profile_id = status.config.profile_id;
+    receiver.freshness_timeout_ms = status.config.freshness_timeout_ms;
+    if (!fnr_receiver_config_valid(&receiver)) {
         status.record_result = FNR_PROVISIONING_INVALID_FIELDS;
         status.staged = false;
         return fnr_receiver_adapter_revoke_provisioning();
