@@ -70,8 +70,7 @@ bool fnr_provisioning_config_valid(const fnr_provisioning_config *config) {
         !config->encryption_required || config->channel < 1U ||
         config->channel > 14U || !unicast_nonzero_mac(config->peer_mac) ||
         config->platform_version != FNR_PLATFORM_VERSION ||
-        config->profile_id != FNR_PROFILE_ID_RELATIVE_MOUSE ||
-        config->profile_schema_version != FNR_RELATIVE_MOUSE_SCHEMA_VERSION ||
+        config->profile_id == 0U || config->profile_schema_version == 0U ||
         config->freshness_timeout_ms == 0U ||
         config->freshness_timeout_ms >= UINT32_C(0x80000000) ||
         config->config_id == 0U || config->generation == 0U) {
