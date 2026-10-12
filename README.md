@@ -106,7 +106,8 @@ bounded UART transport and the FNR-006 generic receiver core. FNR-006 freezes an
 18-byte platform-v1 envelope plus relative_mouse/v1 and routes authorized fresh
 profile messages into the existing three-byte USB mouse backend. The production
 default remains deliberately unprovisioned/fail-closed: FNR-007 must configure an
-allowed peer before RF data can drive HID output.
+allowed peer and explicitly enable the selected profile before RF data can drive
+HID output.
 
 The ESP8266 build remains profile-neutral: FNR-004 receives opaque ESP-NOW
 application datagrams and FNR-005 transports them unchanged. It does not decode
