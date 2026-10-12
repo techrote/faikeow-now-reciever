@@ -171,6 +171,27 @@ static void test_production_hook_chain(void) {
     assert(snapshot.counters.transport_invalidations >= 2U);
 }
 
+static void test_unsupported_profile_stage_is_atomic(void) {
+    start_unconfigured();
+
+    fnr_receiver_config config;
+    fnr_receiver_config_default(&config);
+    config.peer_enabled = true;
+    config.profile_enabled = true;
+    config.profile_id = 2U;
+    const uint8_t peer[FNR_MAC_SIZE] = {0x10,0x20,0x30,0x40,0x50,0x60};
+    memcpy(config.peer_mac, peer, sizeof(peer));
+
+    assert(!fnr_receiver_adapter_stage_provisioning(&config, 6U));
+    fnr_receiver_provisioning_status ps;
+    fnr_receiver_adapter_provisioning_snapshot(&ps);
+    assert(!ps.staged && !ps.radio_acknowledged && ps.expected_channel == 0U);
+
+    fnr_receiver_core snapshot;
+    fnr_receiver_adapter_snapshot(&snapshot);
+    assert(!snapshot.config.peer_enabled && !snapshot.config.profile_enabled);
+}
+
 static void test_provisioning_radio_ack_gate(void) {
     start_unconfigured();
 
@@ -252,6 +273,7 @@ static void test_provisioning_radio_ack_gate(void) {
 
 int main(void) {
     test_production_hook_chain();
+    test_unsupported_profile_stage_is_atomic();
     test_provisioning_radio_ack_gate();
     puts("PASS: production FNR-005 hook -> FNR-006/FNR-007 gate -> HID");
     return 0;
