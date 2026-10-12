@@ -157,6 +157,23 @@ static void test_envelope_golden_and_bounds() {
     CHECK(written == FNR_DATAGRAM_CAPACITY);
     CHECK(fnr_envelope_decode(bytes.data(), written, &decoded) == FNR_ENVELOPE_OK);
 
+    for (std::size_t length = 0U; length <= FNR_PLATFORM_PAYLOAD_CAPACITY; ++length) {
+        fnr_envelope sized{};
+        sized.version = FNR_PLATFORM_VERSION;
+        sized.profile_id = FNR_PROFILE_ID_RELATIVE_MOUSE;
+        sized.message_type = FNR_PLATFORM_MESSAGE_PROFILE_DATA;
+        sized.session = UINT64_C(0xfedcba9876543210);
+        sized.sequence = static_cast<uint32_t>(length);
+        sized.payload_length = static_cast<uint16_t>(length);
+        for (std::size_t i = 0U; i < length; ++i)
+            sized.payload[i] = static_cast<uint8_t>(i ^ length);
+        CHECK(fnr_envelope_encode(&sized, bytes.data(), bytes.size(), &written) == FNR_ENVELOPE_OK);
+        CHECK(written == FNR_PLATFORM_ENVELOPE_HEADER_SIZE + length);
+        CHECK(fnr_envelope_decode(bytes.data(), written, &decoded) == FNR_ENVELOPE_OK);
+        CHECK(decoded.payload_length == length);
+        CHECK(std::memcmp(decoded.payload, sized.payload, length) == 0);
+    }
+
     auto bad = golden;
     bad[0] = 2U;
     CHECK(fnr_envelope_decode(bad.data(), bad.size(), &decoded) == FNR_ENVELOPE_UNSUPPORTED_VERSION);
@@ -187,6 +204,11 @@ static void test_profile_payload_contract() {
     CHECK(fnr_relative_mouse_payload_encode(0, 0, 4U, bytes, sizeof(bytes)) == FNR_RELATIVE_MOUSE_PAYLOAD_INVALID_BUTTONS);
     const uint8_t bad_axis[] = {1U, 0U, 0x80U, 0U};
     CHECK(fnr_relative_mouse_payload_decode(bad_axis, sizeof(bad_axis), &decoded) == FNR_RELATIVE_MOUSE_PAYLOAD_INVALID_AXIS);
+    const uint8_t bad_version[] = {2U, 0U, 0U, 0U};
+    CHECK(fnr_relative_mouse_payload_decode(bad_version, sizeof(bad_version), &decoded) == FNR_RELATIVE_MOUSE_PAYLOAD_UNSUPPORTED_VERSION);
+    const uint8_t bad_buttons[] = {1U, 4U, 0U, 0U};
+    CHECK(fnr_relative_mouse_payload_decode(bad_buttons, sizeof(bad_buttons), &decoded) == FNR_RELATIVE_MOUSE_PAYLOAD_INVALID_BUTTONS);
+    CHECK(fnr_relative_mouse_payload_decode(bytes, 3U, &decoded) == FNR_RELATIVE_MOUSE_PAYLOAD_INVALID_LENGTH);
 }
 
 static void test_sequence_comparator() {
@@ -238,6 +260,115 @@ static void test_order_profile_and_hid() {
     auto invalid = f.make_datagram(11U, 3U, 1, 1, 0U);
     invalid.payload[FNR_PLATFORM_ENVELOPE_HEADER_SIZE + 1U] = 0x80U;
     CHECK(fnr_receiver_core_accept_datagram(&f.core, &invalid, 5U) == FNR_RECEIVER_INVALID_PROFILE_PAYLOAD);
+}
+
+static void test_core_sequence_wrap() {
+    Fixture f;
+    f.mount();
+    const std::array<uint32_t, 4> sequence{{UINT32_MAX - 1U, UINT32_MAX, 0U, 1U}};
+    for (std::size_t i = 0U; i < sequence.size(); ++i) {
+        CHECK(f.send(UINT64_C(0x1111222233334444), sequence[i],
+                     static_cast<int16_t>(i), 0, 0U,
+                     static_cast<uint32_t>(i)) == FNR_RECEIVER_ACCEPTED);
+        f.service();
+    }
+    CHECK(f.core.counters.duplicates == 0U);
+    CHECK(f.core.counters.stale == 0U);
+    CHECK(f.core.counters.ambiguous_sequence == 0U);
+    CHECK(f.core.counters.sequence_gap_events == 0U);
+}
+
+static void test_rejected_messages_do_not_refresh() {
+    Fixture f;
+    f.mount();
+    CHECK(f.send(1U, 0U, 1, 2, 1U, 0U) == FNR_RECEIVER_ACCEPTED);
+    f.service();
+
+    auto wrong_peer = f.make_datagram(1U, 1U, 1, 1, 0U,
+                                      FNR_PROFILE_ID_RELATIVE_MOUSE, kOtherPeer);
+    CHECK(fnr_receiver_core_accept_datagram(&f.core, &wrong_peer, 100U) ==
+          FNR_RECEIVER_UNAUTHORIZED_PEER);
+
+    auto wrong_profile = f.make_datagram(1U, 1U, 1, 1, 0U, 2U);
+    CHECK(fnr_receiver_core_accept_datagram(&f.core, &wrong_profile, 120U) ==
+          FNR_RECEIVER_WRONG_PROFILE);
+
+    auto malformed = f.make_datagram(1U, 1U, 1, 1, 0U);
+    malformed.payload[0] = 2U;
+    CHECK(fnr_receiver_core_accept_datagram(&f.core, &malformed, 140U) ==
+          FNR_RECEIVER_MALFORMED_ENVELOPE);
+
+    auto invalid_profile = f.make_datagram(1U, 1U, 1, 1, 0U);
+    invalid_profile.payload[FNR_PLATFORM_ENVELOPE_HEADER_SIZE] = 2U;
+    CHECK(fnr_receiver_core_accept_datagram(&f.core, &invalid_profile, 160U) ==
+          FNR_RECEIVER_INVALID_PROFILE_PAYLOAD);
+
+    CHECK(f.send(1U, 0U, 10, 10, 3U, 200U) == FNR_RECEIVER_DUPLICATE);
+    fnr_receiver_core_tick(&f.core, 249U);
+    CHECK(f.core.fresh);
+    fnr_receiver_core_tick(&f.core, 250U);
+    CHECK(!f.core.fresh && f.core.counters.freshness_timeouts == 1U);
+    f.service();
+}
+
+static void test_transport_event_matrix() {
+    Fixture f;
+    f.mount();
+    const std::array<uint32_t, 7> events{{
+        FNR_TRANSPORT_EVENT_RESET,
+        FNR_TRANSPORT_EVENT_LINK_ERROR,
+        FNR_TRANSPORT_EVENT_GENERATION_CHANGE,
+        FNR_TRANSPORT_EVENT_SEQUENCE_DISCONTINUITY,
+        FNR_TRANSPORT_EVENT_RADIO_RESET,
+        FNR_TRANSPORT_EVENT_RADIO_UNAVAILABLE,
+        FNR_TRANSPORT_EVENT_TIMEOUT
+    }};
+    uint32_t sequence = 0U;
+    uint32_t now = 0U;
+    for (const uint32_t event : events) {
+        CHECK(f.send(77U, sequence, 1, -1, 1U, now) == FNR_RECEIVER_ACCEPTED);
+        f.service();
+        const uint64_t session_before = f.core.session;
+        const uint32_t sequence_before = f.core.last_sequence;
+        fnr_receiver_core_transport_events(&f.core, event);
+        CHECK(!f.core.fresh && f.core.have_session && f.core.have_sequence);
+        CHECK(f.core.session == session_before && f.core.last_sequence == sequence_before);
+        CHECK(f.hid.pending && f.hid.pending_is_neutral);
+        f.service();
+        ++sequence;
+        ++now;
+    }
+    CHECK(f.core.counters.transport_invalidations == events.size());
+
+    const uint32_t before = f.wire_profile.neutralizations;
+    fnr_receiver_core_transport_events(&f.core,
+        FNR_TRANSPORT_EVENT_DATAGRAM_REPLACED | FNR_TRANSPORT_EVENT_STATUS_REPLACED);
+    CHECK(f.wire_profile.neutralizations == before);
+}
+
+static void test_usb_suspend_resume_no_backlog() {
+    Fixture f;
+    f.mount();
+    CHECK(f.send(5U, 0U, 10, 20, 3U, 0U) == FNR_RECEIVER_ACCEPTED);
+    f.service();
+
+    CHECK(fnr_hid_device_usb_event(&f.hid, FNR_HID_USB_SUSPEND) == FNR_HID_STATUS_OK);
+    fnr_receiver_core_usb_state(&f.core, f.hid.usb_state);
+    CHECK(!f.core.fresh && f.mouse.x == 0 && f.mouse.y == 0 && f.mouse.buttons == 0U);
+    CHECK(f.send(5U, 1U, 99, 88, 3U, 1U) == FNR_RECEIVER_ACCEPTED_OUTPUT_DROPPED);
+    CHECK(f.mouse.x == 0 && f.mouse.y == 0 && f.mouse.buttons == 0U);
+
+    CHECK(fnr_hid_device_usb_event(&f.hid, FNR_HID_USB_RESUME) == FNR_HID_STATUS_OK);
+    fnr_receiver_core_usb_state(&f.core, f.hid.usb_state);
+    f.service();
+    const auto &neutral = f.usb.sent[f.usb.count - 1U];
+    CHECK(neutral.data[0] == 0U && neutral.data[1] == 0U && neutral.data[2] == 0U);
+
+    CHECK(f.send(5U, 2U, -7, 8, 2U, 2U) == FNR_RECEIVER_ACCEPTED);
+    f.service();
+    const auto &fresh = f.usb.sent[f.usb.count - 1U];
+    CHECK(fresh.data[0] == 2U && fresh.data[1] == static_cast<uint8_t>(-7) &&
+          fresh.data[2] == 8U);
 }
 
 static void test_session_change_and_retirement() {
@@ -367,6 +498,10 @@ int main() {
     test_sequence_comparator();
     test_config_and_authorization();
     test_order_profile_and_hid();
+    test_core_sequence_wrap();
+    test_rejected_messages_do_not_refresh();
+    test_transport_event_matrix();
+    test_usb_suspend_resume_no_backlog();
     test_session_change_and_retirement();
     test_freshness_wrap_and_nonrefresh();
     test_transport_and_usb_invalidation();
