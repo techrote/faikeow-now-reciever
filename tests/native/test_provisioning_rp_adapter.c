@@ -3,6 +3,8 @@
 #include <string.h>
 
 #include "fnr/provisioning.h"
+#include "fnr/profile.h"
+#include "fnr/profile_relative_mouse.h"
 #include "../../firmware/rp2040/receiver_adapter.h"
 
 static uint8_t image[FNR_PROVISIONING_RECORD_SIZE];
