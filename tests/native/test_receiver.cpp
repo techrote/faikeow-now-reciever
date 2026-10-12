@@ -298,10 +298,11 @@ static void test_transport_and_usb_invalidation() {
                                                  FNR_TRANSPORT_EVENT_STATUS_REPLACED);
     CHECK(f.wire_profile.neutralizations == neutral_before && f.core.fresh);
     fnr_receiver_core_transport_events(&f.core, FNR_TRANSPORT_EVENT_LINK_ERROR);
-    CHECK(!f.core.fresh && !f.core.have_sequence && f.core.have_session);
+    CHECK(!f.core.fresh && f.core.have_sequence && f.core.have_session);
     CHECK(f.hid.pending_is_neutral);
     f.service();
-    CHECK(f.send(77U, 3U, -1, 2, 1U, 1U) == FNR_RECEIVER_ACCEPTED);
+    CHECK(f.send(77U, 3U, -1, 2, 1U, 1U) == FNR_RECEIVER_STALE);
+    CHECK(f.send(77U, 11U, -1, 2, 1U, 2U) == FNR_RECEIVER_ACCEPTED);
     f.service();
 
     CHECK(fnr_hid_device_usb_event(&f.hid, FNR_HID_USB_UNMOUNT) == FNR_HID_STATUS_OK);
