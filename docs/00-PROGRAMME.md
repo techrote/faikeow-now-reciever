@@ -111,15 +111,21 @@ does not define a competing receiver protocol.
 
 ## FNR-007 — Generic provisioning and recovery
 
-Provision/configure:
+v0.1 uses paired build-time provisioning. One local, untracked configuration
+generates both firmware inputs: the RP2040 receives only a public CRC-protected
+record, while the ESP8285 additionally receives one per-device 16-byte ESP-NOW
+key. Factory firmware remains unprovisioned/fail-closed.
 
-- allowed peer(s);
-- RF channel;
-- encryption/key material if used;
-- enabled/selected profile;
-- compatible platform/profile versions.
+The RP2040 stages peer/profile settings but enables admission only after the
+FNR-005 status path reports the ESP radio READY on the expected channel. Radio
+or internal-link failure revokes that acknowledgement. Reconfiguration/factory
+reset uses the already accepted no-solder flashing paths; there is no permanent
+host provisioning service.
 
-Do not hard-code TiltMouse as the only possible sender.
+See [FNR-007-PROVISIONING.md](FNR-007-PROVISIONING.md). Software qualification
+covers corruption, secret separation, radio setup and RP acknowledgement.
+Representative-board provisioning/power-cycle/recovery smoke remains required
+before issue acceptance.
 
 ## FNR-008 — Platform physical acceptance + TiltMouse reference profile
 
