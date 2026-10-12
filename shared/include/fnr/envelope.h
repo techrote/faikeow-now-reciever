@@ -12,7 +12,7 @@ extern "C" {
 enum {
     FNR_PLATFORM_VERSION = 1,
     FNR_PLATFORM_MESSAGE_PROFILE_DATA = 1,
-    FNR_PLATFORM_ENVELOPE_HEADER_SIZE = 14,
+    FNR_PLATFORM_ENVELOPE_HEADER_SIZE = 18,
     FNR_PLATFORM_PAYLOAD_CAPACITY = FNR_DATAGRAM_CAPACITY - FNR_PLATFORM_ENVELOPE_HEADER_SIZE
 };
 
@@ -32,7 +32,7 @@ typedef struct fnr_envelope {
     uint8_t profile_id;
     uint8_t message_type;
     uint8_t flags;
-    uint32_t session;
+    uint64_t session;
     uint32_t sequence;
     uint16_t payload_length;
     uint8_t payload[FNR_PLATFORM_PAYLOAD_CAPACITY];
