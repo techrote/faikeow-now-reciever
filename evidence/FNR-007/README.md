@@ -82,7 +82,67 @@ the defect in push CI `38309757230`: the actual production radio-adapter test
 failed `!fnr_radio_take_foreground(&d)` after a bare packet from the configured
 MAC. The other 14 native tests passed; this expected failure precedes the repair.
 
-Wrong-profile/channel measurement, RP admission/counter observation,
-power-cycle persistence, link recovery, factory reset and reconfiguration still
-require qualification of the repaired exact source. FNR-008 is not dependency
-ready and TiltMouse interoperability/performance is not claimed.
+## Repaired production smoke — 2026-10-12
+
+Artifact source: `7b08dd1dcbec5f2484af846bcaee3acd4f11422b` (clean source).
+Push `38310778521` and PR `38310782531` both passed all four CI checks.
+The public config is unchanged from the initial identity above. The RP artifact
+is byte-for-byte unchanged. Rebuilt repaired ESP image SHA-256:
+`67f242d7a8909f93b58a696598d5b0e344c28b9c67b83cfc0f8a66244ddaa80a`.
+Repaired provisioning diagnostic SHA-256:
+`7f44fb804b9707a646ca60c2f4b6ef4e8d8519da6f850bf7c70d4055390b9ce5`.
+
+The repaired diagnostic ran on A and reported expected public metadata, valid
+record, key present, encryption enabled, authentication enabled and READY. The
+production ESP/RP pair was then flashed with exact readback and cold-booted by
+the operator. One ROM synchronisation attempt failed before any write; repeating
+the documented physical recovery sequence succeeded. No reset GPIO was guessed.
+
+[Curated production results](production-smoke.json) retain source/tree/lock,
+artifact hashes, timestamps, durations, requested channel and sender counters
+for all 15 cases. Each active case attempted/queued 20 packets at 50 ms spacing;
+each target-filtered Windows Raw Input capture lasted approximately five seconds.
+
+| Repaired production case | Moving HID events | Assessment |
+| --- | ---: | --- |
+| Idle after cold boot | 0 | Safe inactivity |
+| Correct encrypted/authenticated peer/profile | 20 | Positive smoke |
+| Wrong sender MAC, otherwise correct encrypted wrapper | 0 | Safe inactivity |
+| Unsupported packet profile 99 | 0 | Safe inactivity |
+| Mismatched sender key | 0 | Safe inactivity |
+| Bare plaintext packet, configured MAC | 0 | Original defect blocked |
+| Encrypted but unwrapped packet | 0 | Authentication remains mandatory |
+| Plaintext with incorrect authentication key | 0 | Keyless spoof blocked |
+| Altered authentication tag | 0 | Safe inactivity |
+| Wrong authenticated configuration generation | 0 | Safe inactivity |
+| Sender requested channel 6, receiver configured channel 1 | 0 | Bounded measurement; reception counters pending |
+| Same channel mismatch plus wrong sender MAC | 0 | Safe inactivity |
+| Valid wrapper with sender link encryption deliberately disabled | 20 | SDK encryption-attestation limitation measured |
+| Replay of earlier sequences in the same session | 0 | No replayed movement |
+| Correct encrypted/authenticated restore without receiver reflash | 20 | Positive recovery smoke |
+
+All movement totals matched the moving-event counts (+X / -Y); no button events
+were observed. The mismatched-channel authorized case had 20 sender completion
+failures and no HID movement. This does not prove absence of physical reception;
+the observer's radio counters must establish that separately. It does not
+contradict the retained FNR-004 mismatch-reception measurements.
+
+The valid-wrapper/plaintext case is deliberately **a measurement**, not a claim
+of encrypted-only callback delivery. It proves that a key-holding sender can
+authenticate traffic while disabling its own link encryption. This SDK limit is
+explicit in [the wrapper security contract](../../docs/FNR-007-RADIO-AUTH.md).
+Bare or invalidly authenticated traffic produced no HID output. Production
+still requires encrypted peer registration and has no unwrapped fallback.
+
+These are exact production RF-to-USB observations. RP admission/counter state
+is not exposed by the production HID-only interface. The separate observer
+phase remains necessary for boot staging, matching READY, downstream rejection,
+revocation, neutral barriers and recovery-order preservation.
+
+## Remaining acceptance
+
+RP admission/counter observation, full power-cycle metadata reconciliation,
+link recovery, factory reset and reconfiguration still require qualification.
+Unsupported provisioning-schema handling and replay after acknowledgement
+revocation are explicitly included in the observer phase. FNR-008 is not
+dependency ready; TiltMouse interoperability/performance is not claimed.
