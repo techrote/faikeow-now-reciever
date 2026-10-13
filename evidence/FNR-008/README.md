@@ -106,3 +106,24 @@ precise latency, all-buttons-up, or at-most-once host output from compilation.
 Raw inventories, original flash, full private identities and keys remain
 outside Git. Concise derived captures and stable hashes will identify completed
 cases. No physical RF acceptance or final v0.1 defaults are claimed yet.
+
+## Sender diagnosis stop after baseline restoration
+
+The archived TiltMouse 5f07be2 diagnostic binary was restored with live ROM
+identity, three region digests and independent app readback verified; cold
+startup established HID plus CDC. A startup capture then lost serial with
+Windows ClearCommError 22. Operator reported spontaneous disconnection and
+no unusual heat. The original wrapper did not preserve Raw Input on that
+exception, so whole-USB removal versus CDC-only failure is not established.
+Movement/recenter/RF trials stopped for diagnosis; no receiver writes followed.
+
+A separate 30-second passive sender capture was stable: no serial errors,
+HID removal or target movement. It nevertheless showed neutral not ready,
+one cumulative IMU stale/recovery and driver reinit, 279667 us maximum loop gap
+and 208 dropped logical movement reports. These counts did not increase in
+the retained snapshots. Source recovery waits explain a likely gap duration,
+but the initiating event/calibration failure remain unattributed. Sender-only
+raw-sample telemetry is being qualified; thresholds and response stay unchanged.
+The updated shared matrix retains the failures and limitations explicitly.
+Board A remains on config 2; no receiver RF/transport/profile acceptance is
+inferred from any of these sender observations.
