@@ -13,7 +13,9 @@ than saturated roll. Three acquisition windows establish native gyro offset
 near (-1.9, 10.3, -0.83) dps, still preventing the unchanged startup quiet gate.
 The source-owned gyro-bias fix `3a33f41b0e2f5016b425bf28a955dfd777912bf8` passes
 all 14 host tests and all required sender gates in CI 38480200839. It has not
-yet been deployed; stationary calibration, axes, recenter and usability remain
+yet established physical calibration. The candidate was subsequently flashed
+at 22:55:45 UTC with live identity, three region checks and independent readback;
+cold boot and stationary capture are pending. Axes, recenter and usability remain
 physical gates. Exact sender artifacts, derived results and private capture
 hashes are in [TiltMouse evidence](https://github.com/techrote/ESP32-QMI8658C-TiltMouse/tree/codex/tm-008-physical-acceptance/evidence/TM-008).
 
