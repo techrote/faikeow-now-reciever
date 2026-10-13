@@ -6,24 +6,22 @@ Status: **IN PROGRESS; NOT ACCEPTED**. Neither issue is closed by this record.
 
 ## Latest sender checkpoint and receiver boundary
 
-TiltMouse frame observer source 2ee4f77 was successfully flashed/read back
-after fresh ROM identity, then cold-booted. Its 30-second stationary capture
-(22:30:06 UTC) was USB/serial stable and produced a plausible flat pose rather
-than saturated roll. Three acquisition windows establish native gyro offset
-near (-1.9, 10.3, -0.83) dps, still preventing the unchanged startup quiet gate.
-The source-owned gyro-bias fix `3a33f41b0e2f5016b425bf28a955dfd777912bf8` passes
-all 14 host tests and all required sender gates in CI 38480200839. It has not
-yet established physical calibration. The candidate was subsequently flashed
-at 22:55:45 UTC with live identity, three region checks and independent readback;
-cold boot and stationary capture are pending. Axes, recenter and usability remain
-physical gates. Exact sender artifacts, derived results and private capture
-hashes are in [TiltMouse evidence](https://github.com/techrote/ESP32-QMI8658C-TiltMouse/tree/codex/tm-008-physical-acceptance/evidence/TM-008).
+TiltMouse source/build 3a33f41 was flashed/read back and cold-booted. Its
+30-second stationary capture (23:10:50 UTC, 14 October local time) established
+neutral=1 and quiet=32/32 with zero host motion, faults or removal. Learned
+gyro offsets stayed frozen. Qualification completed about 5.145 seconds after
+boot; a two-second startup is not established. An operator-aligned 121-second
+movement recording was USB/serial stable and the operator reported "Feels good,
+x axis swapped". TiltMouse alone now corrects the default X sign, pending
+build/CI and physical repeat. Recenter remained 0 and mixed touch/click events
+are not acceptance. Movement-drop counts are retained in sender evidence.
 
-Board A receiver firmware is unchanged on its historical config-2 pair.
-Prepared config-3 firmware is not deployed. No authenticated RF, internal
-transport, dispatch, timeout or fault/recovery result follows from these
-sender captures. FNR-008 remains open. Later sections retain the chronology
-of earlier diagnosis checkpoints; this checkpoint describes current state.
+Board A is unchanged on config 2, with no receiver flashes/resets. No receiver
+RF, transport, dispatch, timeout or recovery acceptance follows from the sender
+result. Exact sender artifacts, captures and limits are in
+[TiltMouse evidence](https://github.com/techrote/ESP32-QMI8658C-TiltMouse/tree/codex/tm-008-physical-acceptance/evidence/TM-008).
+Receiver evidence head 4078604 passes all gates in CI 38481643674. Both issues
+remain open; earlier sections retain their chronological then-current status.
 
 ## Reconciled authority
 

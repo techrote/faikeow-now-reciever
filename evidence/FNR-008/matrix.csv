@@ -3,9 +3,9 @@ TM-USB-ENUM,A1,TM,PASS,Normal 303a:4004 Windows mouse enumeration and parsed cap
 TM-USB-IDLE,A1,TM,PASS,Initial 20 seconds zero host motion and no removal or observer error
 TM-USB-COLD,A1,TM,PASS,Operator cold replug followed by healthy selected mouse capture; LEDs dark
 TM-USB-SUSPEND,A1,TM,NOT TESTED,Correlate suspend resume with telemetry and host input
-TM-USB-NEUTRAL,A1,TM,BLOCKED,Frame 2ee4f77 flashed and stable flat capture; measured gyro offset blocks neutral; 3a33f41 stationary-bias fix passes CI but awaits physical calibration/drift
-TM-USB-AXES,A1,TM,PARTIAL,Original curve retained; repeat signs and control after frame and gyro-bias calibration
-TM-USB-RECENTER,A1,TM,NOT TESTED,Earlier valid BOOT gesture observed but old saturated neutral not accepted; repeat bounded gesture after bias qualification
+TM-USB-NEUTRAL,A1,TM,PARTIAL,3a33f41 cold boot reaches quiet32/32 neutral1; 30s idle zero motion/faults; qualification5.145s; repeated starts and actual-grip drift pending
+TM-USB-AXES,A1,TM,PARTIAL,3a33f41 operator says control feels good but X swapped; narrow X-only correction pending CI and physical repeat; no individual-edge sign trace
+TM-USB-RECENTER,A1,TM,NOT TESTED,Latest active capture recenter0; operator did not confirm requested gesture; repeat dedicated BOOT held-release trial with recording aligned to response
 TM-USB-TOUCH,A1,TM,NOT TESTED,Each GPIO1-3 left and GPIO5-7 right; press release hold drag and fusion comparison
 TM-USB-GPIO4,A1,TM,NOT TESTED,Touch separator independently and observe no click
 TM-USB-RECAL,A1,TM,NOT TESTED,Touch calibration recalibration and practical fault recovery
