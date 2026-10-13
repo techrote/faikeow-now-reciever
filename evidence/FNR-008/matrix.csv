@@ -51,4 +51,4 @@ CLICK-STATIONARY,E,TM,NOT TESTED,Left right transition timestamps and 100 ms pea
 CLICK-MOVING,E,TM,NOT TESTED,Moving clicks and drags distinguish intentional motion from artefact
 FINAL-REVIEW,F,JOINT,NOT TESTED,Exact accepted heads CI contract lifecycle evidence and separate acceptance conclusions
 TM-USB-SERIAL-DIAG,A1,TM/HOST,BLOCKED,Spontaneous ClearCommError 22; initial wrapper lost Raw Input result; later 30-second passive capture stable; whole-USB versus CDC-only cause not established
-TM-ROM-ENTRY,A1,TM/OPERATOR,BLOCKED,Latest reported cold entry still exposed application; bounded BOOT-input observation awaits operator completion/timing; no button defect inferred
+TM-ROM-ENTRY,A1,TM/OPERATOR,BLOCKED,BOOT gesture seen via recenter counter but hold timing unverified; keep BOOT held through fresh ROM identity confirmation before write

@@ -145,3 +145,12 @@ entry still exposed the application. A bounded BOOT-input observation is
 awaiting operator completion/timing confirmation; no button defect is inferred.
 Installed sender source remains 62c17de. Board A remains unchanged on config 2.
 Receiver radio/transport/profile acceptance remains untested and independent.
+
+Sender BOOT observation update: operator reported completing the long hold.
+A separate 114.563-second bounded serial record on source 62c17de was stable
+and closed cleanly. Recenter=1 was already present in its first retained
+snapshot, confirming firmware received some valid BOOT gesture, but not the
+reported hold duration or its exact effect. The old frame's 85-degree neutral
+is not accepted recenter evidence. Next ROM verification keeps BOOT held
+until the host confirms downloader identity. No further write has occurred;
+frame observer 2ee4f77 remains unflashed and Board A remains unchanged.
