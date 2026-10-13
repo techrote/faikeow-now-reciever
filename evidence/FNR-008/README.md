@@ -12,8 +12,10 @@ neutral=1 and quiet=32/32 with zero host motion, faults or removal. Learned
 gyro offsets stayed frozen. Qualification completed about 5.145 seconds after
 boot; a two-second startup is not established. An operator-aligned 121-second
 movement recording was USB/serial stable and the operator reported "Feels good,
-x axis swapped". TiltMouse alone now corrects the default X sign, pending
-build/CI and physical repeat. Recenter remained 0 and mixed touch/click events
+x axis swapped". TiltMouse source/build
+`e8cfa99c3780df1296eb0fe76678224f67a33436` corrects only default X and passes
+all 14 tests and all required gates in CI 38483762002; archived binaries remain
+unflashed, with physical repeat pending. Recenter remained 0 and mixed touch/click events
 are not acceptance. Movement-drop counts are retained in sender evidence.
 
 Board A is unchanged on config 2, with no receiver flashes/resets. No receiver
