@@ -4,6 +4,25 @@ Owning receiver issue: #9. Reference sender issue: TiltMouse #8.
 Session: `joint-TM008-FNR008-2026-10-13` (Europe/London).
 Status: **IN PROGRESS; NOT ACCEPTED**. Neither issue is closed by this record.
 
+## Latest sender checkpoint and receiver boundary
+
+TiltMouse frame observer source 2ee4f77 was successfully flashed/read back
+after fresh ROM identity, then cold-booted. Its 30-second stationary capture
+(22:30:06 UTC) was USB/serial stable and produced a plausible flat pose rather
+than saturated roll. Three acquisition windows establish native gyro offset
+near (-1.9, 10.3, -0.83) dps, still preventing the unchanged startup quiet gate.
+The source-owned gyro-bias fix `3a33f41b0e2f5016b425bf28a955dfd777912bf8` passes
+all 14 host tests and all required sender gates in CI 38480200839. It has not
+yet been deployed; stationary calibration, axes, recenter and usability remain
+physical gates. Exact sender artifacts, derived results and private capture
+hashes are in [TiltMouse evidence](https://github.com/techrote/ESP32-QMI8658C-TiltMouse/tree/codex/tm-008-physical-acceptance/evidence/TM-008).
+
+Board A receiver firmware is unchanged on its historical config-2 pair.
+Prepared config-3 firmware is not deployed. No authenticated RF, internal
+transport, dispatch, timeout or fault/recovery result follows from these
+sender captures. FNR-008 remains open. Later sections retain the chronology
+of earlier diagnosis checkpoints; this checkpoint describes current state.
+
 ## Reconciled authority
 
 Receiver default/main `a49d95e61dc910c7db139db0280f80a31d10bfc8` and

@@ -3,9 +3,9 @@ TM-USB-ENUM,A1,TM,PASS,Normal 303a:4004 Windows mouse enumeration and parsed cap
 TM-USB-IDLE,A1,TM,PASS,Initial 20 seconds zero host motion and no removal or observer error
 TM-USB-COLD,A1,TM,PASS,Operator cold replug followed by healthy selected mouse capture; LEDs dark
 TM-USB-SUSPEND,A1,TM,NOT TESTED,Correlate suspend resume with telemetry and host input
-TM-USB-NEUTRAL,A1,TM,BLOCKED,62c17de confirmed face-up native -Z frame and stationary gyro Y above 8 dps; 2ee4f77 frame fix green but unflashed; bias correction pending
-TM-USB-AXES,A1,TM,PARTIAL,Original curve restored; proper frame correction requires physical axis retest after neutral and downloader diagnosis
-TM-USB-RECENTER,A1,TM,NOT TESTED,Requested gesture trial captured recenter counter zero; repeat deliberate BOOT hold release with telemetry
+TM-USB-NEUTRAL,A1,TM,BLOCKED,Frame 2ee4f77 flashed and stable flat capture; measured gyro offset blocks neutral; 3a33f41 stationary-bias fix passes CI but awaits physical calibration/drift
+TM-USB-AXES,A1,TM,PARTIAL,Original curve retained; repeat signs and control after frame and gyro-bias calibration
+TM-USB-RECENTER,A1,TM,NOT TESTED,Earlier valid BOOT gesture observed but old saturated neutral not accepted; repeat bounded gesture after bias qualification
 TM-USB-TOUCH,A1,TM,NOT TESTED,Each GPIO1-3 left and GPIO5-7 right; press release hold drag and fusion comparison
 TM-USB-GPIO4,A1,TM,NOT TESTED,Touch separator independently and observe no click
 TM-USB-RECAL,A1,TM,NOT TESTED,Touch calibration recalibration and practical fault recovery
@@ -51,4 +51,4 @@ CLICK-STATIONARY,E,TM,NOT TESTED,Left right transition timestamps and 100 ms pea
 CLICK-MOVING,E,TM,NOT TESTED,Moving clicks and drags distinguish intentional motion from artefact
 FINAL-REVIEW,F,JOINT,NOT TESTED,Exact accepted heads CI contract lifecycle evidence and separate acceptance conclusions
 TM-USB-SERIAL-DIAG,A1,TM/HOST,BLOCKED,Spontaneous ClearCommError 22; initial wrapper lost Raw Input result; later 30-second passive capture stable; whole-USB versus CDC-only cause not established
-TM-ROM-ENTRY,A1,TM/OPERATOR,BLOCKED,BOOT gesture seen via recenter counter but hold timing unverified; keep BOOT held through fresh ROM identity confirmation before write
+TM-ROM-ENTRY,A1,TM/OPERATOR,PASS,Held BOOT through actual ROM detection; fresh preserved MAC and three write digests plus independent app readback verified; no automatic reset hammering
