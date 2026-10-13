@@ -3,9 +3,9 @@ TM-USB-ENUM,A1,TM,PASS,Normal 303a:4004 Windows mouse enumeration and parsed cap
 TM-USB-IDLE,A1,TM,PASS,Initial 20 seconds zero host motion and no removal or observer error
 TM-USB-COLD,A1,TM,PASS,Operator cold replug followed by healthy selected mouse capture; LEDs dark
 TM-USB-SUSPEND,A1,TM,NOT TESTED,Correlate suspend resume with telemetry and host input
-TM-USB-NEUTRAL,A1,TM,NOT TESTED,Establish startup neutral calibration with real IMU telemetry
-TM-USB-AXES,A1,TM,NOT TESTED,60-second trial contained 230 neutral events; diagnose before claiming axes
-TM-USB-RECENTER,A1,TM,NOT TESTED,Deliberate BOOT hold release stationary and after movement
+TM-USB-NEUTRAL,A1,TM,PARTIAL,5f07be2 diagnostic USB neutral and touch ready; 25-second quiet idle; normal corrected image pending
+TM-USB-AXES,A1,TM,PARTIAL,5f07be2 diagnostic USB both axes reach host; operator Y inverted and speed hard to control; candidate 1 repeat pending
+TM-USB-RECENTER,A1,TM,NOT TESTED,Requested gesture trial captured recenter counter zero; repeat deliberate BOOT hold release with telemetry
 TM-USB-TOUCH,A1,TM,NOT TESTED,Each GPIO1-3 left and GPIO5-7 right; press release hold drag and fusion comparison
 TM-USB-GPIO4,A1,TM,NOT TESTED,Touch separator independently and observe no click
 TM-USB-RECAL,A1,TM,NOT TESTED,Touch calibration recalibration and practical fault recovery
@@ -45,7 +45,7 @@ LOSS-RECOVERY,C,JOINT,NOT TESTED,Bounded sender recovery; all-up fail-safe and f
 PERF-CADENCE,D,JOINT,NOT TESTED,Logical RF UART and USB cadence with reproducible counter intervals
 PERF-LOSS,D,JOINT,NOT TESTED,Offered callbacks accepted drops gaps and deliberate loss reconciled
 PERF-LATENCY,D,JOINT,NOT TESTED,Reproducible host responsiveness bounds without unsupported precision
-PERF-LOOP,D,TM,NOT TESTED,Maximum loop gap collapsed slots stack watermark and dropped logical movement
+PERF-LOOP,D,TM,PARTIAL,5f07be2 diagnostic idle max loop gap 5708 us and no dropped logical reports; RF and active workload pending
 PERF-SOAK,D,JOINT,NOT TESTED,Meaningful soak duration and anomalies recorded without post-hoc thresholds
 CLICK-STATIONARY,E,TM,NOT TESTED,Left right transition timestamps and 100 ms peak X Y correlated with host
 CLICK-MOVING,E,TM,NOT TESTED,Moving clicks and drags distinguish intentional motion from artefact
