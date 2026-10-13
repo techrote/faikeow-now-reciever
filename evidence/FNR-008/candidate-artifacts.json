@@ -1,0 +1,117 @@
+{
+  "session_id": "joint-TM008-FNR008-2026-10-13",
+  "source_commit": "a49d95e61dc910c7db139db0280f80a31d10bfc8",
+  "source_clean_at_build": true,
+  "source_tree": "a4eac8570cb7378dde2bff07dccdd74b3c3db8e2",
+  "dependency_lock_sha256": "8f72ecec0c03aea93d8eecabf9b584e218726a5c89c87915714173f677471e5c",
+  "configuration": {
+    "channel": 1,
+    "config_id": "0x28df6312548b3111",
+    "encryption_required": true,
+    "freshness_timeout_ms": 250,
+    "generation": 3,
+    "platform_version": 1,
+    "profile_id": 1,
+    "profile_schema_version": 1,
+    "public_record_sha256": "f9e7143306d73186bb03ef77bf5673bd6ca9fd7f0e78f98d685ca0a5bdfdce5f",
+    "radio_key_present": true,
+    "schema_version": 1,
+    "receiver_station_mac": "ec:94:cb:b3:c4:65",
+    "session_id": "joint-TM008-FNR008-2026-10-13",
+    "physical_pairing_accepted": false,
+    "sender_station_mac_sha256": "47e318a576d408439c0eac06c612580ab13aec47ee8d73f20b5be19b0af2b4f7"
+  },
+  "artifacts": [
+    {
+      "artifact": "build/fnr008-production-rp-win/fnr_rp2040_hid.uf2",
+      "sha256": "4bb9d583c6b2fcab97fa1b39e6dd887ef18844b26723f6a75afb8305b7e11236",
+      "bytes": 60416,
+      "deployment_key_absent": true,
+      "derived_auth_key_absent": true,
+      "deployed_in_this_session": false
+    },
+    {
+      "artifact": "build/fnr008-production-rp-win/fnr_rp2040_hid.elf",
+      "sha256": "a71ee438ad13f02cc8997e9d5d020b03b8e5a17e05c0d841eb228f85337d911a",
+      "bytes": 66916,
+      "deployment_key_absent": true,
+      "derived_auth_key_absent": true,
+      "deployed_in_this_session": false
+    },
+    {
+      "artifact": "build/fnr008-production-rp-win/fnr_rp2040_hid.bin",
+      "sha256": "be89dcef72fa65a47efed18ab3bddd18c7ea105f0017c18add8bd8fd518c1fa6",
+      "bytes": 30196,
+      "deployment_key_absent": true,
+      "derived_auth_key_absent": true,
+      "deployed_in_this_session": false
+    },
+    {
+      "artifact": "build/fnr008-observer-rp-win/fnr_provisioning_observer.uf2",
+      "sha256": "1d55b2f555837965363ff99cf49b9b066a47f53549093894a893957c73669491",
+      "bytes": 198656,
+      "deployment_key_absent": true,
+      "derived_auth_key_absent": true,
+      "deployed_in_this_session": false
+    },
+    {
+      "artifact": "build/fnr008-observer-rp-win/fnr_provisioning_observer.elf",
+      "sha256": "3a703ae4e06d1d81c3892b4c3fe07c6a46ae34852f033c908e1afc844951f47f",
+      "bytes": 154752,
+      "deployment_key_absent": true,
+      "derived_auth_key_absent": true,
+      "deployed_in_this_session": false
+    },
+    {
+      "artifact": "build/fnr008-observer-rp-win/fnr_provisioning_observer.bin",
+      "sha256": "d62165e722a0797361ea1678fd384b95e7fba0dcf26498e870d97cce2545aee8",
+      "bytes": 99140,
+      "deployment_key_absent": true,
+      "derived_auth_key_absent": true,
+      "deployed_in_this_session": false
+    },
+    {
+      "artifact": "build/fnr008-production-esp-win/fnr008_production_esp.ino.bin",
+      "sha256": "fd992b8a012206db418f87d06e8c945ad15ef3295a10812d1da2009c61a5fd18",
+      "bytes": 282752,
+      "deployment_key_absent": false,
+      "derived_auth_key_absent": false,
+      "deployed_in_this_session": false
+    },
+    {
+      "artifact": "build/fnr008-production-esp-win/fnr008_production_esp.ino.elf",
+      "sha256": "92f50e7a7468aafb46fe4816329c7e3c8958b6764bdadd2bc36ec9a5144855f7",
+      "bytes": 2816608,
+      "deployment_key_absent": false,
+      "derived_auth_key_absent": false,
+      "deployed_in_this_session": false
+    },
+    {
+      "artifact": "build/fnr008-diag-esp-win/fnr008_diag_esp.ino.bin",
+      "sha256": "85ec8598b0e45f3e661bc7088ed5a0db213258b10370ede3b34366728cf6a7b2",
+      "bytes": 281424,
+      "deployment_key_absent": false,
+      "derived_auth_key_absent": false,
+      "deployed_in_this_session": false
+    },
+    {
+      "artifact": "build/fnr008-diag-esp-win/fnr008_diag_esp.ino.elf",
+      "sha256": "459c50da31982bd625a48fa28e64d1ddc356d56e5bfbabaf297b07268a4217c4",
+      "bytes": 2757632,
+      "deployment_key_absent": false,
+      "derived_auth_key_absent": false,
+      "deployed_in_this_session": false
+    }
+  ],
+  "physical_acceptance": false,
+  "build_method": "Supplemental native Windows builds; full commands in private manifest. No source/wire change.",
+  "toolchains": {
+    "pico_sdk": "2.2.0 a1438dff1d38bd9c65dbd693f0e5db4b9ae91779",
+    "tinyusb": "0.18.0 86ad6e56c1700e85f1c5678607a762cfe3aa2f47",
+    "arm": "13.3.Rel1 GCC 13.3.1",
+    "esp8266_arduino": "3.1.2 NONOSDK22x_190703",
+    "xtensa": "GCC 10.3.0",
+    "arduino_cli": "1.5.1",
+    "cmake": "3.31.6"
+  }
+}

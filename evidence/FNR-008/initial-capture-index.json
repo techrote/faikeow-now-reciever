@@ -1,0 +1,21 @@
+{
+  "session_id": "joint-TM008-FNR008-2026-10-13",
+  "captures": [
+    {
+      "capture": "inventory-initial.json",
+      "sha256": "342bedcb36907aa083eece5151f3d3633af076544b86ed698f85bc6b16f3c559"
+    },
+    {
+      "capture": "receiver-initial-hid-probe/result.json",
+      "sha256": "f5c10678b012187801d97c45f484551fe1566c36ecd79fe73be3ad95a3ce35cd"
+    },
+    {
+      "capture": "receiver-initial-descriptors/result.json",
+      "sha256": "1676c13a5d5b6470fed0b79e4c33b0c4106f36b6768465dfad1d325098dcb11b"
+    },
+    {
+      "capture": "receiver-initial-idle/result.json",
+      "sha256": "4ad1a4b69a3d8be83facbec8bc690dead120960ae66d835732c0ff053eb3d06a"
+    }
+  ]
+}
