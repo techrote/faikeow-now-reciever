@@ -4,7 +4,7 @@ TM-USB-IDLE,A1,TM,PASS,Initial 20 seconds zero host motion and no removal or obs
 TM-USB-COLD,A1,TM,PASS,Operator cold replug followed by healthy selected mouse capture; LEDs dark
 TM-USB-SUSPEND,A1,TM,NOT TESTED,Correlate suspend resume with telemetry and host input
 TM-USB-NEUTRAL,A1,TM,PARTIAL,5f07be2 diagnostic USB neutral and touch ready; 25-second quiet idle; normal corrected image pending
-TM-USB-AXES,A1,TM,PARTIAL,5f07be2 diagnostic USB both axes reach host; operator corrected orientation and confirmed original directions; speed tuning repeat pending
+TM-USB-AXES,A1,TM,PARTIAL,5f07be2 diagnostic USB both axes reach host; original directions confirmed; physical speed candidate 1 rejected; restore baseline and verify neutral in grip
 TM-USB-RECENTER,A1,TM,NOT TESTED,Requested gesture trial captured recenter counter zero; repeat deliberate BOOT hold release with telemetry
 TM-USB-TOUCH,A1,TM,NOT TESTED,Each GPIO1-3 left and GPIO5-7 right; press release hold drag and fusion comparison
 TM-USB-GPIO4,A1,TM,NOT TESTED,Touch separator independently and observe no click

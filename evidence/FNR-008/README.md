@@ -68,7 +68,9 @@ false freshness failure in the actual target loop. TiltMouse source
 `5f07be236680d6232081923615c0433d643c4fdf` corrects that clock boundary; its
 diagnostic USB capture established ready inputs, quiet idle and movement on
 both host axes. The operator confirmed the original directions after correcting board
-orientation; speed-curve tuning and a repeat trial remain required. This establishes no receiver radio, transport or profile result.
+orientation; the physical speed-curve candidate was rejected as less controllable.
+Baseline restoration and controlled neutral/recenter diagnosis are pending.
+This establishes no receiver radio, transport or profile result.
 TiltMouse diagnosis is tracked in
 [its draft PR #25](https://github.com/techrote/ESP32-QMI8658C-TiltMouse/pull/25)
 and its own evidence directory. Receiver acceptance is not inferred from a
