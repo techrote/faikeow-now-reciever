@@ -4,9 +4,9 @@ TM-USB-IDLE,A1,TM,PASS,Initial 20 seconds zero host motion and no removal or obs
 TM-USB-COLD,A1,TM,PASS,Operator cold replug followed by healthy selected mouse capture; LEDs dark
 TM-USB-SUSPEND,A1,TM,NOT TESTED,Correlate suspend resume with telemetry and host input
 TM-USB-NEUTRAL,A1,TM,PARTIAL,3a33f41 cold boot reaches quiet32/32 neutral1; 30s idle zero motion/faults; qualification5.145s; repeated starts and actual-grip drift pending
-TM-USB-AXES,A1,TM,PARTIAL,3a33f41 operator says control feels good but X swapped; narrow X-only correction pending CI and physical repeat; no individual-edge sign trace
-TM-USB-RECENTER,A1,TM,NOT TESTED,Latest active capture recenter0; operator did not confirm requested gesture; repeat dedicated BOOT held-release trial with recording aligned to response
-TM-USB-TOUCH,A1,TM,NOT TESTED,Each GPIO1-3 left and GPIO5-7 right; press release hold drag and fusion comparison
+TM-USB-AXES,A1,TM,PARTIAL,e8cfa99 X-only correction: operator control seems good and both host axes move; individual edge signs not narrated; swapped click layout requested next
+TM-USB-RECENTER,A1,TM,PARTIAL,e8cfa99 dedicated reported 2s BOOT gesture: recenter0->1 and neutral changed; gyro frozen; USB stable; held-button and restart combinations remain
+TM-USB-TOUCH,A1,TM,PARTIAL,Both button flags observed in mixed handling; operator requests GPIO5-7 left and GPIO1-3 right next; sensitivity unchanged pending controlled touch/GPIO4/click trials
 TM-USB-GPIO4,A1,TM,NOT TESTED,Touch separator independently and observe no click
 TM-USB-RECAL,A1,TM,NOT TESTED,Touch calibration recalibration and practical fault recovery
 TM-USB-NO-STALE,A1,TM,NOT TESTED,Movement reconnect and fault trials with host capture

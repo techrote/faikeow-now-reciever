@@ -14,8 +14,14 @@ boot; a two-second startup is not established. An operator-aligned 121-second
 movement recording was USB/serial stable and the operator reported "Feels good,
 x axis swapped". TiltMouse source/build
 `e8cfa99c3780df1296eb0fe76678224f67a33436` corrects only default X and passes
-all 14 tests and all required gates in CI 38483762002; archived binaries remain
-unflashed, with physical repeat pending. Recenter remained 0 and mixed touch/click events
+all 14 tests and all required gates in CI 38483762002. Its diagnostic image was
+flashed/read back at 23:28:18 UTC and cold-booted; repeated 30-second orientation
+calibration/idle is stable with zero movement/faults/removal. Qualification took
+8.637 seconds from boot; two-second startup is not established. A closed operator capture confirms BOOT recenter 0 -> 1, changed neutral and
+stable USB/sensors; the operator reports good control and dark LEDs. Sender-only
+next-build steering requests swapped click locations and a very dim diagnostic
+sensor indicator. Touch/layout qualification remains open; no receiver changes
+or RF conclusions follow. Recenter remained 0 and mixed touch/click events
 are not acceptance. Movement-drop counts are retained in sender evidence.
 
 Board A is unchanged on config 2, with no receiver flashes/resets. No receiver
