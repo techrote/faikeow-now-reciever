@@ -127,3 +127,21 @@ raw-sample telemetry is being qualified; thresholds and response stay unchanged.
 The updated shared matrix retains the failures and limitations explicitly.
 Board A remains on config 2; no receiver RF/transport/profile acceptance is
 inferred from any of these sender observations.
+
+## Sender frame attribution and pending diagnostic deployment
+
+Operator-confirmed flat, LED-face-up stationary TiltMouse observer source
+62c17de exposed native acceleration near (44,-5,-1001) mg and gyro Y
+8.781-9.437 dps. The unchanged 8 dps startup predicate stayed at quiet 0/32;
+the untransformed estimator saturated near -85 degrees roll. A target-main
+regression reproduced the mounting defect independently of sensor freshness.
+Sender source `2ee4f77d0a6e5f4b1fa18a1110e0596720acb38f` applies a proper
+180-degree X rotation to both accel and gyro, adds diagnostic-only bounded
+native mean/spread windows and passes all four CI gates (38474705997).
+Physical frame qualification and gyro-offset correction remain outstanding.
+
+The frame candidate is archived but not flashed: the latest reported downloader
+entry still exposed the application. A bounded BOOT-input observation is
+awaiting operator completion/timing confirmation; no button defect is inferred.
+Installed sender source remains 62c17de. Board A remains unchanged on config 2.
+Receiver radio/transport/profile acceptance remains untested and independent.
