@@ -1,0 +1,55 @@
+case,phase,owner,status,evidence_or_remaining_action
+TM-USB-ENUM,A1,TM,PASS,Normal 303a:4004 Windows mouse enumeration and parsed caps
+TM-USB-IDLE,A1,TM,PASS,Initial 20 seconds zero host motion and no removal or observer error
+TM-USB-COLD,A1,TM,PASS,Operator cold replug followed by healthy selected mouse capture; LEDs dark
+TM-USB-SUSPEND,A1,TM,NOT TESTED,Correlate suspend resume with telemetry and host input
+TM-USB-NEUTRAL,A1,TM,PARTIAL,3a33f41 cold boot reaches quiet32/32 neutral1; 30s idle zero motion/faults; qualification5.145s; repeated starts and actual-grip drift pending
+TM-USB-AXES,A1,TM,PARTIAL,e8cfa99 X-only correction: operator control seems good and both host axes move; individual edge signs not narrated; swapped click layout requested next
+TM-USB-RECENTER,A1,TM,PARTIAL,e8cfa99 dedicated reported 2s BOOT gesture: recenter0->1 and neutral changed; gyro frozen; USB stable; held-button and restart combinations remain
+TM-USB-TOUCH,A1,TM,PARTIAL,Mixed handling only on e8cfa99; requested GPIO5-7 left and GPIO1-3 right prepared in unflashed 600df43; controlled touch/GPIO4/click/drag still required
+TM-USB-GPIO4,A1,TM,NOT TESTED,Touch separator independently and observe no click
+TM-USB-RECAL,A1,TM,NOT TESTED,Touch calibration recalibration and practical fault recovery
+TM-USB-NO-STALE,A1,TM,NOT TESTED,Movement reconnect and fault trials with host capture
+TM-USB-LED,A1,TM,PASS,Operator old-frame warm-flash observation followed by dark matrix after cold replug; no electrical pin capture
+TM-USB-NO-RADIO,A1,TM,NOT TESTED,Verify wired startup telemetry and selected source path without Wi-Fi or BLE init
+FNR-USB-ENUM,A2,FNR,PASS,cafe:f003 healthy mouse; device configuration descriptors and parsed caps
+FNR-USB-IDLE,A2,FNR,PASS,20 seconds zero host motion and no removal or observer error
+FNR-LOCAL-READY,A2,FNR,NOT TESTED,New paired production UART and matching READY admission observation
+FNR-LOCAL-RESET,A2,FNR,NOT TESTED,Internal transport interruption reset watchdog and bounded recovery
+FNR-LOCAL-NEUTRAL,A2,FNR,NOT TESTED,Startup neutral button release and no stale output
+FNR-CONFIG-ACTIVE,A2,FNR,NOT TESTED,Provisioning public ID generation and power-cycle persistence
+FNR-CONFIG-OFF,A2,FNR,NOT TESTED,Reuse accepted factory fail-closed evidence only where unchanged and applicable
+RF-FIRST-IDENTITY,B,JOINT,NOT TESTED,Exact first authenticated real-sender-to-production-receiver identity
+RF-CORRECT-PEER,B,JOINT,NOT TESTED,Expected station MACs channel public ID generation and key relation
+RF-WRONG-PEER,B,JOINT,NOT TESTED,Wrong peer rejected with attributable upstream or core counters
+RF-WRONG-CONFIG,B,JOINT,NOT TESTED,Wrong key generation or invalid wrapper rejected; no unwrapped fallback
+RF-NEUTRAL,B,JOINT,NOT TESTED,Ordinary full-state neutral packets accepted by receiver
+RF-MOVE-ONCE,B,JOINT,NOT TESTED,Relative X Y reach host once with production schema
+RF-BUTTONS,B,JOINT,NOT TESTED,Left right full-state press hold release reach host
+RF-TIMEOUT,B,FNR,NOT TESTED,Transmitter disappears while button held; host release and receiver freshness event
+NORMAL-IDLE,C,JOINT,NOT TESTED,Neutral stability drift and idle false-click interval
+NORMAL-TILT,C,JOINT,NOT TESTED,Slow moderate reverse diagonal movement and practical usability
+NORMAL-CLICK,C,JOINT,NOT TESTED,Left right realistic rapid press release; stationary and moving clicks
+NORMAL-DRAG,C,JOINT,NOT TESTED,Full-state held drag while moving
+NORMAL-RECENTER,C,JOINT,NOT TESTED,Recenter stationary and after movement with no click or stale motion
+LIFE-SENDER-POWER,C,JOINT,NOT TESTED,Fresh sender session while receiver remains running
+LIFE-RECEIVER-POWER,C,JOINT,NOT TESTED,Receiver joins ongoing sender at current sequence
+LIFE-ESP-RESET,C,FNR,NOT TESTED,ESP reset while RP stays running; safe transport generation recovery
+LIFE-RP-RESET,C,FNR,NOT TESTED,RP reset and USB re-enumeration while sender continues
+LIFE-HOST-USB,C,FNR,NOT TESTED,Host receiver USB unplug replug with no queued replay
+LIFE-SESSION,C,JOINT,NOT TESTED,New session and delayed retired-session packets do not replay old motion
+LIFE-ORDER,C,FNR,NOT TESTED,Duplicate stale reordered half-range and forward-gap handling
+LIFE-WRAP,C,JOINT,NOT TESTED,Exact software wrap evidence when physical wrap is impractical
+LOSS-INTERRUPT,C,JOINT,NOT TESTED,Bounded realistic RF interruption with callback and receiver counters
+LOSS-RECOVERY,C,JOINT,NOT TESTED,Bounded sender recovery; all-up fail-safe and fresh full-state repair
+PERF-CADENCE,D,JOINT,NOT TESTED,Logical RF UART and USB cadence with reproducible counter intervals
+PERF-LOSS,D,JOINT,NOT TESTED,Offered callbacks accepted drops gaps and deliberate loss reconciled
+PERF-LATENCY,D,JOINT,NOT TESTED,Reproducible host responsiveness bounds without unsupported precision
+PERF-LOOP,D,TM,BLOCKED,Restored 5f07be2 cumulative loop max 279667 us; IMU stale/recovery 1 and driver reinit 1/1; dropped movement 208; initiating event unattributed
+PERF-SOAK,D,JOINT,NOT TESTED,Meaningful soak duration and anomalies recorded without post-hoc thresholds
+CLICK-STATIONARY,E,TM,NOT TESTED,Left right transition timestamps and 100 ms peak X Y correlated with host
+CLICK-MOVING,E,TM,NOT TESTED,Moving clicks and drags distinguish intentional motion from artefact
+FINAL-REVIEW,F,JOINT,NOT TESTED,Exact accepted heads CI contract lifecycle evidence and separate acceptance conclusions
+TM-USB-SERIAL-DIAG,A1,TM/HOST,BLOCKED,Spontaneous ClearCommError 22; initial wrapper lost Raw Input result; later 30-second passive capture stable; whole-USB versus CDC-only cause not established
+TM-ROM-ENTRY,A1,TM/OPERATOR,PASS,Held BOOT through actual ROM detection; fresh preserved MAC and three write digests plus independent app readback verified; no automatic reset hammering
+TM-DIAG-INDICATOR,A1,TM,NOT TESTED,Owner-requested diagnostic-only one-code dot prepared in unflashed 600df43; colour/grip orientation/brightness/timing require operator-present testing
