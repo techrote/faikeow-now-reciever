@@ -6,23 +6,36 @@ Status: **IN PROGRESS; NOT ACCEPTED**. Neither issue is closed by this record.
 
 ## Latest sender checkpoint and receiver boundary
 
-TiltMouse source/build 3a33f41 was flashed/read back and cold-booted. Its
-30-second stationary capture (23:10:50 UTC, 14 October local time) established
-neutral=1 and quiet=32/32 with zero host motion, faults or removal. Learned
-gyro offsets stayed frozen. Qualification completed about 5.145 seconds after
-boot; a two-second startup is not established. An operator-aligned 121-second
-movement recording was USB/serial stable and the operator reported "Feels good,
-x axis swapped". TiltMouse source/build
-`e8cfa99c3780df1296eb0fe76678224f67a33436` corrects only default X and passes
-all 14 tests and all required gates in CI 38483762002. Its diagnostic image was
-flashed/read back at 23:28:18 UTC and cold-booted; repeated 30-second orientation
-calibration/idle is stable with zero movement/faults/removal. Qualification took
-8.637 seconds from boot; two-second startup is not established. A closed operator capture confirms BOOT recenter 0 -> 1, changed neutral and
-stable USB/sensors; the operator reports good control and dark LEDs. Sender-only
-next-build steering requests swapped click locations and a very dim diagnostic
-sensor indicator. Touch/layout qualification remains open; no receiver changes
-or RF conclusions follow. Recenter remained 0 and mixed touch/click events
-are not acceptance. Movement-drop counts are retained in sender evidence.
+The operator ended physical work on 14 October 2026 and requested a pinned
+ESPsand review, one more TiltMouse test build, then a stop. No receiver or
+sender flashing/testing occurred during that preparation.
+
+Last physically installed sender: `e8cfa99c3780df1296eb0fe76678224f67a33436`,
+diagnostic app `a63f5c606c3ecebab9ca8ad56c86b3c5d29efd3a52486a82c6e7009e8f8d3abd`.
+Its 30-second cold-boot stationary capture has neutral=1/quiet=32/32, zero host
+movement/faults/removal, and frozen learned gyro offsets. Qualification took
+8.637 seconds from boot; two-second startup is not established. The closed
+operator capture confirms BOOT recenter 0 -> 1 with changed neutral, stable
+USB/sensors and frozen gyro offsets. The operator reports good control and
+dark LEDs; individual edge signs, controlled touch/GPIO4/click/drag and full
+button-neutral state remain incompletely established. Logical drops and the
+earlier spontaneous serial interruption retain their recorded limitations.
+
+Next sender candidate: `600df4366bc93fb3a00c64d9855e8c906d1d0113`, diagnostic app
+`69918e8fc3cad9cc1dfc865ec5f646d71100963756705bbe61add259a060e984`, **unflashed**.
+It implements the chosen GPIO5..7 left / GPIO1..3 right locations, adds one-Hz
+per-pin touch measurements and an owner-requested very dim USB-diagnostic-only
+sensor dot. Sensitivity, motion defaults and canonical full-state wire bits
+are unchanged. All 17 sender host tests and four required gates pass in
+[source CI 38489855242](https://github.com/techrote/ESP32-QMI8658C-TiltMouse/actions/runs/38489855242).
+All three sender modes build locally; archived hashes and the ESPsand review
+are in the linked TiltMouse evidence. The reference's broad touch-row coupling
+does not establish this sender's independent-button acceptance.
+
+Receiver source authority remains `a49d95e61dc910c7db139db0280f80a31d10bfc8`.
+This handoff changes receiver evidence only. No new RF, internal transport,
+dispatch, freshness, ordering, USB recovery or profile-interoperability result
+follows from sender software/build checks. Both physical issues remain open.
 
 Board A is unchanged on config 2, with no receiver flashes/resets. No receiver
 RF, transport, dispatch, timeout or recovery acceptance follows from the sender
